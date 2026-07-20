@@ -1,0 +1,27 @@
+generated: '2026-07-19'
+method: searched
+source: https://docs.intelligems.io/developer-resources/external-api/intelligems-external-api/authentication
+docs: https://docs.intelligems.io/developer-resources/external-api/intelligems-external-api/authentication
+summary:
+  types: [apiKey, oauth2]
+  api_key_in: [header]
+  oauth2_flows: [authorizationCode]
+schemes:
+  - name: accessToken
+    type: apiKey
+    in: header
+    parameter_name: intelligems-access-token
+    surface: External API (https://api.intelligems.io)
+    notes: >-
+      Include your Intelligems-issued API key in the `intelligems-access-token`
+      request header. Missing or invalid keys return HTTP 401 with body {"error":"Unauthorized"}.
+    sources: [openapi/intelligems-external-api-openapi.yml]
+  - name: oauth2
+    type: oauth2
+    flow: authorizationCode
+    surface: MCP server (https://ai.intelligems.io/mcp)
+    notes: >-
+      The hosted Intelligems MCP server is OAuth2-authenticated against an
+      Intelligems organization account; most tools accept an optional
+      `organization` parameter to scope data access.
+    sources: [mcp/intelligems-mcp.yml]

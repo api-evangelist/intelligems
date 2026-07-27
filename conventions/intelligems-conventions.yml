@@ -1,0 +1,49 @@
+generated: '2026-07-19'
+method: searched
+source: https://docs.intelligems.io/developer-resources/external-api
+docs: https://docs.intelligems.io/developer-resources/external-api/intelligems-external-api
+authentication:
+  style: api-key-header
+  header: intelligems-access-token
+  see: authentication/intelligems-authentication.yml
+versioning:
+  style: date-calendar-path
+  current: v25-10-beta
+  notes: >-
+    The External API is versioned in the URL path with a calendar-style,
+    beta-tagged version segment (e.g. /v25-10-beta/...).
+idempotency:
+  supported: false
+  notes: No idempotency key/header is documented for the External API.
+pagination:
+  supported: unknown
+  notes: Pagination is not documented in the public External API reference.
+rate_limiting:
+  model: token-bucket
+  headers:
+    - name: x-ratelimit-limit
+      meaning: Bucket size for the endpoint.
+    - name: x-ratelimit-remaining
+      meaning: Remaining tokens in the current bucket.
+    - name: x-ratelimit-reset
+      meaning: Unix timestamp (ms) at which the bucket next refills.
+  notes: >-
+    Per-endpoint token buckets; the docs advise relying on the response headers
+    as authoritative. Error responses (400/401) do not include rate-limit headers.
+  see: rate-limits/intelligems-rate-limits.yml
+error_envelope:
+  format: json
+  validation_shape: >-
+    {"errors":[], "properties":{"<field>":{"errors":["<message>"]}}} — top-level
+    errors[] is for request-level errors; per-field messages live under
+    properties.<field>.errors.
+  auth_shape: '{"error":"Unauthorized"}'
+  see: errors/intelligems-problem-types.yml
+content_type: application/json
+client_api:
+  javascript:
+    global: window.igData
+    notes: >-
+      Client-side read interface (User/Price/Campaigns objects) injected into the
+      page; readiness signalled via the `ig:ready` event or window.onIgReady callback.
+    see: components/intelligems-components.yml

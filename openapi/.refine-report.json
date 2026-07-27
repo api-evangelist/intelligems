@@ -1,0 +1,18 @@
+{
+  "provider": "intelligems",
+  "sources": [
+    "intelligems-analytics-api-openapi.yml",
+    "intelligems-experiences-api-openapi.yml",
+    "intelligems-holiday-benchmark-api-openapi.yml"
+  ],
+  "outputs": [
+    "intelligems-analytics-api-openapi.yml",
+    "intelligems-experiences-api-openapi.yml",
+    "intelligems-holiday-benchmark-api-openapi.yml"
+  ],
+  "archived": [],
+  "errors": [],
+  "warnings": [],
+  "notes": [],
+  "skipped": []
+}

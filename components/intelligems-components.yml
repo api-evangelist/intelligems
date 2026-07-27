@@ -1,0 +1,39 @@
+generated: '2026-07-19'
+method: searched
+source: https://intelligems.io/resources/developers
+families:
+  - name: JavaScript API (window.igData)
+    kind: client-side-global
+    docs: https://docs.intelligems.io/developer-resources/javascript-api
+    description: >-
+      Global object injected into the page on load; primarily a read interface for
+      configurations and session-specific A/B tests. Readiness is signalled via the
+      `ig:ready` event or the window.onIgReady callback.
+    objects:
+      - name: igData.user
+        docs: https://docs.intelligems.io/developer-resources/javascript-api/user-object
+        description: User ID plus live experiments and test-group assignments (getExperiments()).
+      - name: igData.price
+        docs: https://docs.intelligems.io/developer-resources/javascript-api/price-object
+        description: Advanced/custom price-testing integrations.
+      - name: igData.campaigns
+        docs: https://docs.intelligems.io/developer-resources/javascript-api/campaigns-object
+        description: Onsite campaign/offer customization. Alias igData.offers.
+        methods:
+          - campaigns.getAll()
+          - campaigns.getGWP(options)
+          - campaigns.setHistoryStatus(params)
+  - name: Headless React SDK
+    kind: react-context
+    docs: https://headless.intelligems.io/
+    loader_library: "@intelligems/headless"
+    description: >-
+      React provider that loads experiment config server-side, assigns users to
+      groups, and exposes pricing/content variant data via React context for
+      headless Shopify storefronts (avoids render flicker).
+  - name: Intelligems Theme Snippet
+    kind: shopify-theme-snippet
+    docs: https://docs.intelligems.io/developer-resources/intelligems-theme-snippets
+    description: >-
+      Theme snippet / Intelligems Script added to a Shopify theme to run price,
+      content, shipping, and offer tests.

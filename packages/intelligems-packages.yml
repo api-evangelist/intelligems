@@ -1,0 +1,32 @@
+generated: '2026-07-19'
+method: searched
+source: https://www.npmjs.com/org/intelligems
+packages:
+  - language: javascript
+    registry: npm
+    name: "@intelligems/headless"
+    url: https://www.npmjs.com/package/@intelligems/headless
+    install: npm install @intelligems/headless
+    latest: 1.2.17
+    license: MIT
+    official: true
+    description: >-
+      React SDK for headless Shopify storefronts. Loads experiment config
+      server-side, assigns users to test groups, and exposes pricing/content
+      variant data via React context to avoid render flicker.
+    docs: https://headless.intelligems.io/
+  - language: javascript
+    registry: npm
+    name: "@intelligems/third-party-integrations"
+    url: https://www.npmjs.com/package/@intelligems/third-party-integrations
+    install: npm install @intelligems/third-party-integrations
+    latest: 1.0.0
+    license: MIT
+    official: true
+    description: >-
+      TypeScript library for managing third-party integrations in the
+      Intelligems ecosystem.
+notes: >-
+  A third-party (community) MCP documentation package @victor-paytuvi/intelligems-docs-mcp
+  exists on npm but is NOT first-party and is excluded here. No first-party PyPI, Maven,
+  NuGet, Go, RubyGems, Packagist, or crates.io packages were found.

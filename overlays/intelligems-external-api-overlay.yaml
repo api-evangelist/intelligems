@@ -1,0 +1,17 @@
+overlay: 1.0.0
+info:
+  title: API Evangelist enhancements for Intelligems External API
+  version: 1.0.0
+extends: openapi/intelligems-external-api-openapi.yml
+actions:
+  - target: $.info
+    update:
+      x-apievangelist-provenance: generated from published docs
+      x-intelligems-mcp: https://ai.intelligems.io/mcp
+      x-status-page: null
+  - target: $.tags
+    update:
+      - name: Experiences
+        x-agent-readiness: create/update/lifecycle for A/B tests and personalizations
+      - name: Analytics
+        x-agent-readiness: experience-level and sitewide reporting surface

@@ -1,0 +1,19 @@
+generated: '2026-07-19'
+method: searched
+source: https://docs.intelligems.io/developer-resources/external-api
+versioning:
+  scheme: date-calendar-path
+  current: v25-10-beta
+  stability: beta
+  docs: https://docs.intelligems.io/developer-resources/external-api/intelligems-external-api/base-url
+deprecation:
+  policy_url: null
+  sunset_header: false
+  notes: No public deprecation/sunset policy was found.
+sla:
+  url: null
+status_page: null
+deprecated_operations: []
+notes: >-
+  The External API is offered as a beta (v25-10-beta). No status page, SLA, or
+  formal deprecation policy is published on the developer surface.

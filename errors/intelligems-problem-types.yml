@@ -1,0 +1,26 @@
+generated: '2026-07-19'
+method: searched
+source: https://docs.intelligems.io/developer-resources/external-api/intelligems-external-api/errors
+format: custom-json
+envelope:
+  validation: >-
+    {"errors":[], "properties":{"<fieldName>":{"errors":["<validation message>"]}}}
+    — top-level errors[] holds request-level errors (empty for typical field
+    validation); per-field messages live under properties.<fieldName>.errors.
+  auth: '{"error":"Unauthorized"}'  # may be "Unauthorized" or "Unauthorized!"
+problems:
+  - status: 400
+    title: Validation error
+    meaning: Invalid query or body values. Field messages under properties.<field>.errors.
+  - status: 401
+    title: Unauthorized
+    meaning: Invalid or missing API key (intelligems-access-token header).
+  - status: 404
+    title: Not found
+    meaning: Resource not found.
+  - status: 429
+    title: Rate limit exceeded
+    meaning: Token bucket exhausted. See x-ratelimit-* headers and rate-limits/intelligems-rate-limits.yml.
+  - status: 500
+    title: Internal server error
+    meaning: Server-side error.

@@ -1,0 +1,25 @@
+generated: '2026-07-19'
+method: derived
+source: openapi/intelligems-external-api-openapi.yml
+standards:
+  - id: oauth2
+    conforms: true
+    evidence: Hosted MCP server (ai.intelligems.io/mcp) is OAuth2-authenticated.
+  - id: api-key-auth
+    conforms: true
+    evidence: External API authenticates via intelligems-access-token header (apiKey).
+  - id: rfc6585-rate-limit
+    conforms: partial
+    evidence: 429 with x-ratelimit-limit / x-ratelimit-remaining / x-ratelimit-reset headers (custom, not RFC 9331 RateLimit fields).
+  - id: rfc9457-problem-details
+    conforms: false
+    evidence: Errors use a custom JSON envelope, not application/problem+json.
+  - id: mcp
+    conforms: true
+    evidence: Official Model Context Protocol server with 30 tools over HTTP and SSE.
+  - id: json
+    conforms: true
+    evidence: All External API requests/responses are application/json.
+notes: >-
+  No published third-party compliance certifications (SOC 2, ISO 27001, PCI DSS,
+  HIPAA, FedRAMP) were found, so no Compliance pointer is emitted.

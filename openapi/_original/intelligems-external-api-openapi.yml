@@ -1,0 +1,314 @@
+openapi: 3.1.0
+# x-apievangelist-provenance:
+#   generated: '2026-07-19'
+#   method: generated
+#   source: https://docs.intelligems.io/developer-resources/external-api
+#   note: Faithfully generated from Intelligems' published External API reference
+#     (base URL, apiKey auth, endpoint list, rate-limit + error docs). Request/response
+#     bodies are documented as application/json but full field schemas are not published,
+#     so message bodies are left as open objects rather than fabricated.
+info:
+  title: Intelligems External API
+  version: v25-10-beta
+  description: >-
+    Programmatic access to manage Intelligems A/B tests, personalizations, and
+    experiences, and to pull experiment and sitewide analytics for a Shopify store.
+    Authenticate with an API key in the `intelligems-access-token` header.
+  contact:
+    name: Intelligems
+    url: https://docs.intelligems.io/developer-resources/external-api
+    email: sales@intelligems.io
+servers:
+  - url: https://api.intelligems.io
+    description: Production
+security:
+  - accessToken: []
+tags:
+  - name: Experiences
+    description: Create, read, update, and control A/B tests and personalizations.
+  - name: Analytics
+    description: Experience-level and sitewide analytics.
+  - name: Holiday Benchmark
+    description: Event/holiday benchmark analytics.
+paths:
+  /v25-10-beta/experiences-list:
+    get:
+      operationId: listExperiences
+      summary: List experiences
+      description: List experiences (experiments and personalizations) for the organization.
+      tags: [Experiences]
+      responses:
+        '200': { $ref: '#/components/responses/OK' }
+        '400': { $ref: '#/components/responses/ValidationError' }
+        '401': { $ref: '#/components/responses/Unauthorized' }
+        '429': { $ref: '#/components/responses/RateLimited' }
+        '500': { $ref: '#/components/responses/ServerError' }
+  /v25-10-beta/experiences/{experienceId}:
+    parameters:
+      - $ref: '#/components/parameters/experienceId'
+    get:
+      operationId: getExperience
+      summary: Fetch experience data
+      description: Get detailed information about a specific experience including variations, targeting rules, and configuration.
+      tags: [Experiences]
+      responses:
+        '200': { $ref: '#/components/responses/OK' }
+        '401': { $ref: '#/components/responses/Unauthorized' }
+        '404': { $ref: '#/components/responses/NotFound' }
+        '429': { $ref: '#/components/responses/RateLimited' }
+        '500': { $ref: '#/components/responses/ServerError' }
+    put:
+      operationId: updateExperience
+      summary: Update experience
+      description: Update an existing experience — modify variations, targeting rules, traffic allocation, or other configuration.
+      tags: [Experiences]
+      requestBody: { $ref: '#/components/requestBodies/JsonBody' }
+      responses:
+        '200': { $ref: '#/components/responses/OK' }
+        '400': { $ref: '#/components/responses/ValidationError' }
+        '401': { $ref: '#/components/responses/Unauthorized' }
+        '404': { $ref: '#/components/responses/NotFound' }
+        '429': { $ref: '#/components/responses/RateLimited' }
+        '500': { $ref: '#/components/responses/ServerError' }
+  /v25-10-beta/experiences:
+    post:
+      operationId: createExperience
+      summary: Create experience
+      description: Create a new experience/experiment with organization-specific configuration fields.
+      tags: [Experiences]
+      requestBody: { $ref: '#/components/requestBodies/JsonBody' }
+      responses:
+        '200': { $ref: '#/components/responses/OK' }
+        '400': { $ref: '#/components/responses/ValidationError' }
+        '401': { $ref: '#/components/responses/Unauthorized' }
+        '429': { $ref: '#/components/responses/RateLimited' }
+        '500': { $ref: '#/components/responses/ServerError' }
+  /v25-10-beta/experiences/{experienceId}/actions/{action}:
+    parameters:
+      - $ref: '#/components/parameters/experienceId'
+      - name: action
+        in: path
+        required: true
+        description: Lifecycle action to perform on the experience (start, pause, or end).
+        schema: { type: string, enum: [start, pause, end] }
+    post:
+      operationId: performExperienceAction
+      summary: Perform experience action
+      description: Perform a lifecycle action on an experience — start, pause, or end it.
+      tags: [Experiences]
+      responses:
+        '200': { $ref: '#/components/responses/OK' }
+        '400': { $ref: '#/components/responses/ValidationError' }
+        '401': { $ref: '#/components/responses/Unauthorized' }
+        '404': { $ref: '#/components/responses/NotFound' }
+        '429': { $ref: '#/components/responses/RateLimited' }
+        '500': { $ref: '#/components/responses/ServerError' }
+  /v25-10-beta/analytics/resource/{experienceId}:
+    parameters:
+      - $ref: '#/components/parameters/experienceId'
+    get:
+      operationId: getExperienceAnalytics
+      summary: Get experience analytics
+      description: Retrieve A/B test performance results and statistical comparison for an experience.
+      tags: [Analytics]
+      responses:
+        '200': { $ref: '#/components/responses/OK' }
+        '401': { $ref: '#/components/responses/Unauthorized' }
+        '404': { $ref: '#/components/responses/NotFound' }
+        '429': { $ref: '#/components/responses/RateLimited' }
+        '500': { $ref: '#/components/responses/ServerError' }
+    post:
+      operationId: queryExperienceAnalytics
+      summary: Query experience analytics
+      description: Query A/B test performance results for an experience with filters in the request body.
+      tags: [Analytics]
+      requestBody: { $ref: '#/components/requestBodies/JsonBody' }
+      responses:
+        '200': { $ref: '#/components/responses/OK' }
+        '400': { $ref: '#/components/responses/ValidationError' }
+        '401': { $ref: '#/components/responses/Unauthorized' }
+        '404': { $ref: '#/components/responses/NotFound' }
+        '429': { $ref: '#/components/responses/RateLimited' }
+        '500': { $ref: '#/components/responses/ServerError' }
+  /v25-10-beta/analytics/experience/{experienceId}/timeseries:
+    parameters:
+      - $ref: '#/components/parameters/experienceId'
+    post:
+      operationId: getExperienceTimeseries
+      summary: Get experience timeseries
+      description: Retrieve time-series analytics for an experience.
+      tags: [Analytics]
+      requestBody: { $ref: '#/components/requestBodies/JsonBody' }
+      responses:
+        '200': { $ref: '#/components/responses/OK' }
+        '400': { $ref: '#/components/responses/ValidationError' }
+        '401': { $ref: '#/components/responses/Unauthorized' }
+        '404': { $ref: '#/components/responses/NotFound' }
+        '429': { $ref: '#/components/responses/RateLimited' }
+        '500': { $ref: '#/components/responses/ServerError' }
+  /v25-10-beta/analytics/experience/{experienceId}/export:
+    parameters:
+      - $ref: '#/components/parameters/experienceId'
+    post:
+      operationId: exportExperienceAnalytics
+      summary: Export experience analytics
+      description: Export experience analytics data.
+      tags: [Analytics]
+      requestBody: { $ref: '#/components/requestBodies/JsonBody' }
+      responses:
+        '200': { $ref: '#/components/responses/OK' }
+        '400': { $ref: '#/components/responses/ValidationError' }
+        '401': { $ref: '#/components/responses/Unauthorized' }
+        '404': { $ref: '#/components/responses/NotFound' }
+        '429': { $ref: '#/components/responses/RateLimited' }
+        '500': { $ref: '#/components/responses/ServerError' }
+  /v25-10-beta/analytics/sitewide/snapshot:
+    post:
+      operationId: getSitewideSnapshot
+      summary: Fetch sitewide analytics snapshot
+      description: Retrieve a sitewide analytics summary including revenue per visitor, net revenue, and conversion rate.
+      tags: [Analytics]
+      requestBody: { $ref: '#/components/requestBodies/JsonBody' }
+      responses:
+        '200': { $ref: '#/components/responses/OK' }
+        '400': { $ref: '#/components/responses/ValidationError' }
+        '401': { $ref: '#/components/responses/Unauthorized' }
+        '429': { $ref: '#/components/responses/RateLimited' }
+        '500': { $ref: '#/components/responses/ServerError' }
+  /v25-10-beta/analytics/sitewide/timeseries:
+    post:
+      operationId: getSitewideTimeseries
+      summary: Fetch sitewide timeseries
+      description: Retrieve sitewide time-series analytics.
+      tags: [Analytics]
+      requestBody: { $ref: '#/components/requestBodies/JsonBody' }
+      responses:
+        '200': { $ref: '#/components/responses/OK' }
+        '400': { $ref: '#/components/responses/ValidationError' }
+        '401': { $ref: '#/components/responses/Unauthorized' }
+        '429': { $ref: '#/components/responses/RateLimited' }
+        '500': { $ref: '#/components/responses/ServerError' }
+  /v25-10-beta/analytics/sitewide/order-distribution:
+    post:
+      operationId: getSitewideOrderDistribution
+      summary: Fetch sitewide order distribution
+      description: Retrieve sitewide order-distribution analytics.
+      tags: [Analytics]
+      requestBody: { $ref: '#/components/requestBodies/JsonBody' }
+      responses:
+        '200': { $ref: '#/components/responses/OK' }
+        '400': { $ref: '#/components/responses/ValidationError' }
+        '401': { $ref: '#/components/responses/Unauthorized' }
+        '429': { $ref: '#/components/responses/RateLimited' }
+        '500': { $ref: '#/components/responses/ServerError' }
+  /v25-10-beta/analytics/sitewide/conversion-funnel:
+    post:
+      operationId: getSitewideConversionFunnel
+      summary: Fetch sitewide conversion funnel
+      description: Retrieve sitewide conversion-funnel analytics.
+      tags: [Analytics]
+      requestBody: { $ref: '#/components/requestBodies/JsonBody' }
+      responses:
+        '200': { $ref: '#/components/responses/OK' }
+        '400': { $ref: '#/components/responses/ValidationError' }
+        '401': { $ref: '#/components/responses/Unauthorized' }
+        '429': { $ref: '#/components/responses/RateLimited' }
+        '500': { $ref: '#/components/responses/ServerError' }
+  /v25-10-beta/analytics/event/snapshot:
+    post:
+      operationId: getHolidayBenchmarkSnapshot
+      summary: Get holiday benchmark snapshot
+      description: Retrieve holiday/event benchmark snapshot analytics.
+      tags: [Holiday Benchmark]
+      requestBody: { $ref: '#/components/requestBodies/JsonBody' }
+      responses:
+        '200': { $ref: '#/components/responses/OK' }
+        '400': { $ref: '#/components/responses/ValidationError' }
+        '401': { $ref: '#/components/responses/Unauthorized' }
+        '429': { $ref: '#/components/responses/RateLimited' }
+        '500': { $ref: '#/components/responses/ServerError' }
+  /v25-10-beta/analytics/event/timeseries:
+    post:
+      operationId: getHolidayBenchmarkTimeseries
+      summary: Get holiday benchmark timeseries
+      description: Retrieve holiday/event benchmark time-series analytics.
+      tags: [Holiday Benchmark]
+      requestBody: { $ref: '#/components/requestBodies/JsonBody' }
+      responses:
+        '200': { $ref: '#/components/responses/OK' }
+        '400': { $ref: '#/components/responses/ValidationError' }
+        '401': { $ref: '#/components/responses/Unauthorized' }
+        '429': { $ref: '#/components/responses/RateLimited' }
+        '500': { $ref: '#/components/responses/ServerError' }
+components:
+  securitySchemes:
+    accessToken:
+      type: apiKey
+      in: header
+      name: intelligems-access-token
+      description: API key issued by Intelligems, sent in the intelligems-access-token header.
+  parameters:
+    experienceId:
+      name: experienceId
+      in: path
+      required: true
+      description: The Intelligems experience (experiment or personalization) identifier.
+      schema: { type: string }
+  requestBodies:
+    JsonBody:
+      description: JSON request payload. Field-level schema is not published by Intelligems.
+      required: true
+      content:
+        application/json:
+          schema: { type: object, additionalProperties: true }
+  responses:
+    OK:
+      description: Success.
+      content:
+        application/json:
+          schema: { type: object, additionalProperties: true }
+    ValidationError:
+      description: Validation error (invalid query/body values). Per-field messages under properties.<field>.errors.
+      content:
+        application/json:
+          schema: { $ref: '#/components/schemas/ValidationError' }
+    Unauthorized:
+      description: Unauthorized (invalid or missing API key).
+      content:
+        application/json:
+          schema: { $ref: '#/components/schemas/AuthError' }
+    NotFound:
+      description: Resource not found.
+      content:
+        application/json:
+          schema: { $ref: '#/components/schemas/AuthError' }
+    RateLimited:
+      description: Rate limit exceeded. See x-ratelimit-limit / x-ratelimit-remaining / x-ratelimit-reset headers.
+      headers:
+        x-ratelimit-limit: { schema: { type: integer }, description: Bucket size for the endpoint. }
+        x-ratelimit-remaining: { schema: { type: integer }, description: Remaining tokens in the current bucket. }
+        x-ratelimit-reset: { schema: { type: integer }, description: Unix timestamp (ms) at which the bucket next refills. }
+    ServerError:
+      description: Internal server error.
+  schemas:
+    ValidationError:
+      type: object
+      description: Validation error envelope. Top-level errors[] is for request-level errors; per-field messages live under properties.<field>.errors.
+      properties:
+        errors:
+          type: array
+          items: { type: string }
+        properties:
+          type: object
+          additionalProperties:
+            type: object
+            properties:
+              errors:
+                type: array
+                items: { type: string }
+    AuthError:
+      type: object
+      properties:
+        error:
+          type: string
+          description: Error message, e.g. "Unauthorized" or "Unauthorized!".

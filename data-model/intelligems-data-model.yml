@@ -1,0 +1,46 @@
+generated: '2026-07-19'
+method: derived
+source: openapi/intelligems-external-api-openapi.yml + mcp/intelligems-mcp.yml
+entities:
+  - name: Organization
+    description: An Intelligems account tied to a Shopify store (currency, timezone, integrations, features).
+  - name: Experience
+    description: >-
+      Umbrella entity for a test surface; specializes into Experiment (A/B test) and
+      Personalization. Has variations, targeting rules, traffic allocation, and metrics config.
+    id_field: experienceId
+  - name: Variation
+    description: A variant within an experience.
+  - name: MetricsConfig
+    description: Configured success metrics for an experience (revenue, conversion rate, AOV, custom goals).
+  - name: Analytics
+    description: Experience-level and sitewide analytics (snapshot, timeseries, order distribution, conversion funnel, export).
+  - name: Offer
+    description: Tiered discounts, cart discounts, free gifts, and free shipping.
+  - name: CustomEvent
+    description: Custom tracking events (page views, clicks, scroll depth, custom JS events).
+  - name: Integration
+    description: Connected third-party service (Google Analytics, Klaviyo, Recharge, Slack, etc.).
+relationships:
+  - from: Organization
+    to: Experience
+    type: has_many
+  - from: Experience
+    to: Variation
+    type: has_many
+  - from: Experience
+    to: MetricsConfig
+    type: has_one
+  - from: Experience
+    to: Analytics
+    type: has_many
+    via: experienceId
+  - from: Organization
+    to: Offer
+    type: has_many
+  - from: Organization
+    to: CustomEvent
+    type: has_many
+  - from: Organization
+    to: Integration
+    type: has_many

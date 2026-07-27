@@ -1,25 +1,169 @@
 aid: intelligems
 name: Intelligems
-description: Intelligems is a company surfaced as a portfolio company of techstars and added to the API
-  Evangelist network as a stub for enrichment. This profile is a lead awaiting the enrichment pipeline.
+description: >-
+  Intelligems is an AI-powered A/B testing, pricing optimization, and
+  personalization platform for ecommerce stores, built primarily as a Shopify
+  app. Merchants use it to test and personalize product and subscription
+  pricing, discounts and offers, shipping strategies, content and landing pages,
+  the checkout experience, and post-purchase offers, then measure the profit
+  impact with built-in analytics. For developers, Intelligems exposes a REST
+  External API (manage experiences and pull experiment and sitewide analytics),
+  a client-side JavaScript API (window.igData), a headless React SDK
+  (@intelligems/headless), and an official hosted MCP server with 30 tools that
+  connects experiments, Shopify store data, and analytics to Claude, ChatGPT,
+  and Gemini.
 url: https://raw.githubusercontent.com/api-evangelist/intelligems/refs/heads/main/apis.yml
 x-type: company
 x-source: vc-portfolio
 x-backed-by:
 - techstars
-x-tier: stub
-x-tier-reason: portfolio-lead
+x-tier: profiled
+x-tier-reason: enriched
+accessModel:
+  pricing: unknown
+  onboarding: self-serve
+  trial: false
+  try_now: false
+  public: false
+  label: Self-serve signup
+  confidence: medium
+  source:
+  - authentication
+  generated: '2026-07-22'
+  method: derived
+image: https://intelligems.io/favicon.ico
 specificationVersion: '0.20'
 created: '2026-07-17'
-modified: '2026-07-17'
+modified: '2026-07-19'
 tags:
 - Company
-apis: []
+- A/B Testing
+- Ecommerce
+- Pricing
+- Personalization
+- Conversion Rate Optimization
+- Shopify
+- Analytics
+- Experimentation
+apis:
+- aid: intelligems:intelligems-analytics-api
+  name: Intelligems Analytics API
+  description: Experience-level and sitewide analytics.
+  humanURL: https://docs.intelligems.io/developer-resources/external-api
+  baseURL: https://api.intelligems.io
+  tags:
+  - Analytics
+  properties:
+  - type: OpenAPI
+    url: openapi/intelligems-analytics-api-openapi.yml
+  - type: Authentication
+    url: authentication/intelligems-authentication.yml
+  - type: Conventions
+    url: conventions/intelligems-conventions.yml
+  - type: RateLimits
+    url: rate-limits/intelligems-rate-limits.yml
+  - type: ErrorCatalog
+    url: errors/intelligems-problem-types.yml
+  - type: Lifecycle
+    url: lifecycle/intelligems-lifecycle.yml
+  - type: Conformance
+    url: conformance/intelligems-conformance.yml
+  - type: DataModel
+    url: data-model/intelligems-data-model.yml
+- aid: intelligems:intelligems-experiences-api
+  name: Intelligems Experiences API
+  description: Create, read, update, and control A/B tests and personalizations.
+  humanURL: https://docs.intelligems.io/developer-resources/external-api
+  baseURL: https://api.intelligems.io
+  tags:
+  - Experiences
+  properties:
+  - type: OpenAPI
+    url: openapi/intelligems-experiences-api-openapi.yml
+  - type: Authentication
+    url: authentication/intelligems-authentication.yml
+  - type: Conventions
+    url: conventions/intelligems-conventions.yml
+  - type: RateLimits
+    url: rate-limits/intelligems-rate-limits.yml
+  - type: ErrorCatalog
+    url: errors/intelligems-problem-types.yml
+  - type: Lifecycle
+    url: lifecycle/intelligems-lifecycle.yml
+  - type: Conformance
+    url: conformance/intelligems-conformance.yml
+  - type: DataModel
+    url: data-model/intelligems-data-model.yml
+- aid: intelligems:intelligems-holiday-benchmark-api
+  name: Intelligems Holiday Benchmark API
+  description: Event/holiday benchmark analytics.
+  humanURL: https://docs.intelligems.io/developer-resources/external-api
+  baseURL: https://api.intelligems.io
+  tags:
+  - Holiday Benchmark
+  properties:
+  - type: OpenAPI
+    url: openapi/intelligems-holiday-benchmark-api-openapi.yml
+  - type: Authentication
+    url: authentication/intelligems-authentication.yml
+  - type: Conventions
+    url: conventions/intelligems-conventions.yml
+  - type: RateLimits
+    url: rate-limits/intelligems-rate-limits.yml
+  - type: ErrorCatalog
+    url: errors/intelligems-problem-types.yml
+  - type: Lifecycle
+    url: lifecycle/intelligems-lifecycle.yml
+  - type: Conformance
+    url: conformance/intelligems-conformance.yml
+  - type: DataModel
+    url: data-model/intelligems-data-model.yml
 maintainers:
 - FN: Kin Lane
   email: kin@apievangelist.com
 - FN: APIs.json
   email: info@apis.io
 common:
+- type: AgenticAccess
+  url: agentic-access/intelligems-agentic-access.yml
+- type: DomainSecurity
+  url: security/intelligems-domain-security.yml
+- type: MCPServer
+  url: mcp/intelligems-mcp.yml
+- type: Packages
+  url: packages/intelligems-packages.yml
+- type: SDKs
+  url: packages/intelligems-packages.yml
+- type: Components
+  url: components/intelligems-components.yml
+- type: LLMsTxt
+  url: llms/intelligems-llms.txt
+- type: AgentSkill
+  url: skills/_index.yml
+- type: DeveloperPortal
+  url: https://docs.intelligems.io/getting-started/getting-started
+- type: Documentation
+  url: https://docs.intelligems.io/
+- type: APIReference
+  url: https://docs.intelligems.io/developer-resources/external-api
+- type: GettingStarted
+  url: https://docs.intelligems.io/getting-started/getting-started
+- type: Blog
+  url: https://www.intelligems.io/resources/blog
+- type: Support
+  url: https://www.intelligems.io/company/get-in-touch
+- type: Pricing
+  url: https://www.intelligems.io/pricing
+- type: SignUp
+  url: https://apps.shopify.com/intelligems
+- type: TermsOfService
+  url: https://www.intelligems.io/terms-of-service
+- type: PrivacyPolicy
+  url: https://www.intelligems.io/privacy-policy
 - type: Website
   url: https://intelligems.io/
+x-enrichment:
+  date: '2026-07-19'
+  status: backfilled
+  pass: local-v1
+  note: backfilled from .gitignore signal + verified work evidence

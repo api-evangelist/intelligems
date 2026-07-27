@@ -1,0 +1,23 @@
+generated: '2026-07-19'
+method: searched
+source: https://docs.intelligems.io/developer-resources/external-api/intelligems-external-api/rate-limiting
+model: token-bucket
+headers:
+  - x-ratelimit-limit
+  - x-ratelimit-remaining
+  - x-ratelimit-reset
+exceeded_status: 429
+notes: >-
+  Per-endpoint token buckets. The response headers are authoritative for current
+  limits; the values below are the documented examples for v25-10-beta. Error
+  responses do not carry rate-limit headers.
+limits:
+  - endpoint_group: Experience endpoints
+    limit_count: 50
+    window: burst 50 (refill 25 every 30 seconds)
+  - endpoint_group: Experience export
+    limit_count: 20
+    window: burst 20
+  - endpoint_group: Sitewide analytics
+    limit_count: 10
+    window: burst 10 (refill 5 every 30 seconds)

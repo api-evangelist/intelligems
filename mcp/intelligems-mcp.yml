@@ -1,0 +1,60 @@
+generated: '2026-07-19'
+method: searched
+status: published
+source: https://docs.intelligems.io/developer-resources/mcp-server
+server:
+  name: intelligems
+  transport: http
+  url: https://ai.intelligems.io/mcp
+  sse_url: https://ai.intelligems.io/mcp/sse
+  auth: oauth2
+  auth_notes: >-
+    OAuth2-authenticated. During setup you authenticate with an Intelligems
+    organization account; most tools accept an optional `organization` parameter
+    to select which organization's data to access.
+  clients:
+    - name: Claude
+      docs: https://docs.intelligems.io/developer-resources/mcp-server/claude
+      recommended: true
+    - name: ChatGPT
+      docs: https://docs.intelligems.io/developer-resources/mcp-server/chatgpt
+    - name: Google Gemini
+      docs: https://docs.intelligems.io/developer-resources/mcp-server/google-gemini
+tools:
+  # Organization & Configuration
+  - { name: list_organizations, description: List Intelligems organizations you have access to (filter by install status, sortable). }
+  - { name: get_organization, description: Get org details including currency, timezone, Shopify settings, and enabled features. }
+  - { name: switch_organization, description: Switch the active organization context for subsequent tool calls. }
+  - { name: list_integrations, description: List active integrations (Google Analytics, Klaviyo, Recharge, Slack, etc.). }
+  # Experiences & Experiments
+  - { name: search_experiences, description: Discover experiences of any type; returns minimal info. }
+  - { name: search_experiments, description: Search A/B tests and experiments (minimal return). }
+  - { name: search_personalizations, description: Search personalizations (minimal return). }
+  - { name: list_experiments, description: Full experiment details including variations, targeting rules, and configuration. }
+  - { name: list_personalizations, description: Full personalization details including variations, targeting rules, and configuration. }
+  - { name: get_experience, description: Detailed info about a specific experience (variations, targeting, configuration). }
+  - { name: get_experience_metrics_config, description: Configured success metrics for an experience (revenue, conversion rate, AOV, custom goals). }
+  - { name: create_experience, description: Create a new experience/experiment with org-specific configuration fields. }
+  - { name: update_experience, description: Update variations, targeting rules, traffic allocation, or other configuration. }
+  - { name: experience_action, description: Perform a lifecycle action on an experience (start, pause, end). }
+  - { name: analyze_experience, description: A/B test results, statistical significance, and variation comparison. }
+  # Shopify Store Data
+  - { name: search_products, description: Search the Shopify product catalog by keyword, name, or description. }
+  - { name: list_collections, description: Browse or search product collections in the Shopify store. }
+  - { name: list_pages, description: Browse or search content pages (About, Contact, FAQ, Terms, etc.). }
+  - { name: search_policies, description: Search store policies, FAQs, shipping, returns, privacy, and store rules. }
+  # Analytics & Audience Data
+  - { name: get_sitewide_analytics, description: Sitewide analytics summary (revenue per visitor, net revenue, conversion rate). }
+  - { name: get_audience_by_country, description: A/B test performance by visitor country/geography. }
+  - { name: get_audience_by_device, description: A/B test performance by device type (desktop, mobile, tablet). }
+  - { name: get_audience_by_visitor_type, description: Compare A/B test performance for new vs returning visitors. }
+  - { name: get_audience_by_source_channel, description: A/B test performance by acquisition channel (organic, paid, social, email, direct). }
+  - { name: get_audience_by_source_site, description: A/B test performance by referring website/domain. }
+  - { name: get_audience_by_landing_page, description: A/B test performance by landing page URL. }
+  # Visualization & Charting
+  - { name: generate_intelligems_graph, description: Generate official Intelligems analytics chart images for an experiment. }
+  - { name: generate_custom_graph, description: Generate a branded Intelligems chart from raw data. }
+  # Custom Events
+  - { name: list_custom_events, description: List custom tracking events (page views, clicks, scroll depth, custom JS events). }
+  # Offers
+  - { name: list_offers, description: List offers (tiered discounts, cart discounts, free gifts, free shipping). }

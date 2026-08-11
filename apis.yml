@@ -124,6 +124,8 @@ maintainers:
 - FN: APIs.json
   email: info@apis.io
 common:
+- type: Overlay
+  url: overlays/intelligems-external-api-overlay.yaml
 - type: AgenticAccess
   url: agentic-access/intelligems-agentic-access.yml
 - type: DomainSecurity

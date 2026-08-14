@@ -6,12 +6,14 @@ description: >-
   app. Merchants use it to test and personalize product and subscription
   pricing, discounts and offers, shipping strategies, content and landing pages,
   the checkout experience, and post-purchase offers, then measure the profit
-  impact with built-in analytics. For developers, Intelligems exposes a REST
-  External API (manage experiences and pull experiment and sitewide analytics),
-  a client-side JavaScript API (window.igData), a headless React SDK
-  (@intelligems/headless), and an official hosted MCP server with 30 tools that
-  connects experiments, Shopify store data, and analytics to Claude, ChatGPT,
-  and Gemini.
+  impact with built-in analytics. For developers, Intelligems publishes a REST
+  External API (v25-10-beta) that manages experiences, defines custom events, and
+  pulls experiment, sitewide and seasonal-benchmark analytics — with its own
+  OpenAPI 3.1 published inside the reference — plus signed webhooks for the
+  experience lifecycle, a client-side JavaScript API (window.igData), a headless
+  React SDK (@intelligems/headless), and an official hosted MCP server with 46
+  OAuth-authenticated tools that connects experiments, Shopify store data, and
+  analytics to Claude, ChatGPT, and Gemini.
 url: https://raw.githubusercontent.com/api-evangelist/intelligems/refs/heads/main/apis.yml
 x-type: company
 x-source: vc-portfolio
@@ -20,21 +22,24 @@ x-backed-by:
 x-tier: profiled
 x-tier-reason: enriched
 accessModel:
-  pricing: unknown
+  pricing: paid
   onboarding: self-serve
-  trial: false
+  trial: true
+  trial_days: 14
   try_now: false
   public: false
-  label: Self-serve signup
-  confidence: medium
+  label: Paid plans with a 14-day free trial; API included with the subscription
+  confidence: high
   source:
+  - https://www.intelligems.io/pricing
+  - plans/intelligems-plans-pricing.yml
   - authentication
-  generated: '2026-07-22'
-  method: derived
+  generated: '2026-08-13'
+  method: searched
 image: https://intelligems.io/favicon.ico
 specificationVersion: '0.20'
 created: '2026-07-17'
-modified: '2026-07-19'
+modified: '2026-08-13'
 tags:
 - Company
 - A/B Testing
@@ -45,6 +50,9 @@ tags:
 - Shopify
 - Analytics
 - Experimentation
+- MCP
+- Webhooks
+- Profit Optimization
 apis:
 - aid: intelligems:intelligems-analytics-api
   name: Intelligems Analytics API
@@ -97,7 +105,7 @@ apis:
 - aid: intelligems:intelligems-holiday-benchmark-api
   name: Intelligems Holiday Benchmark API
   description: Event/holiday benchmark analytics.
-  humanURL: https://docs.intelligems.io/developer-resources/external-api
+  humanURL: https://docs.intelligems.io/developer-resources/external-api/get-holiday-benchmark-data
   baseURL: https://api.intelligems.io
   tags:
   - Holiday Benchmark
@@ -118,6 +126,53 @@ apis:
     url: conformance/intelligems-conformance.yml
   - type: DataModel
     url: data-model/intelligems-data-model.yml
+- aid: intelligems:intelligems-custom-events-api
+  name: Intelligems Custom Events API
+  description: >-
+    Define the client-side behaviors Intelligems tracks on a storefront — click events,
+    scroll depth, page views, product and collection page views, element-viewed and custom
+    JavaScript events — so they can be attached to an experience as a success metric or
+    used as an analytics filter.
+  humanURL: https://docs.intelligems.io/developer-resources/external-api/create-custom-event
+  baseURL: https://api.intelligems.io
+  tags:
+  - Custom Events
+  properties:
+  - type: OpenAPI
+    url: openapi/intelligems-custom-events-api-openapi.yml
+  - type: Authentication
+    url: authentication/intelligems-authentication.yml
+  - type: Conventions
+    url: conventions/intelligems-conventions.yml
+  - type: RateLimits
+    url: rate-limits/intelligems-rate-limits.yml
+  - type: ErrorCatalog
+    url: errors/intelligems-problem-types.yml
+  - type: Lifecycle
+    url: lifecycle/intelligems-lifecycle.yml
+  - type: DataModel
+    url: data-model/intelligems-data-model.yml
+- aid: intelligems:intelligems-mcp-server
+  name: Intelligems MCP Server
+  description: >-
+    Official hosted Model Context Protocol server exposing 46 tools over HTTP and SSE —
+    experiment discovery and lifecycle, price-test prepare/commit, experiment and sitewide
+    analytics, seasonal benchmarking, Shopify catalog and ShopifyQL reporting, and chart
+    rendering — to Claude, ChatGPT and Gemini.
+  humanURL: https://docs.intelligems.io/developer-resources/mcp-server
+  baseURL: https://ai.intelligems.io/mcp
+  tags:
+  - MCP
+  - AI
+  properties:
+  - type: MCPServer
+    url: mcp/intelligems-mcp.yml
+  - type: ToolCrosswalk
+    url: mcp/intelligems-tool-crosswalk.yml
+  - type: Authentication
+    url: authentication/intelligems-authentication.yml
+  - type: OAuthScopes
+    url: scopes/intelligems-scopes.yml
 maintainers:
 - FN: Kin Lane
   email: kin@apievangelist.com
@@ -140,8 +195,42 @@ common:
   url: components/intelligems-components.yml
 - type: LLMsTxt
   url: llms/intelligems-llms.txt
+- type: LLMsTxt
+  name: Documentation llms.txt
+  url: llms/intelligems-docs-llms.txt
 - type: AgentSkill
   url: skills/_index.yml
+- type: ToolCrosswalk
+  url: mcp/intelligems-tool-crosswalk.yml
+- type: WellKnown
+  url: well-known/intelligems-well-known.yml
+- type: OAuthScopes
+  url: scopes/intelligems-scopes.yml
+- type: Webhooks
+  url: asyncapi/intelligems-webhooks.yml
+- type: ChangeLog
+  url: changelog/intelligems-changelog.yml
+- type: ChangeLog
+  name: Product Updates
+  url: https://www.intelligems.io/resources/product-updates
+- type: Plans
+  url: plans/intelligems-plans-pricing.yml
+- type: Sandbox
+  url: sandbox/intelligems-sandbox.yml
+- type: RateLimits
+  url: rate-limits/intelligems-rate-limits.yml
+- type: Authentication
+  url: authentication/intelligems-authentication.yml
+- type: Conventions
+  url: conventions/intelligems-conventions.yml
+- type: ErrorCatalog
+  url: errors/intelligems-problem-types.yml
+- type: Lifecycle
+  url: lifecycle/intelligems-lifecycle.yml
+- type: Conformance
+  url: conformance/intelligems-conformance.yml
+- type: DataModel
+  url: data-model/intelligems-data-model.yml
 - type: DeveloperPortal
   url: https://docs.intelligems.io/getting-started/getting-started
 - type: Documentation
@@ -165,7 +254,7 @@ common:
 - type: Website
   url: https://intelligems.io/
 x-enrichment:
-  date: '2026-07-19'
-  status: backfilled
+  date: '2026-08-13'
+  status: enriched
+  artifacts_added: 12
   pass: local-v1
-  note: backfilled from .gitignore signal + verified work evidence

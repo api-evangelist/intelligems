@@ -1,12 +1,16 @@
-generated: '2026-07-19'
+generated: '2026-08-13'
 method: generated
-source: openapi/intelligems-external-api-openapi.yml
+source: openapi/ (operationIds verified against the harvested provider spec)
 skills:
   - file: intelligems-run-and-analyze-ab-test.md
     name: Run and analyze an Intelligems A/B test
-    api: openapi/intelligems-external-api-openapi.yml
+    api: openapi/intelligems-experiences-api-openapi.yml
     operations: [createExperience, performExperienceAction, getExperience, queryExperienceAnalytics, exportExperienceAnalytics]
   - file: intelligems-pull-store-analytics.md
     name: Pull Intelligems store analytics
-    api: openapi/intelligems-external-api-openapi.yml
+    api: openapi/intelligems-analytics-api-openapi.yml
     operations: [getSitewideSnapshot, getSitewideTimeseries, getSitewideOrderDistribution, getSitewideConversionFunnel]
+  - file: intelligems-manage-custom-events.md
+    name: Define Intelligems custom events as test goals
+    api: openapi/intelligems-custom-events-api-openapi.yml
+    operations: [createOrUpdateCustomEvent, listExperiences, updateExperience]

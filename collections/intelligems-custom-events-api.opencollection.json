@@ -1,0 +1,41 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Intelligems External Custom Events API",
+    "version": "v25-10-beta"
+  },
+  "request": {
+    "auth": {
+      "type": "apikey",
+      "key": "intelligems-access-token",
+      "value": "{{intelligems-access-token}}",
+      "placement": "header"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Custom Events",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Create or update custom event",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://api.intelligems.io/v25-10-beta/custom-events",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Create a new custom event (click, scroll depth, page view, element viewed, JavaScript event), or update an existing one in place by passing back its id. Accepts a single event object or an array of up to 50."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

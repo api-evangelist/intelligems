@@ -1,0 +1,42 @@
+generated: '2026-08-13'
+method: probed
+source: https://ai.intelligems.io/.well-known/oauth-protected-resource
+docs: https://docs.intelligems.io/developer-resources/mcp-server
+note: >-
+  Intelligems' OAuth surface is the hosted MCP server, not the External API (which is
+  API-key only — see authentication/intelligems-authentication.yml). The scope set below
+  is read verbatim from the RFC 9728 protected-resource metadata the server publishes
+  anonymously; Intelligems does not document a scopes/permissions reference page, and the
+  metadata advertises exactly one scope. No OpenAPI in this repo declares an oauth2
+  securityScheme, so nothing here is derived from a spec.
+schemes:
+  - name: mcp-oauth2
+    type: oauth2
+    surface: https://ai.intelligems.io/mcp
+    source: https://ai.intelligems.io/.well-known/oauth-authorization-server
+    issuer: https://ai.intelligems.io
+    dynamic_client_registration: true
+    registration_endpoint: https://ai.intelligems.io/oauth/register
+    flows:
+      - flow: authorizationCode
+        authorizationUrl: https://ai.intelligems.io/oauth/authorize
+        tokenUrl: https://ai.intelligems.io/oauth/token
+        pkce: [S256]
+        grant_types: [authorization_code, refresh_token]
+        token_endpoint_auth_methods: [client_secret_post, client_secret_basic, none]
+scopes:
+  - scope: member
+    description: >-
+      The only scope advertised by the MCP protected-resource metadata. Grants an
+      authenticated organization member's access to that organization's Intelligems
+      data through the MCP tools; per-tool scoping is done with the optional
+      `organization` parameter each tool accepts, not with additional OAuth scopes.
+    flows: [authorizationCode]
+    sources: [https://ai.intelligems.io/.well-known/oauth-protected-resource]
+bearer_methods_supported: [header]
+resource: https://ai.intelligems.io/mcp
+x-evidence:
+  - {url: 'https://ai.intelligems.io/.well-known/oauth-authorization-server', status: 200, fetched: '2026-08-13'}
+  - {url: 'https://ai.intelligems.io/.well-known/oauth-protected-resource', status: 200, fetched: '2026-08-13'}
+  - {url: 'https://ai.intelligems.io/mcp', status: 401, fetched: '2026-08-13',
+     note: 'POST tools/list returns WWW-Authenticate: Bearer realm="mcp" — live tool schemas are auth-gated.'}

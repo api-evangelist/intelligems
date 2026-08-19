@@ -1,0 +1,79 @@
+generated: '2026-08-13'
+method: probed
+source: live GET probes of every Intelligems host
+note: >-
+  Five /.well-known/ paths were probed on each of five hosts (25 probes). Only the MCP
+  host ai.intelligems.io serves anything: RFC 8414 authorization-server metadata and
+  RFC 9728 protected-resource metadata, both real JSON documents. docs., www. and
+  headless.intelligems.io answer /.well-known/* with their site 404 page (HTML), and
+  api.intelligems.io answers with a JSON 404 — no security.txt, no api-catalog, no
+  ai-plugin.json, no OIDC discovery anywhere.
+hosts:
+  - host: https://ai.intelligems.io
+    role: MCP server
+    documents:
+      - path: /.well-known/oauth-authorization-server
+        status: 200
+        content_type: application/json
+        file: intelligems-oauth-authorization-server.json
+        spec: RFC 8414
+      - path: /.well-known/oauth-protected-resource
+        status: 200
+        content_type: application/json
+        file: intelligems-oauth-protected-resource.json
+        spec: RFC 9728
+      - path: /.well-known/openid-configuration
+        status: 404
+      - path: /.well-known/security.txt
+        status: 404
+      - path: /.well-known/api-catalog
+        status: 404
+      - path: /.well-known/ai-plugin.json
+        status: 404
+      - path: /.well-known/agent-card.json
+        status: 404
+      - path: /.well-known/agent.json
+        status: 404
+  - host: https://api.intelligems.io
+    role: External API
+    documents:
+      - {path: /.well-known/security.txt, status: 404}
+      - {path: /.well-known/openid-configuration, status: 404}
+      - {path: /.well-known/oauth-authorization-server, status: 404}
+      - {path: /.well-known/oauth-protected-resource, status: 404}
+      - {path: /.well-known/api-catalog, status: 404}
+      - {path: /.well-known/ai-plugin.json, status: 404}
+      - {path: /.well-known/agent-card.json, status: 404}
+      - {path: /.well-known/agent.json, status: 404}
+  - host: https://docs.intelligems.io
+    role: Documentation
+    documents:
+      - {path: /.well-known/security.txt, status: 404, note: HTML 404 page}
+      - {path: /.well-known/api-catalog, status: 404, note: HTML 404 page}
+      - {path: /.well-known/ai-plugin.json, status: 404, note: HTML 404 page}
+      - {path: /.well-known/agent-card.json, status: 404, note: HTML 404 page}
+      - {path: /.well-known/agent.json, status: 404, note: HTML 404 page}
+      - {path: /llms.txt, status: 200, note: served — see llms/intelligems-docs-llms.txt}
+  - host: https://www.intelligems.io
+    role: Website
+    documents:
+      - {path: /.well-known/security.txt, status: 404}
+      - {path: /.well-known/api-catalog, status: 404}
+      - {path: /.well-known/ai-plugin.json, status: 404}
+      - {path: /.well-known/agent-card.json, status: 404}
+      - {path: /.well-known/agent.json, status: 404}
+      - {path: /llms.txt, status: 200, note: served — see llms/intelligems-llms.txt}
+  - host: https://headless.intelligems.io
+    role: Headless SDK docs
+    documents:
+      - {path: /.well-known/security.txt, status: 404, note: HTML 404 page}
+      - {path: /.well-known/agent-card.json, status: 404, note: HTML 404 page}
+      - {path: /.well-known/agent.json, status: 404, note: HTML 404 page}
+      - {path: /llms.txt, status: 200}
+summary:
+  hits: 2
+  security_txt: false
+  openid_configuration: false
+  api_catalog: false
+  agent_card: false
+checked: '2026-08-13'

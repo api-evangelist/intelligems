@@ -1,46 +1,97 @@
-generated: '2026-07-19'
+generated: '2026-08-13'
 method: derived
-source: openapi/intelligems-external-api-openapi.yml + mcp/intelligems-mcp.yml
+source: openapi/_original/intelligems-external-api-openapi.yml + mcp/intelligems-mcp.yml + asyncapi/intelligems-webhooks.yml
+note: >-
+  Re-derived 2026-08-13 against Intelligems' own published OpenAPI, which carries full
+  request-body schemas for create/update experience, custom events and the analytics
+  bodies. Field names below are taken from those schemas, not inferred.
+id_conventions:
+  format: UUID v4
+  applies_to: [Experience, Variation, CustomEvent, ExperienceAction]
+  note: >-
+    Experience and variation IDs are UUIDs, surfaced in the app under the three-dot menu
+    "Show Info" and by listExperiences. Custom events additionally carry a server-generated
+    `identifier` which is read-only and NOT stable across updates — `id` is the stable
+    reference.
 entities:
   - name: Organization
-    description: An Intelligems account tied to a Shopify store (currency, timezone, integrations, features).
+    description: An Intelligems account tied to a Shopify store (currency, timezone, Shopify settings, enabled features, integrations).
+    id_field: organizationId
+    fields: [id, name, shopId, isInstalled, createdAtTs, lastLoginTs]
+    surfaces: [mcp, webhook]
   - name: Experience
     description: >-
-      Umbrella entity for a test surface; specializes into Experiment (A/B test) and
-      Personalization. Has variations, targeting rules, traffic allocation, and metrics config.
+      The central entity. Umbrella for a test surface, specialized by `category` into
+      experiment (A/B test) and personalization, and by `type`/`testTypes` into pricing,
+      shipping, content, content/theme, checkout, merchandising and post-purchase.
     id_field: experienceId
+    fields: [id, name, description, currency, previewPath, type, category, status, isPreview, testTypes, createdAtTs, lastUpdateTs, isDeleted, productVariantCount, sourceExperienceId]
+    status_values: [pending, started, paused, ended]
+    surfaces: [rest, mcp, webhook]
   - name: Variation
-    description: A variant within an experience.
-  - name: MetricsConfig
-    description: Configured success metrics for an experience (revenue, conversion rate, AOV, custom goals).
-  - name: Analytics
-    description: Experience-level and sitewide analytics (snapshot, timeseries, order distribution, conversion funnel, export).
-  - name: Offer
-    description: Tiered discounts, cart discounts, free gifts, and free shipping.
+    description: A test group within an experience — the control or a challenger, with its traffic share and its own price, content, offer and redirect changes.
+    fields: [id, experienceId, name, percentage, isControl, order, priceChange, priceChangeUnit, priceRoundingType, priceRoundingAmount, excludeProducts, includeProducts, cartTargeting, components, onsiteEdits, onsiteInjection, offer, redirects, shippingRateGroups, checkoutBlocks, userInterfaces]
+    surfaces: [rest, mcp, webhook]
+  - name: Audience
+    description: Targeting definition attached to an experience — filters, evaluation frequency, and what to do with visitors who do not match.
+    fields: [enabled, audienceType, filters, evaluationFrequency, elseAction, elseVariationIndex, elseExcludeFromAnalytics, excludeCurrency]
+    surfaces: [rest]
+  - name: PageTargeting
+    description: Expression-based page targeting rules on an experience.
+    fields: [expression]
+    surfaces: [rest]
+  - name: KeyMetric
+    description: A success metric configured on an experience; either a standard event or a custom metric, with one marked primary.
+    fields: [order, isPrimary, standardEventId, experienceCustomMetricId]
+    surfaces: [rest, mcp]
+  - name: ExperienceAction
+    description: A lifecycle action record on an experience (start, pause, end) with its timestamp.
+    fields: [id, experienceId, action, actionTs]
+    surfaces: [rest, webhook]
+  - name: ProductVariantAction
+    description: >-
+      A staged price change against a price test's product variants. Created by the MCP
+      prepare tools and applied by commit; also a field on the experience document.
+    surfaces: [rest, mcp]
   - name: CustomEvent
-    description: Custom tracking events (page views, clicks, scroll depth, custom JS events).
+    description: >-
+      A client-side behavior definition used as a goal or trigger — clickEvent,
+      scrollDepth, pageView, productPageView, collectionPageView, elementViewed or
+      javascriptEvent, each with its own settings shape.
+    fields: [id, identifier, type, name, description, settings, applyToUrls]
+    surfaces: [rest, mcp]
+  - name: Offer
+    description: Tiered discounts, cart discounts, free gifts and free shipping, attachable to a variation.
+    fields: [id, name, discountApplicationType, enabled, isTest, isArchived]
+    surfaces: [mcp]
   - name: Integration
-    description: Connected third-party service (Google Analytics, Klaviyo, Recharge, Slack, etc.).
+    description: A connected third-party service (Google Analytics, Klaviyo, Recharge, Slack).
+    fields: [name, enabled]
+    surfaces: [mcp]
+  - name: AnalyticsResult
+    description: >-
+      Metric results for an experience or for the whole store. Every statistical metric
+      carries value, ci_low, ci_high, plus_minus, p2bb, p2bc and uplift.
+    surfaces: [rest, mcp]
+  - name: Filters
+    description: >-
+      The shared analytics filter object — audience, landing-page operators, behavior
+      flags, product scoping and order bounds — accepted by every analytics operation.
+    surfaces: [rest, mcp]
 relationships:
-  - from: Organization
-    to: Experience
-    type: has_many
-  - from: Experience
-    to: Variation
-    type: has_many
-  - from: Experience
-    to: MetricsConfig
-    type: has_one
-  - from: Experience
-    to: Analytics
-    type: has_many
-    via: experienceId
-  - from: Organization
-    to: Offer
-    type: has_many
-  - from: Organization
-    to: CustomEvent
-    type: has_many
-  - from: Organization
-    to: Integration
-    type: has_many
+  - {from: Organization, to: Experience, type: has_many, via: organizationId}
+  - {from: Organization, to: CustomEvent, type: has_many}
+  - {from: Organization, to: Offer, type: has_many}
+  - {from: Organization, to: Integration, type: has_many}
+  - {from: Experience, to: Variation, type: has_many, via: experienceId}
+  - {from: Experience, to: Audience, type: has_one, via: audience}
+  - {from: Experience, to: PageTargeting, type: has_many, via: experiencePageTargeting}
+  - {from: Experience, to: KeyMetric, type: has_many, via: experienceKeyMetrics}
+  - {from: Experience, to: ExperienceAction, type: has_many, via: experienceActions}
+  - {from: Experience, to: ProductVariantAction, type: has_one, via: productVariantAction}
+  - {from: Experience, to: AnalyticsResult, type: has_many, via: experienceId}
+  - {from: Variation, to: Offer, type: has_one, via: offer}
+  - {from: KeyMetric, to: CustomEvent, type: belongs_to, via: experienceCustomMetricId}
+  - {from: Experience, to: Experience, type: belongs_to, via: sourceExperienceId, note: duplicated experiences keep a pointer to their source}
+external_references:
+  - {system: Shopify, entities: [Product, ProductVariant, Collection, Page, Order], via: 'productId / handle / shopId', note: 'Reached through the MCP server (Admin API + ShopifyQL), not through the External API.'}

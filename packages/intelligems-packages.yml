@@ -1,32 +1,77 @@
-generated: '2026-07-19'
+generated: '2026-08-13'
 method: searched
 source: https://www.npmjs.com/org/intelligems
+note: >-
+  Currency re-read from registry.npmjs.org on 2026-08-13. npm is the only registry
+  carrying first-party Intelligems packages — PyPI, Maven Central, NuGet, pkg.go.dev,
+  RubyGems, Packagist and crates.io were searched and hold none. The External API and the
+  MCP server have no generated client library in any language; @intelligems/headless is a
+  storefront React SDK, not an API client.
 packages:
   - language: javascript
     registry: npm
     name: "@intelligems/headless"
     url: https://www.npmjs.com/package/@intelligems/headless
     install: npm install @intelligems/headless
-    latest: 1.2.17
+    version: 1.2.18
+    published: '2026-08-10'
+    release_count: 95
     license: MIT
     official: true
+    kind: sdk
     description: >-
-      React SDK for headless Shopify storefronts. Loads experiment config
-      server-side, assigns users to test groups, and exposes pricing/content
-      variant data via React context to avoid render flicker.
+      React SDK for headless Shopify storefronts. Loads experiment config server-side,
+      assigns users to test groups, and exposes pricing/content variant data via React
+      context to avoid render flicker.
     docs: https://headless.intelligems.io/
+    changelog: https://headless.intelligems.io/change-log
   - language: javascript
     registry: npm
     name: "@intelligems/third-party-integrations"
     url: https://www.npmjs.com/package/@intelligems/third-party-integrations
     install: npm install @intelligems/third-party-integrations
-    latest: 1.0.0
+    version: 1.0.0
+    published: '2025-06-03'
+    release_count: 1
     license: MIT
     official: true
+    kind: library
     description: >-
-      TypeScript library for managing third-party integrations in the
-      Intelligems ecosystem.
-notes: >-
-  A third-party (community) MCP documentation package @victor-paytuvi/intelligems-docs-mcp
-  exists on npm but is NOT first-party and is excluded here. No first-party PyPI, Maven,
-  NuGet, Go, RubyGems, Packagist, or crates.io packages were found.
+      TypeScript library for managing third-party integrations in the Intelligems
+      ecosystem.
+    note: >-
+      One release, 2025-06-03, still at 1.0.0 — no activity in over a year.
+  - language: javascript
+    registry: npm
+    name: "@intelligems/sst"
+    url: https://www.npmjs.com/package/@intelligems/sst
+    version: 2.47.3
+    published: '2025-02-21'
+    license: MIT
+    official: true
+    kind: internal-fork
+    client_library: false
+    note: >-
+      Published by the intelligems npm account but it is a vendored fork of SST v2
+      (repository git+https://github.com/sst/v2.git) used for their own infrastructure —
+      not an Intelligems API client. Recorded for completeness; it should not be counted
+      as an SDK.
+excluded:
+  - name: "@victor-paytuvi/intelligems-docs-mcp"
+    registry: npm
+    version: 2.0.0
+    published: '2025-07-24'
+    reason: Third-party community package (documentation MCP), not published by Intelligems.
+registries_checked:
+  - {registry: npm, result: 3 first-party packages}
+  - {registry: pypi, result: none}
+  - {registry: maven-central, result: none}
+  - {registry: nuget, result: none}
+  - {registry: pkg.go.dev, result: none}
+  - {registry: rubygems, result: none}
+  - {registry: packagist, result: none}
+  - {registry: crates.io, result: none}
+x-evidence:
+  - {url: 'https://registry.npmjs.org/@intelligems/headless', status: 200, fetched: '2026-08-13'}
+  - {url: 'https://registry.npmjs.org/@intelligems/third-party-integrations', status: 200, fetched: '2026-08-13'}
+  - {url: 'https://registry.npmjs.org/-/v1/search?text=intelligems', status: 200, fetched: '2026-08-13'}

@@ -1,0 +1,207 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Intelligems External Analytics API",
+    "version": "v25-10-beta"
+  },
+  "request": {
+    "auth": {
+      "type": "apikey",
+      "key": "intelligems-access-token",
+      "value": "{{intelligems-access-token}}",
+      "placement": "header"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Analytics",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Fetch experience analytics (deprecated)",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.intelligems.io/v25-10-beta/analytics/resource/:experienceId",
+            "params": [
+              {
+                "name": "graphs",
+                "value": "",
+                "type": "query",
+                "description": "Comma-separated list of graph IDs to include in response. Applies to \"view=overview\" and \"view=audience\" requests. On this deprecated GET endpoint an unrecognized ID is silently ignored and \"graphs\" comes back empty; the POST variant rejects it with a 400 instead.  Available options:\n\n- abandoned_cart_rate\n- abandoned_checkout_rate\n- add_to_cart_rate\n- avg_discount_per_all_orders\n- avg_discount_per_discounted_order\n- avg_product_revenue_per_unit\n- avg_units_per_order\n- checkout_address_submitted_rate\n- checkout_begin_rate\n- checkout_enter_contact_info_rate\n- conversion_rate\n- net_product_revenue_per_order\n- net_revenue_from_post_purchase_offer\n- net_revenue_from_upsell\n- net_revenue_per_order\n- net_revenue_per_visitor\n- net_shipping_revenue_per_order\n- pct_orders_free_shipping\n- pct_orders_with_post_purchase_offer\n- pct_orders_with_upsell\n- pct_subscription_orders\n- profit_per_order\n- profit_per_visitor\n- subscription_orders_per_visitor\n- subscription_product_revenue_per_order\n- subscription_profit_per_visitor\n- subscription_revenue_per_order\n- subscription_revenue_per_visitor\n- view_collection_page_rate\n- view_product_page_rate"
+              },
+              {
+                "name": "graphOutput",
+                "value": "",
+                "type": "query",
+                "description": "Output format for graph images. 'png' (default) uploads to S3 and returns a URL. 'base64' returns the raw base64-encoded PNG data inline."
+              },
+              {
+                "name": "view",
+                "value": "",
+                "type": "query",
+                "description": "Resource view to analyze. Supported values are 'overview' for variation-level metrics, 'audience' for a breakdown by the selected audience dimension, and 'post_test' for post-test metrics (customers who converted during the test, tracked by their purchase behavior after that conversion, split by variation)."
+              },
+              {
+                "name": "audience",
+                "value": "",
+                "type": "query",
+                "description": "Audience breakdown dimension. Required when `view` is `audience`. Optional when `view` is `post_test` (returns the post-test breakdown by the selected dimension). Not allowed when `view` is `overview`. Use one of the supported audience fields such as `device_type`, `visitor_type`, or `source_channel`."
+              },
+              {
+                "name": "analyticsViewType",
+                "value": "",
+                "type": "query",
+                "description": "Optional analytics view preset used by the backend when building the analysis request."
+              },
+              {
+                "name": "end",
+                "value": "",
+                "type": "query",
+                "description": "Optional analysis end timestamp as a 10-digit Unix epoch string in seconds (not milliseconds)."
+              },
+              {
+                "name": "start",
+                "value": "",
+                "type": "query",
+                "description": "Optional analysis start timestamp as a 10-digit Unix epoch string in seconds (not milliseconds)."
+              }
+            ]
+          },
+          "docs": "Legacy query-parameter analytics endpoint, kept only as a beta compatibility path and removed when the beta ends. Use the POST variant instead."
+        },
+        {
+          "info": {
+            "name": "Query experience analytics",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.intelligems.io/v25-10-beta/analytics/resource/:experienceId",
+            "params": [
+              {
+                "name": "experienceId",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Retrieve analytics for an experience (metrics, variations, optional graphs). Accepts filters and all request settings in the JSON body."
+        },
+        {
+          "info": {
+            "name": "Fetch experience timeseries",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.intelligems.io/v25-10-beta/analytics/experience/:experienceId/timeseries",
+            "params": [
+              {
+                "name": "experienceId",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Metric-over-time data for a single experience."
+        },
+        {
+          "info": {
+            "name": "Export experience analytics",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.intelligems.io/v25-10-beta/analytics/experience/:experienceId/export",
+            "params": [
+              {
+                "name": "experienceId",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Export an experience's analytics dataset."
+        },
+        {
+          "info": {
+            "name": "Fetch sitewide snapshot",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.intelligems.io/v25-10-beta/analytics/sitewide/snapshot",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Summary KPI metrics with period-over-period percent changes and optional audience segmentation."
+        },
+        {
+          "info": {
+            "name": "Fetch sitewide timeseries",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.intelligems.io/v25-10-beta/analytics/sitewide/timeseries",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Metric-over-time data with configurable granularity and optional audience segmentation."
+        },
+        {
+          "info": {
+            "name": "Fetch sitewide order distribution",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.intelligems.io/v25-10-beta/analytics/sitewide/order-distribution",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Order-value histogram (KDE/CDF) and unit-mix breakdown."
+        },
+        {
+          "info": {
+            "name": "Fetch sitewide conversion funnel",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.intelligems.io/v25-10-beta/analytics/sitewide/conversion-funnel",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Sitewide conversion funnel as a Sankey graph (entry point, landing page, cart, checkout, conversion)."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

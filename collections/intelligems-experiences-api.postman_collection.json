@@ -1,0 +1,2194 @@
+{
+  "item": [
+    {
+      "id": "544f68c3-35d4-4e5d-9f8a-147551c8904d",
+      "name": "Experiences",
+      "description": {
+        "content": "Create, read, update, and control A/B tests and personalizations.",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "0196fd77-c92a-4fb0-a0e3-29bdd7688d1d",
+          "name": "List experiences",
+          "request": {
+            "name": "List experiences",
+            "description": {
+              "content": "Retrieve a paginated list of experiences (experiments and personalizations), optionally filtered by category, status and module.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v25-10-beta",
+                "experiences-list"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "category",
+                  "value": "<string>",
+                  "description": "Filter by experience category. Omit to return all categories."
+                },
+                {
+                  "disabled": false,
+                  "key": "module",
+                  "value": "<string>",
+                  "description": "Filter by modification type / module (content, checkout, postPurchase, pricing, merchandising, shipping). Category-agnostic. Omit to return all modules."
+                },
+                {
+                  "disabled": false,
+                  "key": "status",
+                  "value": "<string>",
+                  "description": "Filter by lifecycle status. Omit to return all statuses."
+                },
+                {
+                  "disabled": false,
+                  "key": "limit",
+                  "value": "<integer>",
+                  "description": "Maximum number of experiences per page."
+                },
+                {
+                  "disabled": false,
+                  "key": "page",
+                  "value": "<integer>",
+                  "description": "1-based page number for paginated results."
+                }
+              ],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "05bcce6b-021d-4904-b778-887d8745e9f9",
+              "name": "OK",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v25-10-beta",
+                    "experiences-list"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "category",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "module",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "status",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "limit",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "page",
+                      "value": "<integer>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "intelligems-access-token",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "disabled": false,
+                  "description": "CORS allow-origin header.",
+                  "key": "access-control-allow-origin",
+                  "value": "string"
+                },
+                {
+                  "disabled": false,
+                  "description": "CORS allow-credentials header.",
+                  "key": "access-control-allow-credentials",
+                  "value": "string"
+                },
+                {
+                  "disabled": false,
+                  "description": "Allowed origin for Timing headers.",
+                  "key": "Timing-Allow-Origin",
+                  "value": "string"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"experiencesList\": [\n    {\n      \"category\": \"experiment\",\n      \"createdAtTs\": 9279.072806471258,\n      \"endedAtTs\": 7665.175907460666,\n      \"experienceActions\": [\n        {\n          \"id\": \"ffffffff-ffff-ffff-ffff-ffffffffffff\",\n          \"experienceId\": \"Ded61d3F-FD7B-1C32-Bf34-0a4e9DC9a6De\",\n          \"action\": \"end\",\n          \"actionTs\": 8542.989099504617,\n          \"performedBy\": \"string\"\n        },\n        {\n          \"id\": \"00000000-0000-0000-0000-000000000000\",\n          \"experienceId\": \"fCcECAC0-fBa2-8fCe-8b9B-ffde6B7bcE7c\",\n          \"action\": \"reset\",\n          \"actionTs\": 2673.3399758623755,\n          \"performedBy\": \"string\"\n        }\n      ],\n      \"id\": \"cd2EEf79-39Be-25Ac-85aA-B1a62a94cB29\",\n      \"isPreview\": true,\n      \"lastUpdateTs\": 2235.3221850832915,\n      \"linkBaseUrl\": \"string\",\n      \"name\": \"string\",\n      \"organizationId\": \"ffffffff-ffff-ffff-ffff-ffffffffffff\",\n      \"pausedAtTs\": 4885.6890339393085,\n      \"productVariantCount\": 0,\n      \"requiresLink\": false,\n      \"startedAtTs\": 5958.477112558779,\n      \"status\": \"paused\",\n      \"testTypes\": {\n        \"hasTestPricing\": true,\n        \"hasTestShipping\": false,\n        \"hasTestCampaign\": true,\n        \"hasTestContent\": false,\n        \"hasTestContentUrl\": false,\n        \"hasTestContentAdvanced\": false,\n        \"hasTestContentOnsite\": true,\n        \"hasTestContentTemplate\": false,\n        \"hasTestContentTheme\": true,\n        \"hasTestOnsiteInjections\": false,\n        \"hasTestCheckoutBlocks\": true,\n        \"hasTestPostPurchase\": false,\n        \"hasTestOnsiteUpsell\": false\n      },\n      \"type\": \"onsiteUpsell\",\n      \"hasSchedule\": true,\n      \"history\": [\n        {\n          \"id\": \"9C3750e8-61Ed-5Ab8-9E13-7bBAC3Eca8d2\",\n          \"action\": \"archiveExperience\",\n          \"lastUpdateTs\": 3298.4409840943117,\n          \"createdAtTs\": 2005.2581565897688,\n          \"userId\": \"afaA268D-D65b-1C0A-9caa-a60B4d75DC5B\",\n          \"user\": {\n            \"id\": \"e9B21Fe9-ad52-515C-aC1b-ebDDcDFCECdF\",\n            \"email\": \"0jfrOyBZo@A95sKxQH.j496PB3i.tWQ.60nkFKF.GQJRczvdUh.92ThkXWv.dnPd.NjqmZCkwc\",\n            \"organizationId\": \"ffffffff-ffff-ffff-ffff-ffffffffffff\",\n            \"isBlocked\": true,\n            \"passwordResetRequired\": false,\n            \"showInfoPopup\": false,\n            \"showWelcome\": true,\n            \"installer\": false,\n            \"firstName\": \"string\",\n            \"lastName\": \"string\",\n            \"userAlerts\": {\n              \"showAnalyticsReleaseDialog\": false,\n              \"showPersonalizationsDialog\": false,\n              \"showPersonalizationMigrateBanner\": false,\n              \"showWrappedDialog\": false\n            },\n            \"preferredName\": \"string\",\n            \"preferredEmail\": \"string\",\n            \"companyRole\": \"string\",\n            \"previousExperience\": \"string\"\n          },\n          \"experienceId\": \"ffffffff-ffff-ffff-ffff-ffffffffffff\",\n          \"source\": \"mcp\"\n        },\n        {\n          \"id\": \"3858E4d4-26D0-6d0b-bE27-DE6Ae09Cc79C\",\n          \"action\": \"confirmIntegration\",\n          \"lastUpdateTs\": 7852.41716257652,\n          \"createdAtTs\": 2498.734584738295,\n          \"userId\": \"DDaFD026-E146-86cf-AC8e-289edF5E8DB2\",\n          \"user\": {\n            \"id\": \"1e7D17aC-69Bd-15A4-b197-Cd2b1da37fEB\",\n            \"email\": \"sh3NP@uvG9h2.emDwlM.Ll0IVUJ6oST.ZpGq0.l-BWXWVk3.stPF7kK.X.DD.5B7lq.VMnrUyHrF.P.KBduf\",\n            \"organizationId\": \"ffffffff-ffff-ffff-ffff-ffffffffffff\",\n            \"isBlocked\": false,\n            \"passwordResetRequired\": false,\n            \"showInfoPopup\": false,\n            \"showWelcome\": true,\n            \"installer\": false,\n            \"firstName\": \"string\",\n            \"lastName\": \"string\",\n            \"userAlerts\": {\n              \"showAnalyticsReleaseDialog\": false,\n              \"showPersonalizationsDialog\": false,\n              \"showPersonalizationMigrateBanner\": false,\n              \"showWrappedDialog\": false\n            },\n            \"preferredName\": \"string\",\n            \"preferredEmail\": \"string\",\n            \"companyRole\": \"string\",\n            \"previousExperience\": \"string\"\n          },\n          \"experienceId\": \"7Dfa0A85-040B-8Dc7-aD2A-DEB5c1e7Bb57\",\n          \"source\": \"external\"\n        }\n      ],\n      \"previewPath\": \"string\",\n      \"variations\": [\n        {\n          \"id\": \"ffffffff-ffff-ffff-ffff-ffffffffffff\",\n          \"experienceId\": \"b8f0Cf8D-b6cd-7F63-a521-F2dFA5e39D79\",\n          \"name\": \"string\",\n          \"percentage\": 6315.468873372334,\n          \"isControl\": false,\n          \"order\": -5632506567650260,\n          \"functionSyncError\": false,\n          \"testExperienceId\": \"string\",\n          \"offerId\": \"ffffffff-ffff-ffff-ffff-ffffffffffff\",\n          \"checkoutBlockTypes\": [\n            \"timer\",\n            \"shippingProgressBar\"\n          ],\n          \"offerDiscountApplicationType\": \"cartDiscount\",\n          \"offerDiscountApplicationMethod\": \"perOrder\"\n        },\n        {\n          \"id\": \"8BFB2b11-9bFd-38a6-BC6D-C0CAE6DED8E3\",\n          \"experienceId\": \"ffffffff-ffff-ffff-ffff-ffffffffffff\",\n          \"name\": \"string\",\n          \"percentage\": 8806.53322576533,\n          \"isControl\": false,\n          \"order\": -7517203250142635,\n          \"functionSyncError\": false,\n          \"testExperienceId\": \"string\",\n          \"offerId\": \"00000000-0000-0000-0000-000000000000\",\n          \"checkoutBlockTypes\": [\n            \"upsell\",\n            \"shippingProgressBar\"\n          ],\n          \"offerDiscountApplicationType\": \"cartDiscount\",\n          \"offerDiscountApplicationMethod\": \"perItem\"\n        }\n      ],\n      \"experienceAnalysis\": {\n        \"analyticsViewType\": \"test_orders_only\"\n      },\n      \"archivedAtTs\": 6629.048551799429,\n      \"audience\": {\n        \"id\": \"ffffffff-ffff-ffff-ffff-ffffffffffff\",\n        \"experienceId\": \"ffffffff-ffff-ffff-ffff-ffffffffffff\",\n        \"enabled\": true,\n        \"excludeCurrency\": {\n          \"exclude\": true,\n          \"currency\": \"string\",\n          \"country\": \"string\",\n          \"region\": \"string\",\n          \"city\": \"string\"\n        },\n        \"wholesale\": false,\n        \"elseAction\": \"experienceUnassigned\",\n        \"elseExcludeFromAnalytics\": false,\n        \"filters\": [],\n        \"audienceType\": \"advanced\",\n        \"elseVariationId\": \"066F356F-BbCB-8f8a-8AFb-e1B467cB5D76\",\n        \"evaluationFrequency\": 4103.019488022253\n      },\n      \"currency\": {\n        \"code\": \"USD\",\n        \"symbol\": \"$\",\n        \"country\": \"string\",\n        \"options\": {},\n        \"suffix\": \"string\"\n      },\n      \"description\": \"string\",\n      \"devicePreview\": {\n        \"device\": \"desktop\",\n        \"path\": \"/\"\n      },\n      \"isDeleted\": true,\n      \"isExternal\": false,\n      \"sourceAction\": \"duplicate\",\n      \"sourceExperienceId\": \"00000000-0000-0000-0000-000000000000\"\n    },\n    {\n      \"category\": \"experiment\",\n      \"createdAtTs\": 5771.67645620324,\n      \"endedAtTs\": 4457.664106677367,\n      \"experienceActions\": [\n        {\n          \"id\": \"ffffffff-ffff-ffff-ffff-ffffffffffff\",\n          \"experienceId\": \"ffffffff-ffff-ffff-ffff-ffffffffffff\",\n          \"action\": \"pause\",\n          \"actionTs\": 7209.198920089306,\n          \"performedBy\": \"string\"\n        },\n        {\n          \"id\": \"00000000-0000-0000-0000-000000000000\",\n          \"experienceId\": \"99450bc8-CA0f-5ECA-84Fb-EAfA9FabE2ca\",\n          \"action\": \"pause\",\n          \"actionTs\": 1786.444159622672,\n          \"performedBy\": \"string\"\n        }\n      ],\n      \"id\": \"00000000-0000-0000-0000-000000000000\",\n      \"isPreview\": true,\n      \"lastUpdateTs\": 9826.245961725323,\n      \"linkBaseUrl\": \"string\",\n      \"name\": \"string\",\n      \"organizationId\": \"00000000-0000-0000-0000-000000000000\",\n      \"pausedAtTs\": 9343.753935873583,\n      \"productVariantCount\": 0,\n      \"requiresLink\": false,\n      \"startedAtTs\": 5222.020424586041,\n      \"status\": \"started\",\n      \"testTypes\": {\n        \"hasTestPricing\": false,\n        \"hasTestShipping\": true,\n        \"hasTestCampaign\": true,\n        \"hasTestContent\": false,\n        \"hasTestContentUrl\": false,\n        \"hasTestContentAdvanced\": true,\n        \"hasTestContentOnsite\": true,\n        \"hasTestContentTemplate\": false,\n        \"hasTestContentTheme\": false,\n        \"hasTestOnsiteInjections\": false,\n        \"hasTestCheckoutBlocks\": false,\n        \"hasTestPostPurchase\": false,\n        \"hasTestOnsiteUpsell\": true\n      },\n      \"type\": \"personalization/offer\",\n      \"hasSchedule\": true,\n      \"history\": [\n        {\n          \"id\": \"00000000-0000-0000-0000-000000000000\",\n          \"action\": \"archiveCampaign\",\n          \"lastUpdateTs\": 957.0280299547618,\n          \"createdAtTs\": 4834.255391553354,\n          \"userId\": \"ffffffff-ffff-ffff-ffff-ffffffffffff\",\n          \"user\": {\n            \"id\": \"00000000-0000-0000-0000-000000000000\",\n            \"email\": \"gNEPY@y.IHLg\",\n            \"organizationId\": \"16DEecAE-7aE2-11fb-877B-EebeFcBb0E5d\",\n            \"isBlocked\": true,\n            \"passwordResetRequired\": false,\n            \"showInfoPopup\": false,\n            \"showWelcome\": true,\n            \"installer\": false,\n            \"firstName\": \"string\",\n            \"lastName\": \"string\",\n            \"userAlerts\": {\n              \"showAnalyticsReleaseDialog\": false,\n              \"showPersonalizationsDialog\": false,\n              \"showPersonalizationMigrateBanner\": false,\n              \"showWrappedDialog\": true\n            },\n            \"preferredName\": \"string\",\n            \"preferredEmail\": \"string\",\n            \"companyRole\": \"string\",\n            \"previousExperience\": \"string\"\n          },\n          \"experienceId\": \"00000000-0000-0000-0000-000000000000\",\n          \"source\": \"shared_link\"\n        },\n        {\n          \"id\": \"ffffffff-ffff-ffff-ffff-ffffffffffff\",\n          \"action\": \"enableCampaign\",\n          \"lastUpdateTs\": 8446.307890901759,\n          \"createdAtTs\": 6367.59290641731,\n          \"userId\": \"d2D4F1aD-599c-7464-ADdD-b1C7dDf17258\",\n          \"user\": {\n            \"id\": \"00000000-0000-0000-0000-000000000000\",\n            \"email\": \"Guzw@3w.HStO.vvLH.Qa6qeWs57.PPCdykL.aT7fAr.QPpKN7R.tQ.CRayvITNR\",\n            \"organizationId\": \"00000000-0000-0000-0000-000000000000\",\n            \"isBlocked\": true,\n            \"passwordResetRequired\": false,\n            \"showInfoPopup\": false,\n            \"showWelcome\": true,\n            \"installer\": false,\n            \"firstName\": \"string\",\n            \"lastName\": \"string\",\n            \"userAlerts\": {\n              \"showAnalyticsReleaseDialog\": false,\n              \"showPersonalizationsDialog\": false,\n              \"showPersonalizationMigrateBanner\": false,\n              \"showWrappedDialog\": false\n            },\n            \"preferredName\": \"string\",\n            \"preferredEmail\": \"string\",\n            \"companyRole\": \"string\",\n            \"previousExperience\": \"string\"\n          },\n          \"experienceId\": \"B0Bf3f8b-4fd4-4aEc-BBa6-aED81c77672d\",\n          \"source\": \"mcp\"\n        }\n      ],\n      \"previewPath\": \"string\",\n      \"variations\": [\n        {\n          \"id\": \"3e5dACdA-dFb7-67ea-a5CB-9e1FaEF216C3\",\n          \"experienceId\": \"ffffffff-ffff-ffff-ffff-ffffffffffff\",\n          \"name\": \"string\",\n          \"percentage\": 2758.7813508400814,\n          \"isControl\": false,\n          \"order\": -7273961663475715,\n          \"functionSyncError\": false,\n          \"testExperienceId\": \"string\",\n          \"offerId\": \"AbBb6A95-A1d9-6EAe-B6A7-bc5eeB0D8f44\",\n          \"checkoutBlockTypes\": [\n            \"shippingProgressBar\",\n            \"shippingProgressBar\"\n          ],\n          \"offerDiscountApplicationType\": \"tieredDiscount\",\n          \"offerDiscountApplicationMethod\": \"perItem\"\n        },\n        {\n          \"id\": \"ffffffff-ffff-ffff-ffff-ffffffffffff\",\n          \"experienceId\": \"ffffffff-ffff-ffff-ffff-ffffffffffff\",\n          \"name\": \"string\",\n          \"percentage\": 5790.0171215880755,\n          \"isControl\": false,\n          \"order\": -8722787135160551,\n          \"functionSyncError\": false,\n          \"testExperienceId\": \"string\",\n          \"offerId\": \"CD380652-C10d-4471-91c3-B7Bca8dbEDC1\",\n          \"checkoutBlockTypes\": [\n            \"upsell\",\n            \"timer\"\n          ],\n          \"offerDiscountApplicationType\": \"\",\n          \"offerDiscountApplicationMethod\": \"perOrder\"\n        }\n      ],\n      \"experienceAnalysis\": {\n        \"analyticsViewType\": \"none\"\n      },\n      \"archivedAtTs\": 4857.356847363183,\n      \"audience\": {\n        \"id\": \"ffffffff-ffff-ffff-ffff-ffffffffffff\",\n        \"experienceId\": \"A19d1342-a8be-5ff3-9Bdf-d5a0F7D456e2\",\n        \"enabled\": true,\n        \"excludeCurrency\": {\n          \"exclude\": false,\n          \"currency\": \"string\",\n          \"country\": \"string\",\n          \"region\": \"string\",\n          \"city\": \"string\"\n        },\n        \"wholesale\": true,\n        \"elseAction\": \"experienceUnassigned\",\n        \"elseExcludeFromAnalytics\": false,\n        \"filters\": [],\n        \"audienceType\": \"advanced\",\n        \"elseVariationId\": \"5Adf91da-0d75-5C29-90dE-A5ca5ba925cE\",\n        \"evaluationFrequency\": 6620.716542794091\n      },\n      \"currency\": {\n        \"code\": \"USD\",\n        \"symbol\": \"$\",\n        \"country\": \"string\",\n        \"options\": {},\n        \"suffix\": \"string\"\n      },\n      \"description\": \"string\",\n      \"devicePreview\": {\n        \"device\": \"desktop\",\n        \"path\": \"/\"\n      },\n      \"isDeleted\": false,\n      \"isExternal\": false,\n      \"sourceAction\": \"rollout\",\n      \"sourceExperienceId\": \"ffffffff-ffff-ffff-ffff-ffffffffffff\"\n    }\n  ],\n  \"page\": 7762.306397889851,\n  \"limit\": 5648.086074154389,\n  \"total\": 3727.8509778445323,\n  \"totalPages\": 2822.2656158756486\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "ae229904-534b-4808-83b2-536ac69095ee",
+              "name": "Validation error (invalid query/body values). Per-field messages under properties.<field>.errors.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v25-10-beta",
+                    "experiences-list"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "category",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "module",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "status",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "limit",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "page",
+                      "value": "<integer>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "intelligems-access-token",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"errors\": [\n    \"string\",\n    \"string\"\n  ],\n  \"properties\": {\n    \"key_0\": {\n      \"errors\": [\n        \"string\",\n        \"string\"\n      ]\n    },\n    \"key_1\": {\n      \"errors\": [\n        \"string\",\n        \"string\"\n      ]\n    }\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "ba38ac93-8a21-4289-9777-9a198ff62077",
+              "name": "Unauthorized (invalid or missing API key).",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v25-10-beta",
+                    "experiences-list"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "category",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "module",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "status",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "limit",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "page",
+                      "value": "<integer>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "intelligems-access-token",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "6bb74396-44a3-4597-8b40-fd6dd730755a",
+              "name": "Rate limit exceeded. See x-ratelimit-limit / x-ratelimit-remaining / x-ratelimit-reset headers.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v25-10-beta",
+                    "experiences-list"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "category",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "module",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "status",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "limit",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "page",
+                      "value": "<integer>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "intelligems-access-token",
+                    "value": "<API Key>"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Too Many Requests",
+              "code": 429,
+              "header": [
+                {
+                  "disabled": false,
+                  "description": "Bucket size for the endpoint.",
+                  "key": "x-ratelimit-limit",
+                  "value": "1478"
+                },
+                {
+                  "disabled": false,
+                  "description": "Remaining tokens in the current bucket.",
+                  "key": "x-ratelimit-remaining",
+                  "value": "1478"
+                },
+                {
+                  "disabled": false,
+                  "description": "Unix timestamp (ms) at which the bucket next refills.",
+                  "key": "x-ratelimit-reset",
+                  "value": "1478"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "009c52e7-2688-44ba-8b11-1f38d044b992",
+              "name": "Internal server error.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v25-10-beta",
+                    "experiences-list"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "category",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "module",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "status",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "limit",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "page",
+                      "value": "<integer>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "intelligems-access-token",
+                    "value": "<API Key>"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "20d37201-73dd-4d57-a397-01feef48d04a",
+          "name": "Fetch experience data",
+          "request": {
+            "name": "Fetch experience data",
+            "description": {
+              "content": "Get complete details for a specific experience including variations, targeting rules and configuration.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v25-10-beta",
+                "experiences",
+                ":experienceId"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "includeChangeLog",
+                  "value": "<boolean>",
+                  "description": "When true, include a top-level `changeLog` array on the experience containing per-deploy diffs of entities that were modified (experience, variations, offers, onsiteEdits, onsiteInjections, redirects, checkoutBlocks, audiences, pageTargeting). Each entry carries the deployer's email via `performedBy`. Capped at the 20 most recent deploys, newest first. Defaults to false."
+                }
+              ],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<uuid>",
+                  "key": "experienceId",
+                  "description": "(Required) "
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "7574113b-928a-4d22-a2ff-bc8fdde41391",
+              "name": "OK",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v25-10-beta",
+                    "experiences",
+                    ":experienceId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "includeChangeLog",
+                      "value": "<boolean>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "experienceId",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "intelligems-access-token",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "disabled": false,
+                  "description": "CORS allow-origin header.",
+                  "key": "access-control-allow-origin",
+                  "value": "string"
+                },
+                {
+                  "disabled": false,
+                  "description": "CORS allow-credentials header.",
+                  "key": "access-control-allow-credentials",
+                  "value": "string"
+                },
+                {
+                  "disabled": false,
+                  "description": "Allowed origin for Timing headers.",
+                  "key": "Timing-Allow-Origin",
+                  "value": "string"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"experience\": {\n    \"id\": \"ffffffff-ffff-ffff-ffff-ffffffffffff\",\n    \"name\": \"string\",\n    \"isPreview\": true,\n    \"organizationId\": \"00000000-0000-0000-0000-000000000000\",\n    \"type\": \"content/url\",\n    \"category\": \"personalization\",\n    \"status\": \"paused\",\n    \"testTypes\": {\n      \"hasTestPricing\": true,\n      \"hasTestShipping\": true,\n      \"hasTestCampaign\": false,\n      \"hasTestContent\": false,\n      \"hasTestContentUrl\": false,\n      \"hasTestContentAdvanced\": false,\n      \"hasTestContentOnsite\": true,\n      \"hasTestContentTemplate\": false,\n      \"hasTestContentTheme\": true,\n      \"hasTestOnsiteInjections\": false,\n      \"hasTestCheckoutBlocks\": true,\n      \"hasTestPostPurchase\": true,\n      \"hasTestOnsiteUpsell\": false\n    },\n    \"experienceActions\": [\n      {\n        \"id\": \"00000000-0000-0000-0000-000000000000\",\n        \"experienceId\": \"ffffffff-ffff-ffff-ffff-ffffffffffff\",\n        \"action\": \"start\",\n        \"actionTs\": 5675.649075330071,\n        \"performedBy\": \"string\"\n      },\n      {\n        \"id\": \"ffffffff-ffff-ffff-ffff-ffffffffffff\",\n        \"experienceId\": \"7cCB620C-fFdb-892a-a7c1-ee6e11BcbB8B\",\n        \"action\": \"end\",\n        \"actionTs\": 358.77064262681444,\n        \"performedBy\": \"string\"\n      }\n    ],\n    \"createdAtTs\": 3769.3122479905496,\n    \"shippingCarrierProvider\": \"intelligems\",\n    \"lastUpdateTs\": 5709.049792614695,\n    \"startedAtTs\": 2071.9137745792227,\n    \"pausedAtTs\": 7765.817635008333,\n    \"requiresLink\": false,\n    \"linkBaseUrl\": \"string\",\n    \"endedAtTs\": 5652.284704016297,\n    \"productVariantCount\": 0,\n    \"experienceAnalysis\": {\n      \"analyticsViewType\": \"none\"\n    },\n    \"description\": \"string\",\n    \"devicePreview\": {\n      \"device\": \"desktop\",\n      \"path\": \"/\"\n    },\n    \"currency\": {\n      \"code\": \"USD\",\n      \"symbol\": \"$\",\n      \"country\": \"string\",\n      \"options\": {},\n      \"suffix\": \"string\"\n    },\n    \"isDeleted\": false,\n    \"audience\": {\n      \"id\": \"AfAfCAa6-6E63-1aEA-919e-A1fBd9B66E43\",\n      \"experienceId\": \"f08Dc13E-b10A-2941-A380-FB78bBb75b30\",\n      \"enabled\": false,\n      \"excludeCurrency\": {\n        \"exclude\": false,\n        \"currency\": \"string\",\n        \"country\": \"string\",\n        \"region\": \"string\",\n        \"city\": \"string\"\n      },\n      \"wholesale\": true,\n      \"elseAction\": \"experienceExclude\",\n      \"elseExcludeFromAnalytics\": false,\n      \"filters\": [],\n      \"audienceType\": \"common\",\n      \"elseVariationId\": \"ffffffff-ffff-ffff-ffff-ffffffffffff\",\n      \"evaluationFrequency\": 799.5611070951192\n    },\n    \"previewPath\": \"string\",\n    \"isExternal\": false,\n    \"archivedAtTs\": 344.4046388382871,\n    \"sourceExperienceId\": \"7ec36453-7119-88A8-8024-1bB4BA20cbfa\",\n    \"sourceAction\": \"rollout\",\n    \"changeLog\": [\n      {\n        \"actionTs\": 448.40634462274045,\n        \"change\": {\n          \"experience\": {\n            \"id\": \"string\",\n            \"changedFields\": [\n              \"string\",\n              \"string\"\n            ],\n            \"previous\": {\n              \"key_0\": {},\n              \"key_1\": {}\n            },\n            \"updated\": {\n              \"key_0\": {}\n            }\n          },\n          \"variations\": [\n            {\n              \"id\": \"string\",\n              \"changedFields\": [\n                \"string\",\n                \"string\"\n              ],\n              \"previous\": {\n                \"key_0\": {\n                  \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n                },\n                \"key_1\": {\n                  \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n                }\n              },\n              \"updated\": {\n                \"key_0\": {\n                  \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n                },\n                \"key_1\": {\n                  \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n                }\n              }\n            },\n            {\n              \"id\": \"string\",\n              \"changedFields\": [\n                \"string\",\n                \"string\"\n              ],\n              \"previous\": {\n                \"key_0\": {\n                  \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n                }\n              },\n              \"updated\": {\n                \"key_0\": {\n                  \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n                },\n                \"key_1\": {\n                  \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n                }\n              }\n            }\n          ],\n          \"offers\": [\n            {\n              \"id\": \"string\",\n              \"changedFields\": [\n                \"string\",\n                \"string\"\n              ],\n              \"previous\": {\n                \"key_0\": {\n                  \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n                },\n                \"key_1\": {\n                  \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n                },\n                \"key_2\": {\n                  \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n                }\n              },\n              \"updated\": {\n                \"key_0\": {\n                  \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n                }\n              }\n            },\n            {\n              \"id\": \"string\",\n              \"changedFields\": [\n                \"string\",\n                \"string\"\n              ],\n              \"previous\": {\n                \"key_0\": {\n                  \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n                }\n              },\n              \"updated\": {\n                \"key_0\": {\n                  \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n                },\n                \"key_1\": {\n                  \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n                },\n                \"key_2\": {\n                  \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n                }\n              }\n            }\n          ],\n          \"onsiteEdits\": [\n            {\n              \"id\": \"string\",\n              \"changedFields\": [\n                \"string\",\n                \"string\"\n              ],\n              \"previous\": {\n                \"key_0\": {\n                  \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n                }\n              },\n              \"updated\": {\n                \"key_0\": {\n                  \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n                }\n              }\n            },\n            {\n              \"id\": \"string\",\n              \"changedFields\": [\n                \"string\",\n                \"string\"\n              ],\n              \"previous\": {\n                \"key_0\": {\n                  \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n                },\n                \"key_1\": {\n                  \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n                },\n                \"key_2\": {\n                  \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n                }\n              },\n              \"updated\": {\n                \"key_0\": {\n                  \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n                }\n              }\n            }\n          ],\n          \"onsiteInjections\": [\n            {\n              \"id\": \"string\",\n              \"changedFields\": [\n                \"string\",\n                \"string\"\n              ],\n              \"previous\": {\n                \"key_0\": {\n                  \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n                }\n              },\n              \"updated\": {\n                \"key_0\": {\n                  \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n                },\n                \"key_1\": {\n                  \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n                }\n              }\n            },\n            {\n              \"id\": \"string\",\n              \"changedFields\": [\n                \"string\",\n                \"string\"\n              ],\n              \"previous\": {\n                \"key_0\": {\n                  \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n                },\n                \"key_1\": {\n                  \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n                }\n              },\n              \"updated\": {\n                \"key_0\": {\n                  \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n                },\n                \"key_1\": {\n                  \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n                },\n                \"key_2\": {\n                  \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n                }\n              }\n            }\n          ],\n          \"redirects\": [\n            {\n              \"id\": \"string\",\n              \"changedFields\": [\n                \"string\",\n                \"string\"\n              ],\n              \"previous\": {\n                \"key_0\": {\n                  \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n                }\n              },\n              \"updated\": {\n                \"key_0\": {\n                  \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n                }\n              }\n            },\n            {\n              \"id\": \"string\",\n              \"changedFields\": [\n                \"string\",\n                \"string\"\n              ],\n              \"previous\": {\n                \"key_0\": {\n                  \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n                },\n                \"key_1\": {\n                  \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n                },\n                \"key_2\": {\n                  \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n                },\n                \"key_3\": {\n                  \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n                }\n              },\n              \"updated\": {\n                \"key_0\": {\n                  \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n                },\n                \"key_1\": {\n                  \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n                }\n              }\n            }\n          ],\n          \"checkoutBlocks\": [\n            {\n              \"id\": \"string\",\n              \"changedFields\": [\n                \"string\",\n                \"string\"\n              ],\n              \"previous\": {\n                \"key_0\": {\n                  \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n                },\n                \"key_1\": {\n                  \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n                },\n                \"key_2\": {\n                  \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n                }\n              },\n              \"updated\": {\n                \"key_0\": {\n                  \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n                },\n                \"key_1\": {\n                  \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n                },\n                \"key_2\": {\n                  \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n                }\n              }\n            },\n            {\n              \"id\": \"string\",\n              \"changedFields\": [\n                \"string\",\n                \"string\"\n              ],\n              \"previous\": {\n                \"key_0\": {\n                  \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n                },\n                \"key_1\": {\n                  \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n                }\n              },\n              \"updated\": {\n                \"key_0\": {\n                  \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n                },\n                \"key_1\": {\n                  \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n                }\n              }\n            }\n          ],\n          \"audiences\": [\n            {\n              \"id\": \"string\",\n              \"changedFields\": [\n                \"string\",\n                \"string\"\n              ],\n              \"previous\": {\n                \"key_0\": {\n                  \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n                },\n                \"key_1\": {\n                  \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n                },\n                \"key_2\": {\n                  \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n                },\n                \"key_3\": {\n                  \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n                }\n              },\n              \"updated\": {\n                \"key_0\": {\n                  \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n                },\n                \"key_1\": {\n                  \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n                }\n              }\n            },\n            {\n              \"id\": \"string\",\n              \"changedFields\": [\n                \"string\",\n                \"string\"\n              ],\n              \"previous\": {\n                \"key_0\": {\n                  \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n                }\n              },\n              \"updated\": {\n                \"key_0\": {\n                  \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n                }\n              }\n            }\n          ],\n          \"pageTargeting\": [\n            {\n              \"id\": \"string\",\n              \"changedFields\": [\n                \"string\",\n                \"string\"\n              ],\n              \"previous\": {\n                \"key_0\": {\n                  \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n                },\n                \"key_1\": {\n                  \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n                },\n                \"key_2\": {\n                  \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n                }\n              },\n              \"updated\": {\n                \"key_0\": {\n                  \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n                },\n                \"key_1\": {\n                  \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n                }\n              }\n            },\n            {\n              \"id\": \"string\",\n              \"changedFields\": [\n                \"string\",\n                \"string\"\n              ],\n              \"previous\": {\n                \"key_0\": {\n                  \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n                },\n                \"key_1\": {\n                  \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n                }\n              },\n              \"updated\": {\n                \"key_0\": {\n                  \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n                },\n                \"key_1\": {\n                  \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n                }\n              }\n            }\n          ]\n        },\n        \"performedBy\": \"string\"\n      },\n      {\n        \"actionTs\": 4390.111577181272,\n        \"change\": {\n          \"experience\": {\n            \"id\": \"string\",\n            \"changedFields\": [\n              \"string\",\n              \"string\"\n            ],\n            \"previous\": {\n              \"key_0\": {}\n            },\n            \"updated\": {\n              \"key_0\": {}\n            }\n          },\n          \"variations\": [\n            {\n              \"id\": \"string\",\n              \"changedFields\": [\n                \"string\",\n                \"string\"\n              ],\n              \"previous\": {\n                \"key_0\": {\n                  \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n                }\n              },\n              \"updated\": {\n                \"key_0\": {\n                  \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n                }\n              }\n            },\n            {\n              \"id\": \"string\",\n              \"changedFields\": [\n                \"string\",\n                \"string\"\n              ],\n              \"previous\": {\n                \"key_0\": {\n                  \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n                }\n              },\n              \"updated\": {\n                \"key_0\": {\n                  \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n                }\n              }\n            }\n          ],\n          \"offers\": [\n            {\n              \"id\": \"string\",\n              \"changedFields\": [\n                \"string\",\n                \"string\"\n              ],\n              \"previous\": {\n                \"key_0\": {\n                  \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n                },\n                \"key_1\": {\n                  \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n                }\n              },\n              \"updated\": {\n                \"key_0\": {\n                  \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n                }\n              }\n            },\n            {\n              \"id\": \"string\",\n              \"changedFields\": [\n                \"string\",\n                \"string\"\n              ],\n              \"previous\": {\n                \"key_0\": {\n                  \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n                },\n                \"key_1\": {\n                  \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n                },\n                \"key_2\": {\n                  \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n                },\n                \"key_3\": {\n                  \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n                }\n              },\n              \"updated\": {\n                \"key_0\": {\n                  \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n                }\n              }\n            }\n          ],\n          \"onsiteEdits\": [\n            {\n              \"id\": \"string\",\n              \"changedFields\": [\n                \"string\",\n                \"string\"\n              ],\n              \"previous\": {\n                \"key_0\": {\n                  \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n                },\n                \"key_1\": {\n                  \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n                },\n                \"key_2\": {\n                  \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n                }\n              },\n              \"updated\": {\n                \"key_0\": {\n                  \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n                },\n                \"key_1\": {\n                  \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n                },\n                \"key_2\": {\n                  \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n                }\n              }\n            },\n            {\n              \"id\": \"string\",\n              \"changedFields\": [\n                \"string\",\n                \"string\"\n              ],\n              \"previous\": {\n                \"key_0\": {\n                  \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n                },\n                \"key_1\": {\n                  \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n                }\n              },\n              \"updated\": {\n                \"key_0\": {\n                  \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n                }\n              }\n            }\n          ],\n          \"onsiteInjections\": [\n            {\n              \"id\": \"string\",\n              \"changedFields\": [\n                \"string\",\n                \"string\"\n              ],\n              \"previous\": {\n                \"key_0\": {\n                  \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n                }\n              },\n              \"updated\": {\n                \"key_0\": {\n                  \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n                }\n              }\n            },\n            {\n              \"id\": \"string\",\n              \"changedFields\": [\n                \"string\",\n                \"string\"\n              ],\n              \"previous\": {\n                \"key_0\": {\n                  \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n                },\n                \"key_1\": {\n                  \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n                }\n              },\n              \"updated\": {\n                \"key_0\": {\n                  \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n                }\n              }\n            }\n          ],\n          \"redirects\": [\n            {\n              \"id\": \"string\",\n              \"changedFields\": [\n                \"string\",\n                \"string\"\n              ],\n              \"previous\": {\n                \"key_0\": {\n                  \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n                },\n                \"key_1\": {\n                  \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n                }\n              },\n              \"updated\": {\n                \"key_0\": {\n                  \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n                }\n              }\n            },\n            {\n              \"id\": \"string\",\n              \"changedFields\": [\n                \"string\",\n                \"string\"\n              ],\n              \"previous\": {\n                \"key_0\": {\n                  \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n                }\n              },\n              \"updated\": {\n                \"key_0\": {\n                  \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n                },\n                \"key_1\": {\n                  \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n                },\n                \"key_2\": {\n                  \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n                },\n                \"key_3\": {\n                  \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n                }\n              }\n            }\n          ],\n          \"checkoutBlocks\": [\n            {\n              \"id\": \"string\",\n              \"changedFields\": [\n                \"string\",\n                \"string\"\n              ],\n              \"previous\": {\n                \"key_0\": {\n                  \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n                },\n                \"key_1\": {\n                  \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n                }\n              },\n              \"updated\": {\n                \"key_0\": {\n                  \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n                },\n                \"key_1\": {\n                  \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n                }\n              }\n            },\n            {\n              \"id\": \"string\",\n              \"changedFields\": [\n                \"string\",\n                \"string\"\n              ],\n              \"previous\": {\n                \"key_0\": {\n                  \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n                },\n                \"key_1\": {\n                  \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n                }\n              },\n              \"updated\": {\n                \"key_0\": {\n                  \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n                },\n                \"key_1\": {\n                  \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n                },\n                \"key_2\": {\n                  \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n                },\n                \"key_3\": {\n                  \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n                }\n              }\n            }\n          ],\n          \"audiences\": [\n            {\n              \"id\": \"string\",\n              \"changedFields\": [\n                \"string\",\n                \"string\"\n              ],\n              \"previous\": {\n                \"key_0\": {\n                  \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n                }\n              },\n              \"updated\": {\n                \"key_0\": {\n                  \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n                },\n                \"key_1\": {\n                  \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n                }\n              }\n            },\n            {\n              \"id\": \"string\",\n              \"changedFields\": [\n                \"string\",\n                \"string\"\n              ],\n              \"previous\": {\n                \"key_0\": {\n                  \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n                },\n                \"key_1\": {\n                  \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n                },\n                \"key_2\": {\n                  \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n                }\n              },\n              \"updated\": {\n                \"key_0\": {\n                  \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n                },\n                \"key_1\": {\n                  \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n                },\n                \"key_2\": {\n                  \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n                },\n                \"key_3\": {\n                  \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n                }\n              }\n            }\n          ],\n          \"pageTargeting\": [\n            {\n              \"id\": \"string\",\n              \"changedFields\": [\n                \"string\",\n                \"string\"\n              ],\n              \"previous\": {\n                \"key_0\": {\n                  \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n                }\n              },\n              \"updated\": {\n                \"key_0\": {\n                  \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n                }\n              }\n            },\n            {\n              \"id\": \"string\",\n              \"changedFields\": [\n                \"string\",\n                \"string\"\n              ],\n              \"previous\": {\n                \"key_0\": {\n                  \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n                },\n                \"key_1\": {\n                  \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n                }\n              },\n              \"updated\": {\n                \"key_0\": {\n                  \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n                },\n                \"key_1\": {\n                  \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n                }\n              }\n            }\n          ]\n        },\n        \"performedBy\": \"string\"\n      }\n    ]\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "26266765-8657-44d6-9231-e3b6b246ea72",
+              "name": "Validation error (invalid query/body values). Per-field messages under properties.<field>.errors.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v25-10-beta",
+                    "experiences",
+                    ":experienceId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "includeChangeLog",
+                      "value": "<boolean>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "experienceId",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "intelligems-access-token",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"errors\": [\n    \"string\",\n    \"string\"\n  ],\n  \"properties\": {\n    \"key_0\": {\n      \"errors\": [\n        \"string\",\n        \"string\"\n      ]\n    },\n    \"key_1\": {\n      \"errors\": [\n        \"string\",\n        \"string\"\n      ]\n    }\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "e9e9efec-28cf-4933-aebb-30b4e6bc3cf4",
+              "name": "Unauthorized (invalid or missing API key).",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v25-10-beta",
+                    "experiences",
+                    ":experienceId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "includeChangeLog",
+                      "value": "<boolean>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "experienceId",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "intelligems-access-token",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "91e4dd03-f82c-4114-bc24-0beab7989a0a",
+              "name": "Resource not found.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v25-10-beta",
+                    "experiences",
+                    ":experienceId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "includeChangeLog",
+                      "value": "<boolean>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "experienceId",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "intelligems-access-token",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "c6775e30-b597-48ec-8103-918e6a13c4c9",
+              "name": "Rate limit exceeded. See x-ratelimit-limit / x-ratelimit-remaining / x-ratelimit-reset headers.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v25-10-beta",
+                    "experiences",
+                    ":experienceId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "includeChangeLog",
+                      "value": "<boolean>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "experienceId",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "intelligems-access-token",
+                    "value": "<API Key>"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Too Many Requests",
+              "code": 429,
+              "header": [
+                {
+                  "disabled": false,
+                  "description": "Bucket size for the endpoint.",
+                  "key": "x-ratelimit-limit",
+                  "value": "1478"
+                },
+                {
+                  "disabled": false,
+                  "description": "Remaining tokens in the current bucket.",
+                  "key": "x-ratelimit-remaining",
+                  "value": "1478"
+                },
+                {
+                  "disabled": false,
+                  "description": "Unix timestamp (ms) at which the bucket next refills.",
+                  "key": "x-ratelimit-reset",
+                  "value": "1478"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "bfaa1bd1-a4e2-4299-b61d-ef69405c3d1a",
+              "name": "Internal server error.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v25-10-beta",
+                    "experiences",
+                    ":experienceId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "includeChangeLog",
+                      "value": "<boolean>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "experienceId",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "intelligems-access-token",
+                    "value": "<API Key>"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "49c490f5-e8d0-4eaa-a703-2972bb3d77d4",
+          "name": "Update experience",
+          "request": {
+            "name": "Update experience",
+            "description": {
+              "content": "Update an existing experience's configuration, variations or targeting.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v25-10-beta",
+                "experiences",
+                ":experienceId"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "experienceId"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "PUT",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"experience\": {\n    \"name\": \"<string>\",\n    \"type\": \"<string>\",\n    \"experienceAnalysis\": {\n      \"analyticsViewType\": \"none\"\n    },\n    \"id\": \"<uuid>\",\n    \"variations\": [\n      {\n        \"name\": \"<string>\",\n        \"percentage\": \"<number>\",\n        \"order\": \"<integer>\",\n        \"id\": \"<uuid>\",\n        \"isControl\": false,\n        \"priceChange\": \"<string>\",\n        \"priceChangeUnit\": \"<string>\",\n        \"priceRoundingType\": \"<string>\",\n        \"priceRoundingAmount\": \"<string>\",\n        \"excludeProducts\": false,\n        \"includeProducts\": false,\n        \"onsiteInjection\": {\n          \"jsInjectionMode\": {\n            \"type\": \"immediately\",\n            \"timeout\": \"<number>\"\n          },\n          \"id\": \"<uuid>\",\n          \"variationId\": \"<uuid>\",\n          \"customCss\": \"<string>\",\n          \"customJs\": \"<string>\",\n          \"source\": \"<string>\"\n        },\n        \"offer\": {\n          \"name\": \"<string>\",\n          \"discountApplicationType\": \"<string>\",\n          \"discountApplicationMethod\": \"<string>\",\n          \"combinesWithIntelligems\": \"<boolean>\",\n          \"combinesWithShopify\": \"<boolean>\",\n          \"shouldRejectCodes\": \"<boolean>\",\n          \"shippingDiscount\": {\n            \"id\": \"<uuid>\",\n            \"discountType\": \"<string>\",\n            \"unitDiscount\": \"<number>\",\n            \"rateFilter\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"countryFilter\": {\n              \"allow\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"exclude\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              }\n            },\n            \"discountLabel\": \"<string>\"\n          },\n          \"id\": \"<uuid>\",\n          \"variationId\": \"<uuid>\",\n          \"enabled\": false,\n          \"isTest\": false,\n          \"isArchived\": false,\n          \"unitType\": \"dollar\",\n          \"discountType\": \"dollar\",\n          \"tiers\": [\n            {\n              \"id\": \"<uuid>\",\n              \"minimumUnits\": 1,\n              \"maximumUnits\": 1,\n              \"unitDiscount\": 1,\n              \"discountTitle\": \"<string>\",\n              \"giftWithPurchaseTitle\": \"<string>\",\n              \"isFreeShipping\": false,\n              \"isGiftWithPurchase\": false,\n              \"giftWithPurchaseProductId\": \"<string>\",\n              \"giftWithPurchaseVariantId\": \"<string>\",\n              \"giftWithPurchaseVariantIds\": [\n                \"<string>\",\n                \"<string>\"\n              ],\n              \"autoAddGiftWithPurchase\": false,\n              \"giftWithPurchaseHandle\": \"<string>\"\n            },\n            {\n              \"id\": \"<uuid>\",\n              \"minimumUnits\": 1,\n              \"maximumUnits\": 1,\n              \"unitDiscount\": 1,\n              \"discountTitle\": \"<string>\",\n              \"giftWithPurchaseTitle\": \"<string>\",\n              \"isFreeShipping\": false,\n              \"isGiftWithPurchase\": false,\n              \"giftWithPurchaseProductId\": \"<string>\",\n              \"giftWithPurchaseVariantId\": \"<string>\",\n              \"giftWithPurchaseVariantIds\": [\n                \"<string>\",\n                \"<string>\"\n              ],\n              \"autoAddGiftWithPurchase\": false,\n              \"giftWithPurchaseHandle\": \"<string>\"\n            }\n          ],\n          \"maximumDollarDiscount\": \"<number>\",\n          \"requireSameItem\": false,\n          \"subscriptionApplicationType\": \"oneTime\"\n        }\n      }\n    ],\n    \"description\": \"<string>\",\n    \"currency\": {\n      \"code\": \"USD\",\n      \"country\": \"<string>\",\n      \"options\": {},\n      \"symbol\": \"$\",\n      \"suffix\": \"<string>\"\n    },\n    \"previewPath\": \"<string>\",\n    \"productVariantAction\": {\n      \"type\": \"<string>\",\n      \"location\": {\n        \"bucket\": \"<string>\",\n        \"key\": \"<string>\"\n      }\n    },\n    \"audience\": {\n      \"enabled\": \"<boolean>\",\n      \"elseAction\": \"<string>\",\n      \"audienceType\": \"<string>\",\n      \"elseExcludeFromAnalytics\": false,\n      \"evaluationFrequency\": \"<number>\",\n      \"elseVariationIndex\": \"<string>\",\n      \"excludeCurrency\": {\n        \"exclude\": \"<boolean>\",\n        \"currency\": \"<string>\",\n        \"country\": \"<string>\",\n        \"region\": \"<string>\",\n        \"city\": \"<string>\"\n      },\n      \"id\": \"<uuid>\"\n    }\n  }\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "116d9ea0-06ee-4a5f-9044-49bae2b5d66c",
+              "name": "OK",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v25-10-beta",
+                    "experiences",
+                    ":experienceId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "experienceId"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "intelligems-access-token",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PUT",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"experience\": {\n    \"name\": \"<string>\",\n    \"type\": \"<string>\",\n    \"experienceAnalysis\": {\n      \"analyticsViewType\": \"none\"\n    },\n    \"id\": \"<uuid>\",\n    \"variations\": [\n      {\n        \"name\": \"<string>\",\n        \"percentage\": \"<number>\",\n        \"order\": \"<integer>\",\n        \"id\": \"<uuid>\",\n        \"isControl\": false,\n        \"priceChange\": \"<string>\",\n        \"priceChangeUnit\": \"<string>\",\n        \"priceRoundingType\": \"<string>\",\n        \"priceRoundingAmount\": \"<string>\",\n        \"excludeProducts\": false,\n        \"includeProducts\": false,\n        \"onsiteInjection\": {\n          \"jsInjectionMode\": {\n            \"type\": \"immediately\",\n            \"timeout\": \"<number>\"\n          },\n          \"id\": \"<uuid>\",\n          \"variationId\": \"<uuid>\",\n          \"customCss\": \"<string>\",\n          \"customJs\": \"<string>\",\n          \"source\": \"<string>\"\n        },\n        \"offer\": {\n          \"name\": \"<string>\",\n          \"discountApplicationType\": \"<string>\",\n          \"discountApplicationMethod\": \"<string>\",\n          \"combinesWithIntelligems\": \"<boolean>\",\n          \"combinesWithShopify\": \"<boolean>\",\n          \"shouldRejectCodes\": \"<boolean>\",\n          \"shippingDiscount\": {\n            \"id\": \"<uuid>\",\n            \"discountType\": \"<string>\",\n            \"unitDiscount\": \"<number>\",\n            \"rateFilter\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"countryFilter\": {\n              \"allow\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"exclude\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              }\n            },\n            \"discountLabel\": \"<string>\"\n          },\n          \"id\": \"<uuid>\",\n          \"variationId\": \"<uuid>\",\n          \"enabled\": false,\n          \"isTest\": false,\n          \"isArchived\": false,\n          \"unitType\": \"dollar\",\n          \"discountType\": \"dollar\",\n          \"tiers\": [\n            {\n              \"id\": \"<uuid>\",\n              \"minimumUnits\": 1,\n              \"maximumUnits\": 1,\n              \"unitDiscount\": 1,\n              \"discountTitle\": \"<string>\",\n              \"giftWithPurchaseTitle\": \"<string>\",\n              \"isFreeShipping\": false,\n              \"isGiftWithPurchase\": false,\n              \"giftWithPurchaseProductId\": \"<string>\",\n              \"giftWithPurchaseVariantId\": \"<string>\",\n              \"giftWithPurchaseVariantIds\": [\n                \"<string>\",\n                \"<string>\"\n              ],\n              \"autoAddGiftWithPurchase\": false,\n              \"giftWithPurchaseHandle\": \"<string>\"\n            },\n            {\n              \"id\": \"<uuid>\",\n              \"minimumUnits\": 1,\n              \"maximumUnits\": 1,\n              \"unitDiscount\": 1,\n              \"discountTitle\": \"<string>\",\n              \"giftWithPurchaseTitle\": \"<string>\",\n              \"isFreeShipping\": false,\n              \"isGiftWithPurchase\": false,\n              \"giftWithPurchaseProductId\": \"<string>\",\n              \"giftWithPurchaseVariantId\": \"<string>\",\n              \"giftWithPurchaseVariantIds\": [\n                \"<string>\",\n                \"<string>\"\n              ],\n              \"autoAddGiftWithPurchase\": false,\n              \"giftWithPurchaseHandle\": \"<string>\"\n            }\n          ],\n          \"maximumDollarDiscount\": \"<number>\",\n          \"requireSameItem\": false,\n          \"subscriptionApplicationType\": \"oneTime\"\n        }\n      }\n    ],\n    \"description\": \"<string>\",\n    \"currency\": {\n      \"code\": \"USD\",\n      \"country\": \"<string>\",\n      \"options\": {},\n      \"symbol\": \"$\",\n      \"suffix\": \"<string>\"\n    },\n    \"previewPath\": \"<string>\",\n    \"productVariantAction\": {\n      \"type\": \"<string>\",\n      \"location\": {\n        \"bucket\": \"<string>\",\n        \"key\": \"<string>\"\n      }\n    },\n    \"audience\": {\n      \"enabled\": \"<boolean>\",\n      \"elseAction\": \"<string>\",\n      \"audienceType\": \"<string>\",\n      \"elseExcludeFromAnalytics\": false,\n      \"evaluationFrequency\": \"<number>\",\n      \"elseVariationIndex\": \"<string>\",\n      \"excludeCurrency\": {\n        \"exclude\": \"<boolean>\",\n        \"currency\": \"<string>\",\n        \"country\": \"<string>\",\n        \"region\": \"<string>\",\n        \"city\": \"<string>\"\n      },\n      \"id\": \"<uuid>\"\n    }\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "disabled": false,
+                  "description": "CORS allow-origin header.",
+                  "key": "access-control-allow-origin",
+                  "value": "string"
+                },
+                {
+                  "disabled": false,
+                  "description": "CORS allow-credentials header.",
+                  "key": "access-control-allow-credentials",
+                  "value": "string"
+                },
+                {
+                  "disabled": false,
+                  "description": "Allowed origin for Timing headers.",
+                  "key": "Timing-Allow-Origin",
+                  "value": "string"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"experience\": {\n    \"id\": \"00000000-0000-0000-0000-000000000000\",\n    \"name\": \"string\",\n    \"isPreview\": true,\n    \"organizationId\": \"ffffffff-ffff-ffff-ffff-ffffffffffff\",\n    \"type\": \"postPurchase\",\n    \"category\": \"experiment\",\n    \"status\": \"paused\",\n    \"testTypes\": {\n      \"hasTestPricing\": false,\n      \"hasTestShipping\": true,\n      \"hasTestCampaign\": true,\n      \"hasTestContent\": true,\n      \"hasTestContentUrl\": false,\n      \"hasTestContentAdvanced\": false,\n      \"hasTestContentOnsite\": true,\n      \"hasTestContentTemplate\": false,\n      \"hasTestContentTheme\": false,\n      \"hasTestOnsiteInjections\": true,\n      \"hasTestCheckoutBlocks\": false,\n      \"hasTestPostPurchase\": true,\n      \"hasTestOnsiteUpsell\": false\n    },\n    \"experienceActions\": [\n      {\n        \"id\": \"062f4246-Bcf4-79a7-A5cA-dEF24FE50f4a\",\n        \"experienceId\": \"ffffffff-ffff-ffff-ffff-ffffffffffff\",\n        \"action\": \"pause\",\n        \"actionTs\": 4348.981674005753,\n        \"performedBy\": \"string\"\n      },\n      {\n        \"id\": \"00000000-0000-0000-0000-000000000000\",\n        \"experienceId\": \"ffffffff-ffff-ffff-ffff-ffffffffffff\",\n        \"action\": \"start\",\n        \"actionTs\": 9865.301748078931,\n        \"performedBy\": \"string\"\n      }\n    ],\n    \"createdAtTs\": 3315.806959060946,\n    \"shippingCarrierProvider\": \"intelligems\",\n    \"lastUpdateTs\": 9778.833079717999,\n    \"startedAtTs\": 5566.00515438455,\n    \"pausedAtTs\": 3650.154629605,\n    \"requiresLink\": false,\n    \"linkBaseUrl\": \"string\",\n    \"endedAtTs\": 7514.536130505286,\n    \"productVariantCount\": 0,\n    \"experienceAnalysis\": {\n      \"analyticsViewType\": \"test_orders_only\"\n    },\n    \"description\": \"string\",\n    \"devicePreview\": {\n      \"device\": \"desktop\",\n      \"path\": \"/\"\n    },\n    \"currency\": {\n      \"code\": \"USD\",\n      \"symbol\": \"$\",\n      \"country\": \"string\",\n      \"options\": {},\n      \"suffix\": \"string\"\n    },\n    \"isDeleted\": false,\n    \"audience\": {\n      \"id\": \"ffffffff-ffff-ffff-ffff-ffffffffffff\",\n      \"experienceId\": \"ffffffff-ffff-ffff-ffff-ffffffffffff\",\n      \"enabled\": true,\n      \"excludeCurrency\": {\n        \"exclude\": false,\n        \"currency\": \"string\",\n        \"country\": \"string\",\n        \"region\": \"string\",\n        \"city\": \"string\"\n      },\n      \"wholesale\": true,\n      \"elseAction\": \"leaveUnassigned\",\n      \"elseExcludeFromAnalytics\": false,\n      \"filters\": [],\n      \"audienceType\": \"advanced\",\n      \"elseVariationId\": \"ffffffff-ffff-ffff-ffff-ffffffffffff\",\n      \"evaluationFrequency\": 4109.544324382557\n    },\n    \"previewPath\": \"string\",\n    \"isExternal\": false,\n    \"archivedAtTs\": 5318.495229042282,\n    \"sourceExperienceId\": \"ffffffff-ffff-ffff-ffff-ffffffffffff\",\n    \"sourceAction\": \"duplicate\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "fca5b334-2747-4a5f-9fc8-6fdbae86dbd8",
+              "name": "Validation error (invalid query/body values). Per-field messages under properties.<field>.errors.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v25-10-beta",
+                    "experiences",
+                    ":experienceId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "experienceId"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "intelligems-access-token",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PUT",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"experience\": {\n    \"name\": \"<string>\",\n    \"type\": \"<string>\",\n    \"experienceAnalysis\": {\n      \"analyticsViewType\": \"none\"\n    },\n    \"id\": \"<uuid>\",\n    \"variations\": [\n      {\n        \"name\": \"<string>\",\n        \"percentage\": \"<number>\",\n        \"order\": \"<integer>\",\n        \"id\": \"<uuid>\",\n        \"isControl\": false,\n        \"priceChange\": \"<string>\",\n        \"priceChangeUnit\": \"<string>\",\n        \"priceRoundingType\": \"<string>\",\n        \"priceRoundingAmount\": \"<string>\",\n        \"excludeProducts\": false,\n        \"includeProducts\": false,\n        \"onsiteInjection\": {\n          \"jsInjectionMode\": {\n            \"type\": \"immediately\",\n            \"timeout\": \"<number>\"\n          },\n          \"id\": \"<uuid>\",\n          \"variationId\": \"<uuid>\",\n          \"customCss\": \"<string>\",\n          \"customJs\": \"<string>\",\n          \"source\": \"<string>\"\n        },\n        \"offer\": {\n          \"name\": \"<string>\",\n          \"discountApplicationType\": \"<string>\",\n          \"discountApplicationMethod\": \"<string>\",\n          \"combinesWithIntelligems\": \"<boolean>\",\n          \"combinesWithShopify\": \"<boolean>\",\n          \"shouldRejectCodes\": \"<boolean>\",\n          \"shippingDiscount\": {\n            \"id\": \"<uuid>\",\n            \"discountType\": \"<string>\",\n            \"unitDiscount\": \"<number>\",\n            \"rateFilter\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"countryFilter\": {\n              \"allow\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"exclude\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              }\n            },\n            \"discountLabel\": \"<string>\"\n          },\n          \"id\": \"<uuid>\",\n          \"variationId\": \"<uuid>\",\n          \"enabled\": false,\n          \"isTest\": false,\n          \"isArchived\": false,\n          \"unitType\": \"dollar\",\n          \"discountType\": \"dollar\",\n          \"tiers\": [\n            {\n              \"id\": \"<uuid>\",\n              \"minimumUnits\": 1,\n              \"maximumUnits\": 1,\n              \"unitDiscount\": 1,\n              \"discountTitle\": \"<string>\",\n              \"giftWithPurchaseTitle\": \"<string>\",\n              \"isFreeShipping\": false,\n              \"isGiftWithPurchase\": false,\n              \"giftWithPurchaseProductId\": \"<string>\",\n              \"giftWithPurchaseVariantId\": \"<string>\",\n              \"giftWithPurchaseVariantIds\": [\n                \"<string>\",\n                \"<string>\"\n              ],\n              \"autoAddGiftWithPurchase\": false,\n              \"giftWithPurchaseHandle\": \"<string>\"\n            },\n            {\n              \"id\": \"<uuid>\",\n              \"minimumUnits\": 1,\n              \"maximumUnits\": 1,\n              \"unitDiscount\": 1,\n              \"discountTitle\": \"<string>\",\n              \"giftWithPurchaseTitle\": \"<string>\",\n              \"isFreeShipping\": false,\n              \"isGiftWithPurchase\": false,\n              \"giftWithPurchaseProductId\": \"<string>\",\n              \"giftWithPurchaseVariantId\": \"<string>\",\n              \"giftWithPurchaseVariantIds\": [\n                \"<string>\",\n                \"<string>\"\n              ],\n              \"autoAddGiftWithPurchase\": false,\n              \"giftWithPurchaseHandle\": \"<string>\"\n            }\n          ],\n          \"maximumDollarDiscount\": \"<number>\",\n          \"requireSameItem\": false,\n          \"subscriptionApplicationType\": \"oneTime\"\n        }\n      }\n    ],\n    \"description\": \"<string>\",\n    \"currency\": {\n      \"code\": \"USD\",\n      \"country\": \"<string>\",\n      \"options\": {},\n      \"symbol\": \"$\",\n      \"suffix\": \"<string>\"\n    },\n    \"previewPath\": \"<string>\",\n    \"productVariantAction\": {\n      \"type\": \"<string>\",\n      \"location\": {\n        \"bucket\": \"<string>\",\n        \"key\": \"<string>\"\n      }\n    },\n    \"audience\": {\n      \"enabled\": \"<boolean>\",\n      \"elseAction\": \"<string>\",\n      \"audienceType\": \"<string>\",\n      \"elseExcludeFromAnalytics\": false,\n      \"evaluationFrequency\": \"<number>\",\n      \"elseVariationIndex\": \"<string>\",\n      \"excludeCurrency\": {\n        \"exclude\": \"<boolean>\",\n        \"currency\": \"<string>\",\n        \"country\": \"<string>\",\n        \"region\": \"<string>\",\n        \"city\": \"<string>\"\n      },\n      \"id\": \"<uuid>\"\n    }\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"errors\": [\n    \"string\",\n    \"string\"\n  ],\n  \"properties\": {\n    \"key_0\": {\n      \"errors\": [\n        \"string\",\n        \"string\"\n      ]\n    },\n    \"key_1\": {\n      \"errors\": [\n        \"string\",\n        \"string\"\n      ]\n    }\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "c0834eae-b988-4ab3-987c-01bb4ad8058f",
+              "name": "Unauthorized (invalid or missing API key).",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v25-10-beta",
+                    "experiences",
+                    ":experienceId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "experienceId"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "intelligems-access-token",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PUT",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"experience\": {\n    \"name\": \"<string>\",\n    \"type\": \"<string>\",\n    \"experienceAnalysis\": {\n      \"analyticsViewType\": \"none\"\n    },\n    \"id\": \"<uuid>\",\n    \"variations\": [\n      {\n        \"name\": \"<string>\",\n        \"percentage\": \"<number>\",\n        \"order\": \"<integer>\",\n        \"id\": \"<uuid>\",\n        \"isControl\": false,\n        \"priceChange\": \"<string>\",\n        \"priceChangeUnit\": \"<string>\",\n        \"priceRoundingType\": \"<string>\",\n        \"priceRoundingAmount\": \"<string>\",\n        \"excludeProducts\": false,\n        \"includeProducts\": false,\n        \"onsiteInjection\": {\n          \"jsInjectionMode\": {\n            \"type\": \"immediately\",\n            \"timeout\": \"<number>\"\n          },\n          \"id\": \"<uuid>\",\n          \"variationId\": \"<uuid>\",\n          \"customCss\": \"<string>\",\n          \"customJs\": \"<string>\",\n          \"source\": \"<string>\"\n        },\n        \"offer\": {\n          \"name\": \"<string>\",\n          \"discountApplicationType\": \"<string>\",\n          \"discountApplicationMethod\": \"<string>\",\n          \"combinesWithIntelligems\": \"<boolean>\",\n          \"combinesWithShopify\": \"<boolean>\",\n          \"shouldRejectCodes\": \"<boolean>\",\n          \"shippingDiscount\": {\n            \"id\": \"<uuid>\",\n            \"discountType\": \"<string>\",\n            \"unitDiscount\": \"<number>\",\n            \"rateFilter\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"countryFilter\": {\n              \"allow\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"exclude\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              }\n            },\n            \"discountLabel\": \"<string>\"\n          },\n          \"id\": \"<uuid>\",\n          \"variationId\": \"<uuid>\",\n          \"enabled\": false,\n          \"isTest\": false,\n          \"isArchived\": false,\n          \"unitType\": \"dollar\",\n          \"discountType\": \"dollar\",\n          \"tiers\": [\n            {\n              \"id\": \"<uuid>\",\n              \"minimumUnits\": 1,\n              \"maximumUnits\": 1,\n              \"unitDiscount\": 1,\n              \"discountTitle\": \"<string>\",\n              \"giftWithPurchaseTitle\": \"<string>\",\n              \"isFreeShipping\": false,\n              \"isGiftWithPurchase\": false,\n              \"giftWithPurchaseProductId\": \"<string>\",\n              \"giftWithPurchaseVariantId\": \"<string>\",\n              \"giftWithPurchaseVariantIds\": [\n                \"<string>\",\n                \"<string>\"\n              ],\n              \"autoAddGiftWithPurchase\": false,\n              \"giftWithPurchaseHandle\": \"<string>\"\n            },\n            {\n              \"id\": \"<uuid>\",\n              \"minimumUnits\": 1,\n              \"maximumUnits\": 1,\n              \"unitDiscount\": 1,\n              \"discountTitle\": \"<string>\",\n              \"giftWithPurchaseTitle\": \"<string>\",\n              \"isFreeShipping\": false,\n              \"isGiftWithPurchase\": false,\n              \"giftWithPurchaseProductId\": \"<string>\",\n              \"giftWithPurchaseVariantId\": \"<string>\",\n              \"giftWithPurchaseVariantIds\": [\n                \"<string>\",\n                \"<string>\"\n              ],\n              \"autoAddGiftWithPurchase\": false,\n              \"giftWithPurchaseHandle\": \"<string>\"\n            }\n          ],\n          \"maximumDollarDiscount\": \"<number>\",\n          \"requireSameItem\": false,\n          \"subscriptionApplicationType\": \"oneTime\"\n        }\n      }\n    ],\n    \"description\": \"<string>\",\n    \"currency\": {\n      \"code\": \"USD\",\n      \"country\": \"<string>\",\n      \"options\": {},\n      \"symbol\": \"$\",\n      \"suffix\": \"<string>\"\n    },\n    \"previewPath\": \"<string>\",\n    \"productVariantAction\": {\n      \"type\": \"<string>\",\n      \"location\": {\n        \"bucket\": \"<string>\",\n        \"key\": \"<string>\"\n      }\n    },\n    \"audience\": {\n      \"enabled\": \"<boolean>\",\n      \"elseAction\": \"<string>\",\n      \"audienceType\": \"<string>\",\n      \"elseExcludeFromAnalytics\": false,\n      \"evaluationFrequency\": \"<number>\",\n      \"elseVariationIndex\": \"<string>\",\n      \"excludeCurrency\": {\n        \"exclude\": \"<boolean>\",\n        \"currency\": \"<string>\",\n        \"country\": \"<string>\",\n        \"region\": \"<string>\",\n        \"city\": \"<string>\"\n      },\n      \"id\": \"<uuid>\"\n    }\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "5b7afce3-0a9d-4ea2-a5c2-e4c36b800d59",
+              "name": "Resource not found.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v25-10-beta",
+                    "experiences",
+                    ":experienceId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "experienceId"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "intelligems-access-token",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PUT",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"experience\": {\n    \"name\": \"<string>\",\n    \"type\": \"<string>\",\n    \"experienceAnalysis\": {\n      \"analyticsViewType\": \"none\"\n    },\n    \"id\": \"<uuid>\",\n    \"variations\": [\n      {\n        \"name\": \"<string>\",\n        \"percentage\": \"<number>\",\n        \"order\": \"<integer>\",\n        \"id\": \"<uuid>\",\n        \"isControl\": false,\n        \"priceChange\": \"<string>\",\n        \"priceChangeUnit\": \"<string>\",\n        \"priceRoundingType\": \"<string>\",\n        \"priceRoundingAmount\": \"<string>\",\n        \"excludeProducts\": false,\n        \"includeProducts\": false,\n        \"onsiteInjection\": {\n          \"jsInjectionMode\": {\n            \"type\": \"immediately\",\n            \"timeout\": \"<number>\"\n          },\n          \"id\": \"<uuid>\",\n          \"variationId\": \"<uuid>\",\n          \"customCss\": \"<string>\",\n          \"customJs\": \"<string>\",\n          \"source\": \"<string>\"\n        },\n        \"offer\": {\n          \"name\": \"<string>\",\n          \"discountApplicationType\": \"<string>\",\n          \"discountApplicationMethod\": \"<string>\",\n          \"combinesWithIntelligems\": \"<boolean>\",\n          \"combinesWithShopify\": \"<boolean>\",\n          \"shouldRejectCodes\": \"<boolean>\",\n          \"shippingDiscount\": {\n            \"id\": \"<uuid>\",\n            \"discountType\": \"<string>\",\n            \"unitDiscount\": \"<number>\",\n            \"rateFilter\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"countryFilter\": {\n              \"allow\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"exclude\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              }\n            },\n            \"discountLabel\": \"<string>\"\n          },\n          \"id\": \"<uuid>\",\n          \"variationId\": \"<uuid>\",\n          \"enabled\": false,\n          \"isTest\": false,\n          \"isArchived\": false,\n          \"unitType\": \"dollar\",\n          \"discountType\": \"dollar\",\n          \"tiers\": [\n            {\n              \"id\": \"<uuid>\",\n              \"minimumUnits\": 1,\n              \"maximumUnits\": 1,\n              \"unitDiscount\": 1,\n              \"discountTitle\": \"<string>\",\n              \"giftWithPurchaseTitle\": \"<string>\",\n              \"isFreeShipping\": false,\n              \"isGiftWithPurchase\": false,\n              \"giftWithPurchaseProductId\": \"<string>\",\n              \"giftWithPurchaseVariantId\": \"<string>\",\n              \"giftWithPurchaseVariantIds\": [\n                \"<string>\",\n                \"<string>\"\n              ],\n              \"autoAddGiftWithPurchase\": false,\n              \"giftWithPurchaseHandle\": \"<string>\"\n            },\n            {\n              \"id\": \"<uuid>\",\n              \"minimumUnits\": 1,\n              \"maximumUnits\": 1,\n              \"unitDiscount\": 1,\n              \"discountTitle\": \"<string>\",\n              \"giftWithPurchaseTitle\": \"<string>\",\n              \"isFreeShipping\": false,\n              \"isGiftWithPurchase\": false,\n              \"giftWithPurchaseProductId\": \"<string>\",\n              \"giftWithPurchaseVariantId\": \"<string>\",\n              \"giftWithPurchaseVariantIds\": [\n                \"<string>\",\n                \"<string>\"\n              ],\n              \"autoAddGiftWithPurchase\": false,\n              \"giftWithPurchaseHandle\": \"<string>\"\n            }\n          ],\n          \"maximumDollarDiscount\": \"<number>\",\n          \"requireSameItem\": false,\n          \"subscriptionApplicationType\": \"oneTime\"\n        }\n      }\n    ],\n    \"description\": \"<string>\",\n    \"currency\": {\n      \"code\": \"USD\",\n      \"country\": \"<string>\",\n      \"options\": {},\n      \"symbol\": \"$\",\n      \"suffix\": \"<string>\"\n    },\n    \"previewPath\": \"<string>\",\n    \"productVariantAction\": {\n      \"type\": \"<string>\",\n      \"location\": {\n        \"bucket\": \"<string>\",\n        \"key\": \"<string>\"\n      }\n    },\n    \"audience\": {\n      \"enabled\": \"<boolean>\",\n      \"elseAction\": \"<string>\",\n      \"audienceType\": \"<string>\",\n      \"elseExcludeFromAnalytics\": false,\n      \"evaluationFrequency\": \"<number>\",\n      \"elseVariationIndex\": \"<string>\",\n      \"excludeCurrency\": {\n        \"exclude\": \"<boolean>\",\n        \"currency\": \"<string>\",\n        \"country\": \"<string>\",\n        \"region\": \"<string>\",\n        \"city\": \"<string>\"\n      },\n      \"id\": \"<uuid>\"\n    }\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "5198320b-1f26-4b27-82f6-e43161e62995",
+              "name": "Rate limit exceeded. See x-ratelimit-limit / x-ratelimit-remaining / x-ratelimit-reset headers.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v25-10-beta",
+                    "experiences",
+                    ":experienceId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "experienceId"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "intelligems-access-token",
+                    "value": "<API Key>"
+                  }
+                ],
+                "method": "PUT",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"experience\": {\n    \"name\": \"<string>\",\n    \"type\": \"<string>\",\n    \"experienceAnalysis\": {\n      \"analyticsViewType\": \"none\"\n    },\n    \"id\": \"<uuid>\",\n    \"variations\": [\n      {\n        \"name\": \"<string>\",\n        \"percentage\": \"<number>\",\n        \"order\": \"<integer>\",\n        \"id\": \"<uuid>\",\n        \"isControl\": false,\n        \"priceChange\": \"<string>\",\n        \"priceChangeUnit\": \"<string>\",\n        \"priceRoundingType\": \"<string>\",\n        \"priceRoundingAmount\": \"<string>\",\n        \"excludeProducts\": false,\n        \"includeProducts\": false,\n        \"onsiteInjection\": {\n          \"jsInjectionMode\": {\n            \"type\": \"immediately\",\n            \"timeout\": \"<number>\"\n          },\n          \"id\": \"<uuid>\",\n          \"variationId\": \"<uuid>\",\n          \"customCss\": \"<string>\",\n          \"customJs\": \"<string>\",\n          \"source\": \"<string>\"\n        },\n        \"offer\": {\n          \"name\": \"<string>\",\n          \"discountApplicationType\": \"<string>\",\n          \"discountApplicationMethod\": \"<string>\",\n          \"combinesWithIntelligems\": \"<boolean>\",\n          \"combinesWithShopify\": \"<boolean>\",\n          \"shouldRejectCodes\": \"<boolean>\",\n          \"shippingDiscount\": {\n            \"id\": \"<uuid>\",\n            \"discountType\": \"<string>\",\n            \"unitDiscount\": \"<number>\",\n            \"rateFilter\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"countryFilter\": {\n              \"allow\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"exclude\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              }\n            },\n            \"discountLabel\": \"<string>\"\n          },\n          \"id\": \"<uuid>\",\n          \"variationId\": \"<uuid>\",\n          \"enabled\": false,\n          \"isTest\": false,\n          \"isArchived\": false,\n          \"unitType\": \"dollar\",\n          \"discountType\": \"dollar\",\n          \"tiers\": [\n            {\n              \"id\": \"<uuid>\",\n              \"minimumUnits\": 1,\n              \"maximumUnits\": 1,\n              \"unitDiscount\": 1,\n              \"discountTitle\": \"<string>\",\n              \"giftWithPurchaseTitle\": \"<string>\",\n              \"isFreeShipping\": false,\n              \"isGiftWithPurchase\": false,\n              \"giftWithPurchaseProductId\": \"<string>\",\n              \"giftWithPurchaseVariantId\": \"<string>\",\n              \"giftWithPurchaseVariantIds\": [\n                \"<string>\",\n                \"<string>\"\n              ],\n              \"autoAddGiftWithPurchase\": false,\n              \"giftWithPurchaseHandle\": \"<string>\"\n            },\n            {\n              \"id\": \"<uuid>\",\n              \"minimumUnits\": 1,\n              \"maximumUnits\": 1,\n              \"unitDiscount\": 1,\n              \"discountTitle\": \"<string>\",\n              \"giftWithPurchaseTitle\": \"<string>\",\n              \"isFreeShipping\": false,\n              \"isGiftWithPurchase\": false,\n              \"giftWithPurchaseProductId\": \"<string>\",\n              \"giftWithPurchaseVariantId\": \"<string>\",\n              \"giftWithPurchaseVariantIds\": [\n                \"<string>\",\n                \"<string>\"\n              ],\n              \"autoAddGiftWithPurchase\": false,\n              \"giftWithPurchaseHandle\": \"<string>\"\n            }\n          ],\n          \"maximumDollarDiscount\": \"<number>\",\n          \"requireSameItem\": false,\n          \"subscriptionApplicationType\": \"oneTime\"\n        }\n      }\n    ],\n    \"description\": \"<string>\",\n    \"currency\": {\n      \"code\": \"USD\",\n      \"country\": \"<string>\",\n      \"options\": {},\n      \"symbol\": \"$\",\n      \"suffix\": \"<string>\"\n    },\n    \"previewPath\": \"<string>\",\n    \"productVariantAction\": {\n      \"type\": \"<string>\",\n      \"location\": {\n        \"bucket\": \"<string>\",\n        \"key\": \"<string>\"\n      }\n    },\n    \"audience\": {\n      \"enabled\": \"<boolean>\",\n      \"elseAction\": \"<string>\",\n      \"audienceType\": \"<string>\",\n      \"elseExcludeFromAnalytics\": false,\n      \"evaluationFrequency\": \"<number>\",\n      \"elseVariationIndex\": \"<string>\",\n      \"excludeCurrency\": {\n        \"exclude\": \"<boolean>\",\n        \"currency\": \"<string>\",\n        \"country\": \"<string>\",\n        \"region\": \"<string>\",\n        \"city\": \"<string>\"\n      },\n      \"id\": \"<uuid>\"\n    }\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Too Many Requests",
+              "code": 429,
+              "header": [
+                {
+                  "disabled": false,
+                  "description": "Bucket size for the endpoint.",
+                  "key": "x-ratelimit-limit",
+                  "value": "1478"
+                },
+                {
+                  "disabled": false,
+                  "description": "Remaining tokens in the current bucket.",
+                  "key": "x-ratelimit-remaining",
+                  "value": "1478"
+                },
+                {
+                  "disabled": false,
+                  "description": "Unix timestamp (ms) at which the bucket next refills.",
+                  "key": "x-ratelimit-reset",
+                  "value": "1478"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "8a4ee9a8-b705-4497-a8e3-f6d27641c1fb",
+              "name": "Internal server error.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v25-10-beta",
+                    "experiences",
+                    ":experienceId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "experienceId"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "intelligems-access-token",
+                    "value": "<API Key>"
+                  }
+                ],
+                "method": "PUT",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"experience\": {\n    \"name\": \"<string>\",\n    \"type\": \"<string>\",\n    \"experienceAnalysis\": {\n      \"analyticsViewType\": \"none\"\n    },\n    \"id\": \"<uuid>\",\n    \"variations\": [\n      {\n        \"name\": \"<string>\",\n        \"percentage\": \"<number>\",\n        \"order\": \"<integer>\",\n        \"id\": \"<uuid>\",\n        \"isControl\": false,\n        \"priceChange\": \"<string>\",\n        \"priceChangeUnit\": \"<string>\",\n        \"priceRoundingType\": \"<string>\",\n        \"priceRoundingAmount\": \"<string>\",\n        \"excludeProducts\": false,\n        \"includeProducts\": false,\n        \"onsiteInjection\": {\n          \"jsInjectionMode\": {\n            \"type\": \"immediately\",\n            \"timeout\": \"<number>\"\n          },\n          \"id\": \"<uuid>\",\n          \"variationId\": \"<uuid>\",\n          \"customCss\": \"<string>\",\n          \"customJs\": \"<string>\",\n          \"source\": \"<string>\"\n        },\n        \"offer\": {\n          \"name\": \"<string>\",\n          \"discountApplicationType\": \"<string>\",\n          \"discountApplicationMethod\": \"<string>\",\n          \"combinesWithIntelligems\": \"<boolean>\",\n          \"combinesWithShopify\": \"<boolean>\",\n          \"shouldRejectCodes\": \"<boolean>\",\n          \"shippingDiscount\": {\n            \"id\": \"<uuid>\",\n            \"discountType\": \"<string>\",\n            \"unitDiscount\": \"<number>\",\n            \"rateFilter\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"countryFilter\": {\n              \"allow\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"exclude\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              }\n            },\n            \"discountLabel\": \"<string>\"\n          },\n          \"id\": \"<uuid>\",\n          \"variationId\": \"<uuid>\",\n          \"enabled\": false,\n          \"isTest\": false,\n          \"isArchived\": false,\n          \"unitType\": \"dollar\",\n          \"discountType\": \"dollar\",\n          \"tiers\": [\n            {\n              \"id\": \"<uuid>\",\n              \"minimumUnits\": 1,\n              \"maximumUnits\": 1,\n              \"unitDiscount\": 1,\n              \"discountTitle\": \"<string>\",\n              \"giftWithPurchaseTitle\": \"<string>\",\n              \"isFreeShipping\": false,\n              \"isGiftWithPurchase\": false,\n              \"giftWithPurchaseProductId\": \"<string>\",\n              \"giftWithPurchaseVariantId\": \"<string>\",\n              \"giftWithPurchaseVariantIds\": [\n                \"<string>\",\n                \"<string>\"\n              ],\n              \"autoAddGiftWithPurchase\": false,\n              \"giftWithPurchaseHandle\": \"<string>\"\n            },\n            {\n              \"id\": \"<uuid>\",\n              \"minimumUnits\": 1,\n              \"maximumUnits\": 1,\n              \"unitDiscount\": 1,\n              \"discountTitle\": \"<string>\",\n              \"giftWithPurchaseTitle\": \"<string>\",\n              \"isFreeShipping\": false,\n              \"isGiftWithPurchase\": false,\n              \"giftWithPurchaseProductId\": \"<string>\",\n              \"giftWithPurchaseVariantId\": \"<string>\",\n              \"giftWithPurchaseVariantIds\": [\n                \"<string>\",\n                \"<string>\"\n              ],\n              \"autoAddGiftWithPurchase\": false,\n              \"giftWithPurchaseHandle\": \"<string>\"\n            }\n          ],\n          \"maximumDollarDiscount\": \"<number>\",\n          \"requireSameItem\": false,\n          \"subscriptionApplicationType\": \"oneTime\"\n        }\n      }\n    ],\n    \"description\": \"<string>\",\n    \"currency\": {\n      \"code\": \"USD\",\n      \"country\": \"<string>\",\n      \"options\": {},\n      \"symbol\": \"$\",\n      \"suffix\": \"<string>\"\n    },\n    \"previewPath\": \"<string>\",\n    \"productVariantAction\": {\n      \"type\": \"<string>\",\n      \"location\": {\n        \"bucket\": \"<string>\",\n        \"key\": \"<string>\"\n      }\n    },\n    \"audience\": {\n      \"enabled\": \"<boolean>\",\n      \"elseAction\": \"<string>\",\n      \"audienceType\": \"<string>\",\n      \"elseExcludeFromAnalytics\": false,\n      \"evaluationFrequency\": \"<number>\",\n      \"elseVariationIndex\": \"<string>\",\n      \"excludeCurrency\": {\n        \"exclude\": \"<boolean>\",\n        \"currency\": \"<string>\",\n        \"country\": \"<string>\",\n        \"region\": \"<string>\",\n        \"city\": \"<string>\"\n      },\n      \"id\": \"<uuid>\"\n    }\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "8dd66579-f6c6-4041-a874-e4abf4f26bef",
+          "name": "Create experience",
+          "request": {
+            "name": "Create experience",
+            "description": {
+              "content": "Create a new experience or experiment.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v25-10-beta",
+                "experiences"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"experience\": {\n    \"name\": \"<string>\",\n    \"type\": \"<string>\",\n    \"experienceAnalysis\": {\n      \"analyticsViewType\": \"none\"\n    },\n    \"variations\": [\n      {\n        \"name\": \"<string>\",\n        \"percentage\": \"<number>\",\n        \"order\": \"<integer>\",\n        \"isControl\": false,\n        \"priceChange\": \"<string>\",\n        \"priceChangeUnit\": \"<string>\",\n        \"priceRoundingType\": \"<string>\",\n        \"priceRoundingAmount\": \"<string>\",\n        \"excludeProducts\": false,\n        \"includeProducts\": false,\n        \"onsiteInjection\": {\n          \"jsInjectionMode\": {\n            \"type\": \"immediately\",\n            \"timeout\": \"<number>\"\n          },\n          \"customCss\": \"<string>\",\n          \"customJs\": \"<string>\",\n          \"source\": \"<string>\"\n        },\n        \"offer\": {\n          \"name\": \"<string>\",\n          \"discountApplicationType\": \"<string>\",\n          \"discountApplicationMethod\": \"<string>\",\n          \"combinesWithIntelligems\": \"<boolean>\",\n          \"combinesWithShopify\": \"<boolean>\",\n          \"shouldRejectCodes\": \"<boolean>\",\n          \"shippingDiscount\": {\n            \"id\": \"<uuid>\",\n            \"discountType\": \"<string>\",\n            \"unitDiscount\": \"<number>\",\n            \"rateFilter\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"countryFilter\": {\n              \"allow\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"exclude\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              }\n            },\n            \"discountLabel\": \"<string>\"\n          },\n          \"enabled\": false,\n          \"isTest\": false,\n          \"isArchived\": false,\n          \"unitType\": \"dollar\",\n          \"discountType\": \"dollar\",\n          \"tiers\": [\n            {\n              \"minimumUnits\": 1,\n              \"maximumUnits\": 1,\n              \"unitDiscount\": 1,\n              \"discountTitle\": \"<string>\",\n              \"giftWithPurchaseTitle\": \"<string>\",\n              \"isFreeShipping\": false,\n              \"isGiftWithPurchase\": false,\n              \"giftWithPurchaseProductId\": \"<string>\",\n              \"giftWithPurchaseVariantId\": \"<string>\",\n              \"giftWithPurchaseVariantIds\": [\n                \"<string>\",\n                \"<string>\"\n              ],\n              \"autoAddGiftWithPurchase\": false,\n              \"giftWithPurchaseHandle\": \"<string>\"\n            },\n            {\n              \"minimumUnits\": 1,\n              \"maximumUnits\": 1,\n              \"unitDiscount\": 1,\n              \"discountTitle\": \"<string>\",\n              \"giftWithPurchaseTitle\": \"<string>\",\n              \"isFreeShipping\": false,\n              \"isGiftWithPurchase\": false,\n              \"giftWithPurchaseProductId\": \"<string>\",\n              \"giftWithPurchaseVariantId\": \"<string>\",\n              \"giftWithPurchaseVariantIds\": [\n                \"<string>\",\n                \"<string>\"\n              ],\n              \"autoAddGiftWithPurchase\": false,\n              \"giftWithPurchaseHandle\": \"<string>\"\n            }\n          ],\n          \"maximumDollarDiscount\": \"<number>\",\n          \"requireSameItem\": false,\n          \"subscriptionApplicationType\": \"oneTime\"\n        }\n      }\n    ],\n    \"description\": \"<string>\",\n    \"currency\": {\n      \"code\": \"USD\",\n      \"country\": \"<string>\",\n      \"options\": {},\n      \"symbol\": \"$\",\n      \"suffix\": \"<string>\"\n    },\n    \"previewPath\": \"<string>\",\n    \"productVariantAction\": {\n      \"type\": \"<string>\",\n      \"location\": {\n        \"bucket\": \"<string>\",\n        \"key\": \"<string>\"\n      }\n    },\n    \"audience\": {\n      \"enabled\": \"<boolean>\",\n      \"elseAction\": \"<string>\",\n      \"audienceType\": \"<string>\",\n      \"elseExcludeFromAnalytics\": false,\n      \"evaluationFrequency\": \"<number>\",\n      \"elseVariationIndex\": \"<string>\",\n      \"excludeCurrency\": {\n        \"exclude\": \"<boolean>\",\n        \"currency\": \"<string>\",\n        \"country\": \"<string>\",\n        \"region\": \"<string>\",\n        \"city\": \"<string>\"\n      }\n    }\n  }\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "110eb102-7a3f-4a7b-9b71-106d91a0129c",
+              "name": "OK",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v25-10-beta",
+                    "experiences"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "intelligems-access-token",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"experience\": {\n    \"name\": \"<string>\",\n    \"type\": \"<string>\",\n    \"experienceAnalysis\": {\n      \"analyticsViewType\": \"none\"\n    },\n    \"variations\": [\n      {\n        \"name\": \"<string>\",\n        \"percentage\": \"<number>\",\n        \"order\": \"<integer>\",\n        \"isControl\": false,\n        \"priceChange\": \"<string>\",\n        \"priceChangeUnit\": \"<string>\",\n        \"priceRoundingType\": \"<string>\",\n        \"priceRoundingAmount\": \"<string>\",\n        \"excludeProducts\": false,\n        \"includeProducts\": false,\n        \"onsiteInjection\": {\n          \"jsInjectionMode\": {\n            \"type\": \"immediately\",\n            \"timeout\": \"<number>\"\n          },\n          \"customCss\": \"<string>\",\n          \"customJs\": \"<string>\",\n          \"source\": \"<string>\"\n        },\n        \"offer\": {\n          \"name\": \"<string>\",\n          \"discountApplicationType\": \"<string>\",\n          \"discountApplicationMethod\": \"<string>\",\n          \"combinesWithIntelligems\": \"<boolean>\",\n          \"combinesWithShopify\": \"<boolean>\",\n          \"shouldRejectCodes\": \"<boolean>\",\n          \"shippingDiscount\": {\n            \"id\": \"<uuid>\",\n            \"discountType\": \"<string>\",\n            \"unitDiscount\": \"<number>\",\n            \"rateFilter\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"countryFilter\": {\n              \"allow\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"exclude\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              }\n            },\n            \"discountLabel\": \"<string>\"\n          },\n          \"enabled\": false,\n          \"isTest\": false,\n          \"isArchived\": false,\n          \"unitType\": \"dollar\",\n          \"discountType\": \"dollar\",\n          \"tiers\": [\n            {\n              \"minimumUnits\": 1,\n              \"maximumUnits\": 1,\n              \"unitDiscount\": 1,\n              \"discountTitle\": \"<string>\",\n              \"giftWithPurchaseTitle\": \"<string>\",\n              \"isFreeShipping\": false,\n              \"isGiftWithPurchase\": false,\n              \"giftWithPurchaseProductId\": \"<string>\",\n              \"giftWithPurchaseVariantId\": \"<string>\",\n              \"giftWithPurchaseVariantIds\": [\n                \"<string>\",\n                \"<string>\"\n              ],\n              \"autoAddGiftWithPurchase\": false,\n              \"giftWithPurchaseHandle\": \"<string>\"\n            },\n            {\n              \"minimumUnits\": 1,\n              \"maximumUnits\": 1,\n              \"unitDiscount\": 1,\n              \"discountTitle\": \"<string>\",\n              \"giftWithPurchaseTitle\": \"<string>\",\n              \"isFreeShipping\": false,\n              \"isGiftWithPurchase\": false,\n              \"giftWithPurchaseProductId\": \"<string>\",\n              \"giftWithPurchaseVariantId\": \"<string>\",\n              \"giftWithPurchaseVariantIds\": [\n                \"<string>\",\n                \"<string>\"\n              ],\n              \"autoAddGiftWithPurchase\": false,\n              \"giftWithPurchaseHandle\": \"<string>\"\n            }\n          ],\n          \"maximumDollarDiscount\": \"<number>\",\n          \"requireSameItem\": false,\n          \"subscriptionApplicationType\": \"oneTime\"\n        }\n      }\n    ],\n    \"description\": \"<string>\",\n    \"currency\": {\n      \"code\": \"USD\",\n      \"country\": \"<string>\",\n      \"options\": {},\n      \"symbol\": \"$\",\n      \"suffix\": \"<string>\"\n    },\n    \"previewPath\": \"<string>\",\n    \"productVariantAction\": {\n      \"type\": \"<string>\",\n      \"location\": {\n        \"bucket\": \"<string>\",\n        \"key\": \"<string>\"\n      }\n    },\n    \"audience\": {\n      \"enabled\": \"<boolean>\",\n      \"elseAction\": \"<string>\",\n      \"audienceType\": \"<string>\",\n      \"elseExcludeFromAnalytics\": false,\n      \"evaluationFrequency\": \"<number>\",\n      \"elseVariationIndex\": \"<string>\",\n      \"excludeCurrency\": {\n        \"exclude\": \"<boolean>\",\n        \"currency\": \"<string>\",\n        \"country\": \"<string>\",\n        \"region\": \"<string>\",\n        \"city\": \"<string>\"\n      }\n    }\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "disabled": false,
+                  "description": "CORS allow-origin header.",
+                  "key": "access-control-allow-origin",
+                  "value": "string"
+                },
+                {
+                  "disabled": false,
+                  "description": "CORS allow-credentials header.",
+                  "key": "access-control-allow-credentials",
+                  "value": "string"
+                },
+                {
+                  "disabled": false,
+                  "description": "Allowed origin for Timing headers.",
+                  "key": "Timing-Allow-Origin",
+                  "value": "string"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"experience\": {\n    \"id\": \"00000000-0000-0000-0000-000000000000\",\n    \"name\": \"string\",\n    \"isPreview\": true,\n    \"organizationId\": \"ffffffff-ffff-ffff-ffff-ffffffffffff\",\n    \"type\": \"postPurchase\",\n    \"category\": \"experiment\",\n    \"status\": \"paused\",\n    \"testTypes\": {\n      \"hasTestPricing\": false,\n      \"hasTestShipping\": true,\n      \"hasTestCampaign\": true,\n      \"hasTestContent\": true,\n      \"hasTestContentUrl\": false,\n      \"hasTestContentAdvanced\": false,\n      \"hasTestContentOnsite\": true,\n      \"hasTestContentTemplate\": false,\n      \"hasTestContentTheme\": false,\n      \"hasTestOnsiteInjections\": true,\n      \"hasTestCheckoutBlocks\": false,\n      \"hasTestPostPurchase\": true,\n      \"hasTestOnsiteUpsell\": false\n    },\n    \"experienceActions\": [\n      {\n        \"id\": \"062f4246-Bcf4-79a7-A5cA-dEF24FE50f4a\",\n        \"experienceId\": \"ffffffff-ffff-ffff-ffff-ffffffffffff\",\n        \"action\": \"pause\",\n        \"actionTs\": 4348.981674005753,\n        \"performedBy\": \"string\"\n      },\n      {\n        \"id\": \"00000000-0000-0000-0000-000000000000\",\n        \"experienceId\": \"ffffffff-ffff-ffff-ffff-ffffffffffff\",\n        \"action\": \"start\",\n        \"actionTs\": 9865.301748078931,\n        \"performedBy\": \"string\"\n      }\n    ],\n    \"createdAtTs\": 3315.806959060946,\n    \"shippingCarrierProvider\": \"intelligems\",\n    \"lastUpdateTs\": 9778.833079717999,\n    \"startedAtTs\": 5566.00515438455,\n    \"pausedAtTs\": 3650.154629605,\n    \"requiresLink\": false,\n    \"linkBaseUrl\": \"string\",\n    \"endedAtTs\": 7514.536130505286,\n    \"productVariantCount\": 0,\n    \"experienceAnalysis\": {\n      \"analyticsViewType\": \"test_orders_only\"\n    },\n    \"description\": \"string\",\n    \"devicePreview\": {\n      \"device\": \"desktop\",\n      \"path\": \"/\"\n    },\n    \"currency\": {\n      \"code\": \"USD\",\n      \"symbol\": \"$\",\n      \"country\": \"string\",\n      \"options\": {},\n      \"suffix\": \"string\"\n    },\n    \"isDeleted\": false,\n    \"audience\": {\n      \"id\": \"ffffffff-ffff-ffff-ffff-ffffffffffff\",\n      \"experienceId\": \"ffffffff-ffff-ffff-ffff-ffffffffffff\",\n      \"enabled\": true,\n      \"excludeCurrency\": {\n        \"exclude\": false,\n        \"currency\": \"string\",\n        \"country\": \"string\",\n        \"region\": \"string\",\n        \"city\": \"string\"\n      },\n      \"wholesale\": true,\n      \"elseAction\": \"leaveUnassigned\",\n      \"elseExcludeFromAnalytics\": false,\n      \"filters\": [],\n      \"audienceType\": \"advanced\",\n      \"elseVariationId\": \"ffffffff-ffff-ffff-ffff-ffffffffffff\",\n      \"evaluationFrequency\": 4109.544324382557\n    },\n    \"previewPath\": \"string\",\n    \"isExternal\": false,\n    \"archivedAtTs\": 5318.495229042282,\n    \"sourceExperienceId\": \"ffffffff-ffff-ffff-ffff-ffffffffffff\",\n    \"sourceAction\": \"duplicate\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "c9b2737a-014f-46c9-84ed-e49ed93b6805",
+              "name": "Validation error (invalid query/body values). Per-field messages under properties.<field>.errors.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v25-10-beta",
+                    "experiences"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "intelligems-access-token",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"experience\": {\n    \"name\": \"<string>\",\n    \"type\": \"<string>\",\n    \"experienceAnalysis\": {\n      \"analyticsViewType\": \"none\"\n    },\n    \"variations\": [\n      {\n        \"name\": \"<string>\",\n        \"percentage\": \"<number>\",\n        \"order\": \"<integer>\",\n        \"isControl\": false,\n        \"priceChange\": \"<string>\",\n        \"priceChangeUnit\": \"<string>\",\n        \"priceRoundingType\": \"<string>\",\n        \"priceRoundingAmount\": \"<string>\",\n        \"excludeProducts\": false,\n        \"includeProducts\": false,\n        \"onsiteInjection\": {\n          \"jsInjectionMode\": {\n            \"type\": \"immediately\",\n            \"timeout\": \"<number>\"\n          },\n          \"customCss\": \"<string>\",\n          \"customJs\": \"<string>\",\n          \"source\": \"<string>\"\n        },\n        \"offer\": {\n          \"name\": \"<string>\",\n          \"discountApplicationType\": \"<string>\",\n          \"discountApplicationMethod\": \"<string>\",\n          \"combinesWithIntelligems\": \"<boolean>\",\n          \"combinesWithShopify\": \"<boolean>\",\n          \"shouldRejectCodes\": \"<boolean>\",\n          \"shippingDiscount\": {\n            \"id\": \"<uuid>\",\n            \"discountType\": \"<string>\",\n            \"unitDiscount\": \"<number>\",\n            \"rateFilter\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"countryFilter\": {\n              \"allow\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"exclude\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              }\n            },\n            \"discountLabel\": \"<string>\"\n          },\n          \"enabled\": false,\n          \"isTest\": false,\n          \"isArchived\": false,\n          \"unitType\": \"dollar\",\n          \"discountType\": \"dollar\",\n          \"tiers\": [\n            {\n              \"minimumUnits\": 1,\n              \"maximumUnits\": 1,\n              \"unitDiscount\": 1,\n              \"discountTitle\": \"<string>\",\n              \"giftWithPurchaseTitle\": \"<string>\",\n              \"isFreeShipping\": false,\n              \"isGiftWithPurchase\": false,\n              \"giftWithPurchaseProductId\": \"<string>\",\n              \"giftWithPurchaseVariantId\": \"<string>\",\n              \"giftWithPurchaseVariantIds\": [\n                \"<string>\",\n                \"<string>\"\n              ],\n              \"autoAddGiftWithPurchase\": false,\n              \"giftWithPurchaseHandle\": \"<string>\"\n            },\n            {\n              \"minimumUnits\": 1,\n              \"maximumUnits\": 1,\n              \"unitDiscount\": 1,\n              \"discountTitle\": \"<string>\",\n              \"giftWithPurchaseTitle\": \"<string>\",\n              \"isFreeShipping\": false,\n              \"isGiftWithPurchase\": false,\n              \"giftWithPurchaseProductId\": \"<string>\",\n              \"giftWithPurchaseVariantId\": \"<string>\",\n              \"giftWithPurchaseVariantIds\": [\n                \"<string>\",\n                \"<string>\"\n              ],\n              \"autoAddGiftWithPurchase\": false,\n              \"giftWithPurchaseHandle\": \"<string>\"\n            }\n          ],\n          \"maximumDollarDiscount\": \"<number>\",\n          \"requireSameItem\": false,\n          \"subscriptionApplicationType\": \"oneTime\"\n        }\n      }\n    ],\n    \"description\": \"<string>\",\n    \"currency\": {\n      \"code\": \"USD\",\n      \"country\": \"<string>\",\n      \"options\": {},\n      \"symbol\": \"$\",\n      \"suffix\": \"<string>\"\n    },\n    \"previewPath\": \"<string>\",\n    \"productVariantAction\": {\n      \"type\": \"<string>\",\n      \"location\": {\n        \"bucket\": \"<string>\",\n        \"key\": \"<string>\"\n      }\n    },\n    \"audience\": {\n      \"enabled\": \"<boolean>\",\n      \"elseAction\": \"<string>\",\n      \"audienceType\": \"<string>\",\n      \"elseExcludeFromAnalytics\": false,\n      \"evaluationFrequency\": \"<number>\",\n      \"elseVariationIndex\": \"<string>\",\n      \"excludeCurrency\": {\n        \"exclude\": \"<boolean>\",\n        \"currency\": \"<string>\",\n        \"country\": \"<string>\",\n        \"region\": \"<string>\",\n        \"city\": \"<string>\"\n      }\n    }\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"errors\": [\n    \"string\",\n    \"string\"\n  ],\n  \"properties\": {\n    \"key_0\": {\n      \"errors\": [\n        \"string\",\n        \"string\"\n      ]\n    },\n    \"key_1\": {\n      \"errors\": [\n        \"string\",\n        \"string\"\n      ]\n    }\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "403d784e-62b8-46c5-8126-013640ad6293",
+              "name": "Unauthorized (invalid or missing API key).",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v25-10-beta",
+                    "experiences"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "intelligems-access-token",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"experience\": {\n    \"name\": \"<string>\",\n    \"type\": \"<string>\",\n    \"experienceAnalysis\": {\n      \"analyticsViewType\": \"none\"\n    },\n    \"variations\": [\n      {\n        \"name\": \"<string>\",\n        \"percentage\": \"<number>\",\n        \"order\": \"<integer>\",\n        \"isControl\": false,\n        \"priceChange\": \"<string>\",\n        \"priceChangeUnit\": \"<string>\",\n        \"priceRoundingType\": \"<string>\",\n        \"priceRoundingAmount\": \"<string>\",\n        \"excludeProducts\": false,\n        \"includeProducts\": false,\n        \"onsiteInjection\": {\n          \"jsInjectionMode\": {\n            \"type\": \"immediately\",\n            \"timeout\": \"<number>\"\n          },\n          \"customCss\": \"<string>\",\n          \"customJs\": \"<string>\",\n          \"source\": \"<string>\"\n        },\n        \"offer\": {\n          \"name\": \"<string>\",\n          \"discountApplicationType\": \"<string>\",\n          \"discountApplicationMethod\": \"<string>\",\n          \"combinesWithIntelligems\": \"<boolean>\",\n          \"combinesWithShopify\": \"<boolean>\",\n          \"shouldRejectCodes\": \"<boolean>\",\n          \"shippingDiscount\": {\n            \"id\": \"<uuid>\",\n            \"discountType\": \"<string>\",\n            \"unitDiscount\": \"<number>\",\n            \"rateFilter\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"countryFilter\": {\n              \"allow\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"exclude\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              }\n            },\n            \"discountLabel\": \"<string>\"\n          },\n          \"enabled\": false,\n          \"isTest\": false,\n          \"isArchived\": false,\n          \"unitType\": \"dollar\",\n          \"discountType\": \"dollar\",\n          \"tiers\": [\n            {\n              \"minimumUnits\": 1,\n              \"maximumUnits\": 1,\n              \"unitDiscount\": 1,\n              \"discountTitle\": \"<string>\",\n              \"giftWithPurchaseTitle\": \"<string>\",\n              \"isFreeShipping\": false,\n              \"isGiftWithPurchase\": false,\n              \"giftWithPurchaseProductId\": \"<string>\",\n              \"giftWithPurchaseVariantId\": \"<string>\",\n              \"giftWithPurchaseVariantIds\": [\n                \"<string>\",\n                \"<string>\"\n              ],\n              \"autoAddGiftWithPurchase\": false,\n              \"giftWithPurchaseHandle\": \"<string>\"\n            },\n            {\n              \"minimumUnits\": 1,\n              \"maximumUnits\": 1,\n              \"unitDiscount\": 1,\n              \"discountTitle\": \"<string>\",\n              \"giftWithPurchaseTitle\": \"<string>\",\n              \"isFreeShipping\": false,\n              \"isGiftWithPurchase\": false,\n              \"giftWithPurchaseProductId\": \"<string>\",\n              \"giftWithPurchaseVariantId\": \"<string>\",\n              \"giftWithPurchaseVariantIds\": [\n                \"<string>\",\n                \"<string>\"\n              ],\n              \"autoAddGiftWithPurchase\": false,\n              \"giftWithPurchaseHandle\": \"<string>\"\n            }\n          ],\n          \"maximumDollarDiscount\": \"<number>\",\n          \"requireSameItem\": false,\n          \"subscriptionApplicationType\": \"oneTime\"\n        }\n      }\n    ],\n    \"description\": \"<string>\",\n    \"currency\": {\n      \"code\": \"USD\",\n      \"country\": \"<string>\",\n      \"options\": {},\n      \"symbol\": \"$\",\n      \"suffix\": \"<string>\"\n    },\n    \"previewPath\": \"<string>\",\n    \"productVariantAction\": {\n      \"type\": \"<string>\",\n      \"location\": {\n        \"bucket\": \"<string>\",\n        \"key\": \"<string>\"\n      }\n    },\n    \"audience\": {\n      \"enabled\": \"<boolean>\",\n      \"elseAction\": \"<string>\",\n      \"audienceType\": \"<string>\",\n      \"elseExcludeFromAnalytics\": false,\n      \"evaluationFrequency\": \"<number>\",\n      \"elseVariationIndex\": \"<string>\",\n      \"excludeCurrency\": {\n        \"exclude\": \"<boolean>\",\n        \"currency\": \"<string>\",\n        \"country\": \"<string>\",\n        \"region\": \"<string>\",\n        \"city\": \"<string>\"\n      }\n    }\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "04172300-9193-43da-8459-48fe0e382d5d",
+              "name": "Rate limit exceeded. See x-ratelimit-limit / x-ratelimit-remaining / x-ratelimit-reset headers.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v25-10-beta",
+                    "experiences"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "intelligems-access-token",
+                    "value": "<API Key>"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"experience\": {\n    \"name\": \"<string>\",\n    \"type\": \"<string>\",\n    \"experienceAnalysis\": {\n      \"analyticsViewType\": \"none\"\n    },\n    \"variations\": [\n      {\n        \"name\": \"<string>\",\n        \"percentage\": \"<number>\",\n        \"order\": \"<integer>\",\n        \"isControl\": false,\n        \"priceChange\": \"<string>\",\n        \"priceChangeUnit\": \"<string>\",\n        \"priceRoundingType\": \"<string>\",\n        \"priceRoundingAmount\": \"<string>\",\n        \"excludeProducts\": false,\n        \"includeProducts\": false,\n        \"onsiteInjection\": {\n          \"jsInjectionMode\": {\n            \"type\": \"immediately\",\n            \"timeout\": \"<number>\"\n          },\n          \"customCss\": \"<string>\",\n          \"customJs\": \"<string>\",\n          \"source\": \"<string>\"\n        },\n        \"offer\": {\n          \"name\": \"<string>\",\n          \"discountApplicationType\": \"<string>\",\n          \"discountApplicationMethod\": \"<string>\",\n          \"combinesWithIntelligems\": \"<boolean>\",\n          \"combinesWithShopify\": \"<boolean>\",\n          \"shouldRejectCodes\": \"<boolean>\",\n          \"shippingDiscount\": {\n            \"id\": \"<uuid>\",\n            \"discountType\": \"<string>\",\n            \"unitDiscount\": \"<number>\",\n            \"rateFilter\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"countryFilter\": {\n              \"allow\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"exclude\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              }\n            },\n            \"discountLabel\": \"<string>\"\n          },\n          \"enabled\": false,\n          \"isTest\": false,\n          \"isArchived\": false,\n          \"unitType\": \"dollar\",\n          \"discountType\": \"dollar\",\n          \"tiers\": [\n            {\n              \"minimumUnits\": 1,\n              \"maximumUnits\": 1,\n              \"unitDiscount\": 1,\n              \"discountTitle\": \"<string>\",\n              \"giftWithPurchaseTitle\": \"<string>\",\n              \"isFreeShipping\": false,\n              \"isGiftWithPurchase\": false,\n              \"giftWithPurchaseProductId\": \"<string>\",\n              \"giftWithPurchaseVariantId\": \"<string>\",\n              \"giftWithPurchaseVariantIds\": [\n                \"<string>\",\n                \"<string>\"\n              ],\n              \"autoAddGiftWithPurchase\": false,\n              \"giftWithPurchaseHandle\": \"<string>\"\n            },\n            {\n              \"minimumUnits\": 1,\n              \"maximumUnits\": 1,\n              \"unitDiscount\": 1,\n              \"discountTitle\": \"<string>\",\n              \"giftWithPurchaseTitle\": \"<string>\",\n              \"isFreeShipping\": false,\n              \"isGiftWithPurchase\": false,\n              \"giftWithPurchaseProductId\": \"<string>\",\n              \"giftWithPurchaseVariantId\": \"<string>\",\n              \"giftWithPurchaseVariantIds\": [\n                \"<string>\",\n                \"<string>\"\n              ],\n              \"autoAddGiftWithPurchase\": false,\n              \"giftWithPurchaseHandle\": \"<string>\"\n            }\n          ],\n          \"maximumDollarDiscount\": \"<number>\",\n          \"requireSameItem\": false,\n          \"subscriptionApplicationType\": \"oneTime\"\n        }\n      }\n    ],\n    \"description\": \"<string>\",\n    \"currency\": {\n      \"code\": \"USD\",\n      \"country\": \"<string>\",\n      \"options\": {},\n      \"symbol\": \"$\",\n      \"suffix\": \"<string>\"\n    },\n    \"previewPath\": \"<string>\",\n    \"productVariantAction\": {\n      \"type\": \"<string>\",\n      \"location\": {\n        \"bucket\": \"<string>\",\n        \"key\": \"<string>\"\n      }\n    },\n    \"audience\": {\n      \"enabled\": \"<boolean>\",\n      \"elseAction\": \"<string>\",\n      \"audienceType\": \"<string>\",\n      \"elseExcludeFromAnalytics\": false,\n      \"evaluationFrequency\": \"<number>\",\n      \"elseVariationIndex\": \"<string>\",\n      \"excludeCurrency\": {\n        \"exclude\": \"<boolean>\",\n        \"currency\": \"<string>\",\n        \"country\": \"<string>\",\n        \"region\": \"<string>\",\n        \"city\": \"<string>\"\n      }\n    }\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Too Many Requests",
+              "code": 429,
+              "header": [
+                {
+                  "disabled": false,
+                  "description": "Bucket size for the endpoint.",
+                  "key": "x-ratelimit-limit",
+                  "value": "1478"
+                },
+                {
+                  "disabled": false,
+                  "description": "Remaining tokens in the current bucket.",
+                  "key": "x-ratelimit-remaining",
+                  "value": "1478"
+                },
+                {
+                  "disabled": false,
+                  "description": "Unix timestamp (ms) at which the bucket next refills.",
+                  "key": "x-ratelimit-reset",
+                  "value": "1478"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "fdccbab4-777b-4936-a7b9-0b629fd9585d",
+              "name": "Internal server error.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v25-10-beta",
+                    "experiences"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "intelligems-access-token",
+                    "value": "<API Key>"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"experience\": {\n    \"name\": \"<string>\",\n    \"type\": \"<string>\",\n    \"experienceAnalysis\": {\n      \"analyticsViewType\": \"none\"\n    },\n    \"variations\": [\n      {\n        \"name\": \"<string>\",\n        \"percentage\": \"<number>\",\n        \"order\": \"<integer>\",\n        \"isControl\": false,\n        \"priceChange\": \"<string>\",\n        \"priceChangeUnit\": \"<string>\",\n        \"priceRoundingType\": \"<string>\",\n        \"priceRoundingAmount\": \"<string>\",\n        \"excludeProducts\": false,\n        \"includeProducts\": false,\n        \"onsiteInjection\": {\n          \"jsInjectionMode\": {\n            \"type\": \"immediately\",\n            \"timeout\": \"<number>\"\n          },\n          \"customCss\": \"<string>\",\n          \"customJs\": \"<string>\",\n          \"source\": \"<string>\"\n        },\n        \"offer\": {\n          \"name\": \"<string>\",\n          \"discountApplicationType\": \"<string>\",\n          \"discountApplicationMethod\": \"<string>\",\n          \"combinesWithIntelligems\": \"<boolean>\",\n          \"combinesWithShopify\": \"<boolean>\",\n          \"shouldRejectCodes\": \"<boolean>\",\n          \"shippingDiscount\": {\n            \"id\": \"<uuid>\",\n            \"discountType\": \"<string>\",\n            \"unitDiscount\": \"<number>\",\n            \"rateFilter\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"countryFilter\": {\n              \"allow\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"exclude\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              }\n            },\n            \"discountLabel\": \"<string>\"\n          },\n          \"enabled\": false,\n          \"isTest\": false,\n          \"isArchived\": false,\n          \"unitType\": \"dollar\",\n          \"discountType\": \"dollar\",\n          \"tiers\": [\n            {\n              \"minimumUnits\": 1,\n              \"maximumUnits\": 1,\n              \"unitDiscount\": 1,\n              \"discountTitle\": \"<string>\",\n              \"giftWithPurchaseTitle\": \"<string>\",\n              \"isFreeShipping\": false,\n              \"isGiftWithPurchase\": false,\n              \"giftWithPurchaseProductId\": \"<string>\",\n              \"giftWithPurchaseVariantId\": \"<string>\",\n              \"giftWithPurchaseVariantIds\": [\n                \"<string>\",\n                \"<string>\"\n              ],\n              \"autoAddGiftWithPurchase\": false,\n              \"giftWithPurchaseHandle\": \"<string>\"\n            },\n            {\n              \"minimumUnits\": 1,\n              \"maximumUnits\": 1,\n              \"unitDiscount\": 1,\n              \"discountTitle\": \"<string>\",\n              \"giftWithPurchaseTitle\": \"<string>\",\n              \"isFreeShipping\": false,\n              \"isGiftWithPurchase\": false,\n              \"giftWithPurchaseProductId\": \"<string>\",\n              \"giftWithPurchaseVariantId\": \"<string>\",\n              \"giftWithPurchaseVariantIds\": [\n                \"<string>\",\n                \"<string>\"\n              ],\n              \"autoAddGiftWithPurchase\": false,\n              \"giftWithPurchaseHandle\": \"<string>\"\n            }\n          ],\n          \"maximumDollarDiscount\": \"<number>\",\n          \"requireSameItem\": false,\n          \"subscriptionApplicationType\": \"oneTime\"\n        }\n      }\n    ],\n    \"description\": \"<string>\",\n    \"currency\": {\n      \"code\": \"USD\",\n      \"country\": \"<string>\",\n      \"options\": {},\n      \"symbol\": \"$\",\n      \"suffix\": \"<string>\"\n    },\n    \"previewPath\": \"<string>\",\n    \"productVariantAction\": {\n      \"type\": \"<string>\",\n      \"location\": {\n        \"bucket\": \"<string>\",\n        \"key\": \"<string>\"\n      }\n    },\n    \"audience\": {\n      \"enabled\": \"<boolean>\",\n      \"elseAction\": \"<string>\",\n      \"audienceType\": \"<string>\",\n      \"elseExcludeFromAnalytics\": false,\n      \"evaluationFrequency\": \"<number>\",\n      \"elseVariationIndex\": \"<string>\",\n      \"excludeCurrency\": {\n        \"exclude\": \"<boolean>\",\n        \"currency\": \"<string>\",\n        \"country\": \"<string>\",\n        \"region\": \"<string>\",\n        \"city\": \"<string>\"\n      }\n    }\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "a92586a0-5e3a-4a99-b3f4-cd477f229105",
+          "name": "Perform experience action",
+          "request": {
+            "name": "Perform experience action",
+            "description": {
+              "content": "Perform a lifecycle action on an experience: start, pause or end.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v25-10-beta",
+                "experiences",
+                ":experienceId",
+                "actions",
+                ":action"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<uuid>",
+                  "key": "experienceId",
+                  "description": "(Required) "
+                },
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "action",
+                  "description": "(Required) "
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"variationId\": \"<uuid>\",\n  \"updatePricesToVariation\": \"<boolean>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "01b373ce-ce79-40d0-9a65-fe6e9eae4d8c",
+              "name": "OK",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v25-10-beta",
+                    "experiences",
+                    ":experienceId",
+                    "actions",
+                    ":action"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "experienceId",
+                      "description": "(Required) "
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "action",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "intelligems-access-token",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"variationId\": \"<uuid>\",\n  \"updatePricesToVariation\": \"<boolean>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "disabled": false,
+                  "description": "CORS allow-origin header.",
+                  "key": "access-control-allow-origin",
+                  "value": "string"
+                },
+                {
+                  "disabled": false,
+                  "description": "CORS allow-credentials header.",
+                  "key": "access-control-allow-credentials",
+                  "value": "string"
+                },
+                {
+                  "disabled": false,
+                  "description": "Allowed origin for Timing headers.",
+                  "key": "Timing-Allow-Origin",
+                  "value": "string"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"experience\": {\n    \"id\": \"00000000-0000-0000-0000-000000000000\",\n    \"name\": \"string\",\n    \"isPreview\": true,\n    \"organizationId\": \"cea9AefD-b5eD-5Fc5-832d-3dcfA2780AEd\",\n    \"type\": \"checkoutBlock\",\n    \"category\": \"personalization\",\n    \"status\": \"ended\",\n    \"testTypes\": {\n      \"hasTestPricing\": true,\n      \"hasTestShipping\": false,\n      \"hasTestCampaign\": false,\n      \"hasTestContent\": false,\n      \"hasTestContentUrl\": true,\n      \"hasTestContentAdvanced\": true,\n      \"hasTestContentOnsite\": true,\n      \"hasTestContentTemplate\": false,\n      \"hasTestContentTheme\": true,\n      \"hasTestOnsiteInjections\": false,\n      \"hasTestCheckoutBlocks\": true,\n      \"hasTestPostPurchase\": false,\n      \"hasTestOnsiteUpsell\": false\n    },\n    \"experienceActions\": [\n      {\n        \"id\": \"ffffffff-ffff-ffff-ffff-ffffffffffff\",\n        \"experienceId\": \"8d93eBeF-2Fdb-1DfE-BBA9-eBDbf65Becde\",\n        \"action\": \"end\",\n        \"actionTs\": 2447.688004954277,\n        \"performedBy\": \"string\"\n      },\n      {\n        \"id\": \"ffffffff-ffff-ffff-ffff-ffffffffffff\",\n        \"experienceId\": \"00000000-0000-0000-0000-000000000000\",\n        \"action\": \"end\",\n        \"actionTs\": 5023.880758968297,\n        \"performedBy\": \"string\"\n      }\n    ],\n    \"createdAtTs\": 2781.2295679142608,\n    \"shippingCarrierProvider\": \"intelligems\",\n    \"lastUpdateTs\": 1557.653460955295,\n    \"startedAtTs\": 6217.326584592264,\n    \"pausedAtTs\": 4790.858577653708,\n    \"requiresLink\": false,\n    \"linkBaseUrl\": \"string\",\n    \"endedAtTs\": 6133.313706018814,\n    \"productVariantCount\": 0,\n    \"experienceAnalysis\": {\n      \"analyticsViewType\": \"sitewide_orders\"\n    },\n    \"description\": \"string\",\n    \"devicePreview\": {\n      \"device\": \"desktop\",\n      \"path\": \"/\"\n    },\n    \"currency\": {\n      \"code\": \"USD\",\n      \"symbol\": \"$\",\n      \"country\": \"string\",\n      \"options\": {},\n      \"suffix\": \"string\"\n    },\n    \"isDeleted\": true,\n    \"audience\": {\n      \"id\": \"00000000-0000-0000-0000-000000000000\",\n      \"experienceId\": \"ffffffff-ffff-ffff-ffff-ffffffffffff\",\n      \"enabled\": true,\n      \"excludeCurrency\": {\n        \"exclude\": true,\n        \"currency\": \"string\",\n        \"country\": \"string\",\n        \"region\": \"string\",\n        \"city\": \"string\"\n      },\n      \"wholesale\": true,\n      \"elseAction\": \"experienceInclude\",\n      \"elseExcludeFromAnalytics\": false,\n      \"filters\": [],\n      \"audienceType\": \"common\",\n      \"elseVariationId\": \"3b4baffb-C22F-66d5-b70B-E60c9d18Df76\",\n      \"evaluationFrequency\": 1826.551490437972\n    },\n    \"previewPath\": \"string\",\n    \"isExternal\": false,\n    \"archivedAtTs\": 3739.3862140159617,\n    \"sourceExperienceId\": \"B417F8Bf-ddFf-6eA0-adAe-6EadEDEB0aE0\",\n    \"sourceAction\": \"duplicate\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "54434241-3e41-41a1-926d-dcaab99da025",
+              "name": "Validation error (invalid query/body values). Per-field messages under properties.<field>.errors.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v25-10-beta",
+                    "experiences",
+                    ":experienceId",
+                    "actions",
+                    ":action"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "experienceId",
+                      "description": "(Required) "
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "action",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "intelligems-access-token",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"variationId\": \"<uuid>\",\n  \"updatePricesToVariation\": \"<boolean>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"errors\": [\n    \"string\",\n    \"string\"\n  ],\n  \"properties\": {\n    \"key_0\": {\n      \"errors\": [\n        \"string\",\n        \"string\"\n      ]\n    },\n    \"key_1\": {\n      \"errors\": [\n        \"string\",\n        \"string\"\n      ]\n    }\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "ea8db31b-41bf-483d-9079-9eac49cfbfbf",
+              "name": "Unauthorized (invalid or missing API key).",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v25-10-beta",
+                    "experiences",
+                    ":experienceId",
+                    "actions",
+                    ":action"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "experienceId",
+                      "description": "(Required) "
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "action",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "intelligems-access-token",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"variationId\": \"<uuid>\",\n  \"updatePricesToVariation\": \"<boolean>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "b1741f67-d331-4fef-976a-c620fedc54d9",
+              "name": "Resource not found.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v25-10-beta",
+                    "experiences",
+                    ":experienceId",
+                    "actions",
+                    ":action"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "experienceId",
+                      "description": "(Required) "
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "action",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "intelligems-access-token",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"variationId\": \"<uuid>\",\n  \"updatePricesToVariation\": \"<boolean>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "4ea23e9a-4d5a-41b2-a3a9-fcafcc7f67e4",
+              "name": "Rate limit exceeded. See x-ratelimit-limit / x-ratelimit-remaining / x-ratelimit-reset headers.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v25-10-beta",
+                    "experiences",
+                    ":experienceId",
+                    "actions",
+                    ":action"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "experienceId",
+                      "description": "(Required) "
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "action",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "intelligems-access-token",
+                    "value": "<API Key>"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"variationId\": \"<uuid>\",\n  \"updatePricesToVariation\": \"<boolean>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Too Many Requests",
+              "code": 429,
+              "header": [
+                {
+                  "disabled": false,
+                  "description": "Bucket size for the endpoint.",
+                  "key": "x-ratelimit-limit",
+                  "value": "1478"
+                },
+                {
+                  "disabled": false,
+                  "description": "Remaining tokens in the current bucket.",
+                  "key": "x-ratelimit-remaining",
+                  "value": "1478"
+                },
+                {
+                  "disabled": false,
+                  "description": "Unix timestamp (ms) at which the bucket next refills.",
+                  "key": "x-ratelimit-reset",
+                  "value": "1478"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "80f8d6d1-514f-45aa-aa7a-603bdba99979",
+              "name": "Internal server error.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v25-10-beta",
+                    "experiences",
+                    ":experienceId",
+                    "actions",
+                    ":action"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "experienceId",
+                      "description": "(Required) "
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "action",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "intelligems-access-token",
+                    "value": "<API Key>"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"variationId\": \"<uuid>\",\n  \"updatePricesToVariation\": \"<boolean>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "https://api.intelligems.io",
+      "key": "baseUrl"
+    }
+  ],
+  "auth": {
+    "type": "apikey",
+    "apikey": [
+      {
+        "key": "key",
+        "value": "intelligems-access-token"
+      },
+      {
+        "key": "value",
+        "value": "{{apiKey}}"
+      },
+      {
+        "key": "in",
+        "value": "header"
+      }
+    ]
+  },
+  "info": {
+    "_postman_id": "1685a4d0-1312-499c-9558-722308100fb2",
+    "name": "Intelligems External Experiences API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "Programmatic access to manage Intelligems A/B tests, personalizations, and experiences, to define custom events, and to pull experiment and sitewide analytics for a Shopify store. Authenticate with an API key in the `intelligems-access-token` header.\n\nContact Support:\n Name: Intelligems",
+      "type": "text/plain"
+    }
+  }
+}

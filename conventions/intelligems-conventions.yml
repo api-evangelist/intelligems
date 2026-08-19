@@ -1,49 +1,99 @@
-generated: '2026-07-19'
+generated: '2026-08-13'
 method: searched
 source: https://docs.intelligems.io/developer-resources/external-api
 docs: https://docs.intelligems.io/developer-resources/external-api/intelligems-external-api
 authentication:
   style: api-key-header
   header: intelligems-access-token
+  scheme_name_in_spec: intelligems_access_token
   see: authentication/intelligems-authentication.yml
+  mcp:
+    style: oauth2-authorization-code
+    endpoint: https://ai.intelligems.io/mcp
+    see: scopes/intelligems-scopes.yml
 versioning:
   style: date-calendar-path
   current: v25-10-beta
   notes: >-
-    The External API is versioned in the URL path with a calendar-style,
-    beta-tagged version segment (e.g. /v25-10-beta/...).
+    The External API is versioned in the URL path with a calendar-style, beta-tagged
+    version segment (e.g. /v25-10-beta/...). All 16 published operations sit under it.
 idempotency:
   supported: false
-  notes: No idempotency key/header is documented for the External API.
+  notes: >-
+    No idempotency key or header is documented, and none appears in the published
+    OpenAPI. PUT /v25-10-beta/experiences/{experienceId} and PUT /v25-10-beta/custom-events
+    are full replacements, which makes them naturally idempotent by shape, but that is a
+    property of the verb, not an idempotency contract — retrying a POST create is unsafe.
 pagination:
-  supported: unknown
-  notes: Pagination is not documented in the public External API reference.
+  supported: true
+  style: page-number
+  applies_to: [listExperiences]
+  request_params:
+    - {name: page, type: integer, minimum: 1, default: 1}
+    - {name: limit, type: integer, default: 20}
+  response_fields: [experiencesList, page, limit, total, totalPages]
+  offset_supported: false
+  notes: >-
+    Documented on the Fetch Experience List page: pagination is page-based; `offset` is
+    explicitly not supported. Analytics operations are time-window scoped rather than
+    paginated.
+filtering:
+  experiences:
+    - {name: status, values: [started, paused, ended, pending]}
+    - {name: category, values: [experiment, personalization]}
+    - {name: module, values: [content, checkout, postPurchase, pricing, merchandising, shipping]}
+  analytics:
+    shared_filters_object: true
+    docs: https://docs.intelligems.io/developer-resources/external-api/intelligems-external-api/filters-reference
+    groups: [audience, landing page, behavior, product, order]
+    notes: >-
+      Analytics operations take a shared `filters` object in the request body (audience,
+      landing-page operators, behavior flags, product scoping, order bounds). Filter
+      operators that expect values return 400 when the value is missing or empty rather
+      than silently matching nothing.
+large_results:
+  style: presigned-url
+  notes: >-
+    Exports and other large datasets return a presigned S3 download URL valid for roughly
+    15 minutes (exportExperienceAnalytics; the MCP export and price-matrix tools behave
+    the same way). Check the `expiresIn` field for the exact TTL.
+async_writes:
+  notes: >-
+    Price-test commits through MCP are processed asynchronously — the response reports the
+    change as queued, not live.
 rate_limiting:
   model: token-bucket
   headers:
-    - name: x-ratelimit-limit
-      meaning: Bucket size for the endpoint.
-    - name: x-ratelimit-remaining
-      meaning: Remaining tokens in the current bucket.
-    - name: x-ratelimit-reset
-      meaning: Unix timestamp (ms) at which the bucket next refills.
+    - {name: x-ratelimit-limit, meaning: Bucket size for the endpoint.}
+    - {name: x-ratelimit-remaining, meaning: Remaining tokens in the current bucket.}
+    - {name: x-ratelimit-reset, meaning: 'Unix timestamp (ms) at which the bucket next refills.'}
+  exceeded_status: 429
   notes: >-
-    Per-endpoint token buckets; the docs advise relying on the response headers
-    as authoritative. Error responses (400/401) do not include rate-limit headers.
+    Per-endpoint token buckets; the docs advise relying on the response headers as
+    authoritative. Error responses (400/401) do not include rate-limit headers. The MCP
+    host returns the same header family (observed x-ratelimit-limit: 100 on an
+    unauthenticated probe).
   see: rate-limits/intelligems-rate-limits.yml
 error_envelope:
   format: json
   validation_shape: >-
-    {"errors":[], "properties":{"<field>":{"errors":["<message>"]}}} — top-level
-    errors[] is for request-level errors; per-field messages live under
+    {"errors":[], "properties":{"<field>":{"errors":["<message>"]}}} — top-level errors[]
+    is for request-level errors not attributable to a field; per-field messages live under
     properties.<field>.errors.
   auth_shape: '{"error":"Unauthorized"}'
+  problem_json: false
   see: errors/intelligems-problem-types.yml
 content_type: application/json
+webhooks:
+  supported: true
+  signing: HMAC-SHA256
+  see: asyncapi/intelligems-webhooks.yml
 client_api:
   javascript:
     global: window.igData
     notes: >-
-      Client-side read interface (User/Price/Campaigns objects) injected into the
-      page; readiness signalled via the `ig:ready` event or window.onIgReady callback.
+      Client-side read interface (User/Price/Campaigns objects) injected into the page;
+      readiness signalled via the `ig:ready` event or window.onIgReady callback.
     see: components/intelligems-components.yml
+  preview_params: [ig-preview, igTg, ig-integration]
+  see_sandbox: sandbox/intelligems-sandbox.yml

@@ -1,88 +1,21 @@
-generated: '2026-07-19'
+generated: '2026-08-13'
 method: generated
-source: openapi/intelligems-external-api-openapi.yml
+source: openapi/intelligems-analytics-api-openapi.yml, openapi/intelligems-custom-events-api-openapi.yml,
+  openapi/intelligems-experiences-api-openapi.yml, openapi/intelligems-holiday-benchmark-api-openapi.yml
 description: Recommended x-agentic-access execution contracts, classified heuristically from
   the OpenAPI. A governance starting point for exposing this API to AI agents — review and bind
   audience per deployment. See research/curity/agentic-governance/.
 summary:
-  operations: 15
+  operations: 16
   by_action_class:
     connected: 3
-    acting: 12
+    acting: 13
   by_consequence:
     read: 3
-    write: 11
+    write: 12
     physical: 1
   human_in_the_loop_required: 0
 operations:
-- path: /v25-10-beta/experiences-list
-  method: get
-  operationId: listExperiences
-  x-agentic-access:
-    action-class: connected
-    consequence: read
-    subject: optional
-    token:
-      max-ttl: 3600
-    audit: none
-- path: /v25-10-beta/experiences/{experienceId}
-  method: get
-  operationId: getExperience
-  x-agentic-access:
-    action-class: connected
-    consequence: read
-    subject: optional
-    token:
-      max-ttl: 3600
-    audit: none
-- path: /v25-10-beta/experiences/{experienceId}
-  method: put
-  operationId: updateExperience
-  x-agentic-access:
-    action-class: acting
-    consequence: write
-    subject: required
-    audience: null
-    token:
-      max-ttl: 900
-    escalation:
-      human-in-the-loop: conditional
-      triggers:
-      - abnormal
-      - high-value
-    audit: required
-- path: /v25-10-beta/experiences
-  method: post
-  operationId: createExperience
-  x-agentic-access:
-    action-class: acting
-    consequence: write
-    subject: required
-    audience: null
-    token:
-      max-ttl: 900
-    escalation:
-      human-in-the-loop: conditional
-      triggers:
-      - abnormal
-      - high-value
-    audit: required
-- path: /v25-10-beta/experiences/{experienceId}/actions/{action}
-  method: post
-  operationId: performExperienceAction
-  x-agentic-access:
-    action-class: acting
-    consequence: write
-    subject: required
-    audience: null
-    token:
-      max-ttl: 900
-    escalation:
-      human-in-the-loop: conditional
-      triggers:
-      - abnormal
-      - high-value
-    audit: required
 - path: /v25-10-beta/analytics/resource/{experienceId}
   method: get
   operationId: getExperienceAnalytics
@@ -194,6 +127,90 @@ operations:
 - path: /v25-10-beta/analytics/sitewide/conversion-funnel
   method: post
   operationId: getSitewideConversionFunnel
+  x-agentic-access:
+    action-class: acting
+    consequence: write
+    subject: required
+    audience: null
+    token:
+      max-ttl: 900
+    escalation:
+      human-in-the-loop: conditional
+      triggers:
+      - abnormal
+      - high-value
+    audit: required
+- path: /v25-10-beta/custom-events
+  method: put
+  operationId: createOrUpdateCustomEvent
+  x-agentic-access:
+    action-class: acting
+    consequence: write
+    subject: required
+    audience: null
+    token:
+      max-ttl: 900
+    escalation:
+      human-in-the-loop: conditional
+      triggers:
+      - abnormal
+      - high-value
+    audit: required
+- path: /v25-10-beta/experiences-list
+  method: get
+  operationId: listExperiences
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    token:
+      max-ttl: 3600
+    audit: none
+- path: /v25-10-beta/experiences/{experienceId}
+  method: get
+  operationId: getExperience
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    token:
+      max-ttl: 3600
+    audit: none
+- path: /v25-10-beta/experiences/{experienceId}
+  method: put
+  operationId: updateExperience
+  x-agentic-access:
+    action-class: acting
+    consequence: write
+    subject: required
+    audience: null
+    token:
+      max-ttl: 900
+    escalation:
+      human-in-the-loop: conditional
+      triggers:
+      - abnormal
+      - high-value
+    audit: required
+- path: /v25-10-beta/experiences
+  method: post
+  operationId: createExperience
+  x-agentic-access:
+    action-class: acting
+    consequence: write
+    subject: required
+    audience: null
+    token:
+      max-ttl: 900
+    escalation:
+      human-in-the-loop: conditional
+      triggers:
+      - abnormal
+      - high-value
+    audit: required
+- path: /v25-10-beta/experiences/{experienceId}/actions/{action}
+  method: post
+  operationId: performExperienceAction
   x-agentic-access:
     action-class: acting
     consequence: write

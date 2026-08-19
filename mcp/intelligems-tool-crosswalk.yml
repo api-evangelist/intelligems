@@ -1,0 +1,189 @@
+generated: '2026-08-13'
+method: derived
+source: mcp/intelligems-mcp.yml + openapi/
+note: >-
+  Binds each of the 46 published Intelligems MCP tools to the backing External API
+  operation(s) where one exists. Live tools/list introspection is OAuth-gated (401), so
+  bindings are made by name and documented semantics, not by comparing inputSchemas —
+  confidence is set accordingly. The two surfaces are close but NOT identical: the MCP
+  server reaches through to Shopify (catalog, ShopifyQL sales reporting) and adds a
+  price-test prepare/commit workflow and chart rendering that the REST API does not
+  expose, while the REST API's custom-event authoring has no MCP tool.
+surfaces:
+  openapi:
+    specs:
+      - openapi/intelligems-experiences-api-openapi.yml
+      - openapi/intelligems-analytics-api-openapi.yml
+      - openapi/intelligems-holiday-benchmark-api-openapi.yml
+      - openapi/intelligems-custom-events-api-openapi.yml
+    base: https://api.intelligems.io
+    auth: apiKey header intelligems-access-token
+  mcp:
+    url: https://ai.intelligems.io/mcp
+    gated: true
+    gated_note: 'POST tools/list returns 401 with a Bearer challenge; schemas require an authenticated session.'
+  graphql: null
+crosswalk:
+  - tool: search_experiments
+    category: discovery
+    rest: [listExperiences]
+    binding: rest
+    confidence: high
+    note: MCP splits experiments and experiences into separate tools; REST uses the `category` query parameter on one operation.
+  - tool: search_experiences
+    category: discovery
+    rest: [listExperiences]
+    binding: rest
+    confidence: high
+  - tool: list_experiments
+    category: discovery
+    rest: [listExperiences, getExperience]
+    binding: rest
+    confidence: medium
+    note: Full configuration per experiment; REST reaches the same data by listing then fetching each experience.
+  - tool: get_experiences_list_full
+    category: discovery
+    rest: [listExperiences, getExperience]
+    binding: rest
+    confidence: medium
+  - tool: get_experience
+    category: discovery
+    rest: [getExperience]
+    binding: rest
+    confidence: high
+  - tool: get_experience_metrics_config
+    category: discovery
+    rest: [getExperience]
+    binding: rest
+    confidence: low
+    note: Metrics configuration is part of the experience document in REST; there is no dedicated operation.
+  - tool: create_experience
+    category: write
+    rest: [createExperience]
+    binding: rest
+    confidence: high
+  - tool: update_experience
+    category: write
+    rest: [updateExperience]
+    binding: rest
+    confidence: high
+    note: The MCP tool refuses price changes and routes them through the price-test tools; the REST PUT has no such split.
+  - tool: experience_action
+    category: write
+    rest: [performExperienceAction]
+    binding: rest
+    confidence: high
+  - tool: analyze_experience
+    category: analytics
+    rest: [queryExperienceAnalytics]
+    binding: rest
+    confidence: high
+  - tool: get_variation_overview
+    category: analytics
+    rest: [queryExperienceAnalytics]
+    binding: rest
+    confidence: medium
+    note: MCP fans the analytics POST out into per-view tools; view=overview is the closest REST equivalent.
+  - tool: get_variation_audience
+    category: analytics
+    rest: [queryExperienceAnalytics]
+    binding: rest
+    confidence: medium
+  - tool: get_variation_products
+    category: analytics
+    rest: [queryExperienceAnalytics]
+    binding: rest
+    confidence: low
+    note: Product-level breakdown is not separately documented on the REST analytics body.
+  - tool: get_variation_timeseries
+    category: analytics
+    rest: [getExperienceTimeseries]
+    binding: rest
+    confidence: medium
+  - tool: get_experience_timeseries
+    category: analytics
+    rest: [getExperienceTimeseries]
+    binding: rest
+    confidence: high
+  - tool: get_experience_export
+    category: analytics
+    rest: [exportExperienceAnalytics]
+    binding: rest
+    confidence: high
+  - tool: get_sitewide_snapshot
+    category: sitewide
+    rest: [getSitewideSnapshot]
+    binding: rest
+    confidence: high
+  - tool: get_sitewide_timeseries
+    category: sitewide
+    rest: [getSitewideTimeseries]
+    binding: rest
+    confidence: high
+  - tool: get_sitewide_order_distribution
+    category: sitewide
+    rest: [getSitewideOrderDistribution]
+    binding: rest
+    confidence: high
+  - tool: get_sitewide_conversion_funnel
+    category: sitewide
+    rest: [getSitewideConversionFunnel]
+    binding: rest
+    confidence: high
+  - tool: get_event_snapshot
+    category: benchmark
+    rest: [getHolidayBenchmarkSnapshot]
+    binding: rest
+    confidence: high
+  - tool: get_event_timeseries
+    category: benchmark
+    rest: [getHolidayBenchmarkTimeseries]
+    binding: rest
+    confidence: high
+  - tool: list_custom_events
+    category: events-offers
+    rest: [createOrUpdateCustomEvent]
+    binding: rest
+    confidence: low
+    note: >-
+      Read-side only overlap. The REST surface can create/update custom events but publishes
+      no list operation; the MCP tool lists them but cannot author them. Neither surface is
+      a superset of the other here.
+mcp_only:
+  - {tool: list_organizations, reason: Organization directory is not exposed by the External API.}
+  - {tool: get_organization, reason: No REST organization resource is published.}
+  - {tool: get_shop_info, reason: Shopify store metadata is read server-side; no REST operation.}
+  - {tool: list_integrations, reason: Integration inventory has no REST operation.}
+  - {tool: get_price_test_products, reason: Price matrix read has no REST operation.}
+  - {tool: prepare_price_test_products, reason: Server-side staged price transform (prepare/review/commit); no REST equivalent.}
+  - {tool: commit_price_test_products, reason: Asynchronous commit of a staged price change; no REST equivalent.}
+  - {tool: search_products, reason: Shopify Admin API passthrough.}
+  - {tool: list_products, reason: Shopify Admin API passthrough.}
+  - {tool: get_product, reason: Shopify Admin API passthrough.}
+  - {tool: get_products, reason: Shopify Admin API passthrough.}
+  - {tool: list_collections, reason: Shopify Admin API passthrough.}
+  - {tool: get_collection_products, reason: Shopify Admin API passthrough.}
+  - {tool: list_pages, reason: Shopify Admin API passthrough.}
+  - {tool: search_policies, reason: Shopify store content passthrough.}
+  - {tool: get_sales_overview, reason: ShopifyQL reporting passthrough.}
+  - {tool: get_revenue_by_product, reason: ShopifyQL reporting passthrough.}
+  - {tool: get_revenue_by_product_timeseries, reason: ShopifyQL reporting passthrough.}
+  - {tool: get_shopifyql_reference, reason: ShopifyQL schema discovery; no REST equivalent.}
+  - {tool: run_shopifyql_query, reason: Arbitrary ShopifyQL execution; no REST equivalent.}
+  - {tool: generate_intelligems_graph, reason: Server-side chart rendering to PNG; REST analytics returns data only.}
+  - {tool: generate_custom_graph, reason: Server-side chart rendering from raw data.}
+  - {tool: list_offers, reason: Offer inventory has no REST operation.}
+rest_only:
+  - operation: createOrUpdateCustomEvent
+    capability: Custom event authoring
+    note: PUT /v25-10-beta/custom-events creates or replaces custom events; MCP can only list them.
+  - operation: getExperienceAnalytics
+    capability: Legacy query-parameter analytics
+    note: Deprecated REST compatibility path; no tool maps to it and none should.
+coverage:
+  tools_documented: 46
+  tools_bound_to_rest: 23
+  mcp_only: 23
+  rest_operations_total: 16
+  rest_operations_with_a_tool: 14
+  rest_only: 2

@@ -1,0 +1,66 @@
+generated: '2026-08-13'
+method: searched
+source: https://headless.intelligems.io/usage/preview-your-site
+note: >-
+  Intelligems ships no test-mode API credentials — there is one live External API key per
+  organization and no test/live key prefix separation, and the MCP server authenticates
+  against a real organization. What it does publish is a client-side preview surface: an
+  experience can be created and staged without reaching a shopper, and merchants force
+  themselves into a specific experience or variation with URL query parameters. Those
+  parameters are the closest thing to magic test values this provider has, and they are
+  recorded verbatim below.
+test_live_separation:
+  api_keys: false
+  api_key_note: A single Intelligems-issued key per organization; no test-mode key prefix is documented.
+  draft_state: true
+  draft_note: >-
+    Experiences created through the API or MCP are drafts and reach no shoppers until an
+    explicit start action (performExperienceAction / experience_action).
+  preview_flag: >-
+    Experience payloads carry an `isPreview` boolean, visible in the webhook example
+    payloads.
+magic_values:
+  - param: ig-preview
+    value: 'true'
+    example: 'https://www.mywebsite.com/?ig-preview=true'
+    meaning: Enter preview mode — the page renders prices for experiences in preview mode.
+    surface: storefront + headless
+  - param: ig-preview
+    value: '<EXPERIENCE-ID>'
+    example: 'https://www.mywebsite.com/?ig-preview=24d3c894-210a-4300-bae0-8388ee54f495'
+    meaning: Preview one specific experience or personalization by its UUID.
+    surface: storefront + headless
+  - param: igTg
+    value: '<VARIATION-ID>'
+    example: 'https://www.mywebsite.com/?igTg=44bae2e6-dbc3-4fc1-a68d-4218ac04f99c'
+    meaning: Force the visitor into a specific variation (test group).
+    surface: storefront + headless
+  - param: ig-integration
+    value: 'true'
+    example: 'https://www.mywebsite.com/?ig-integration=true'
+    meaning: >-
+      Integration mode — colors prices rendered through the <IgPrice/> component. Green
+      means Intelligems changed the price, blue means it did not. Used to verify a price
+      testing integration before launch.
+    surface: headless
+id_discovery: >-
+  Experience and variation IDs are read from the A/B Tests tab in the Intelligems app via
+  the three-dot menu -> "Show Info".
+qa_tooling:
+  checklists:
+    - {name: Price Test QA Checklist, url: 'https://docs.intelligems.io/price-testing/price-test-qa-checklist'}
+    - {name: Shipping Test QA Checklist, url: 'https://docs.intelligems.io/shipping-testing/shipping-test-qa-checklist'}
+    - {name: Content Test QA Checklist, url: 'https://docs.intelligems.io/content-testing/content-test-qa-checklist'}
+    - {name: Merchandising Experience QA Checklist, url: 'https://docs.intelligems.io/offer-personalizations/offer-test-qa-checklist'}
+    - {name: Checkout Test QA Checklist, url: 'https://docs.intelligems.io/checkout/checkout-test-qa-checklist'}
+    - {name: Post-Purchase Upsell QA Checklist, url: 'https://docs.intelligems.io/post-purchase-upsells/post-purchase-upsell-qa-checklist'}
+  lite_mode: https://headless.intelligems.io/usage/lite-mode
+  preview_personalizations: https://docs.intelligems.io/personalizations/previewing-personalizations
+trial:
+  available: true
+  length_days: 14
+  credit_card_required: false
+  source: https://www.intelligems.io/pricing
+x-evidence:
+  - {url: 'https://headless.intelligems.io/usage/preview-your-site.md', status: 200, fetched: '2026-08-13'}
+  - {url: 'https://docs.intelligems.io/llms.txt', status: 200, fetched: '2026-08-13'}

@@ -1,17 +1,88 @@
 overlay: 1.0.0
 info:
-  title: API Evangelist enhancements for Intelligems External API
-  version: 1.0.0
-extends: openapi/intelligems-external-api-openapi.yml
+  title: API Evangelist enhancements for the Intelligems External API
+  version: 2.0.0
+extends: openapi/_original/intelligems-external-api-openapi.yml
+x-apievangelist:
+  generated: '2026-08-13'
+  method: generated
+  note: >-
+    Intelligems' own OpenAPI is published one fragment per documentation page, with no
+    operationIds, no summaries, and only a 200 response per operation. This overlay records
+    exactly what API Evangelist added on top of that harvested contract to produce the
+    refined per-tag specs in openapi/ — nothing here changes a provider-authored schema.
 actions:
   - target: $.info
     update:
-      x-apievangelist-provenance: generated from published docs
+      x-apievangelist-provenance: harvested from provider-published OpenAPI blocks in the GitBook API reference
       x-intelligems-mcp: https://ai.intelligems.io/mcp
+      x-intelligems-webhooks: https://docs.intelligems.io/integrations/webhook-integration
       x-status-page: null
+      x-deprecation-policy: null
   - target: $.tags
     update:
       - name: Experiences
         x-agent-readiness: create/update/lifecycle for A/B tests and personalizations
       - name: Analytics
         x-agent-readiness: experience-level and sitewide reporting surface
+      - name: Holiday Benchmark
+        x-agent-readiness: seasonal event benchmarking
+      - name: Custom Events
+        x-agent-readiness: define click/scroll/page-view goals used as experience metrics
+  - target: $.paths['/v25-10-beta/experiences-list'].get
+    update:
+      operationId: listExperiences
+      summary: List experiences
+      x-pagination: {style: page-number, params: [page, limit], response: [page, limit, total, totalPages]}
+  - target: $.paths['/v25-10-beta/experiences/{experienceId}'].get
+    update: {operationId: getExperience, summary: Fetch experience data}
+  - target: $.paths['/v25-10-beta/experiences/{experienceId}'].put
+    update: {operationId: updateExperience, summary: Update experience}
+  - target: $.paths['/v25-10-beta/experiences'].post
+    update: {operationId: createExperience, summary: Create experience}
+  - target: $.paths['/v25-10-beta/experiences/{experienceId}/actions/{action}'].post
+    update: {operationId: performExperienceAction, summary: Perform experience action}
+  - target: $.paths['/v25-10-beta/analytics/resource/{experienceId}'].get
+    update:
+      operationId: getExperienceAnalytics
+      summary: Fetch experience analytics (deprecated)
+      x-sunset-note: removed when the v25-10-beta beta ends; use queryExperienceAnalytics
+  - target: $.paths['/v25-10-beta/analytics/resource/{experienceId}'].post
+    update: {operationId: queryExperienceAnalytics, summary: Query experience analytics}
+  - target: $.paths['/v25-10-beta/analytics/experience/{experienceId}/timeseries'].post
+    update: {operationId: getExperienceTimeseries, summary: Fetch experience timeseries}
+  - target: $.paths['/v25-10-beta/analytics/experience/{experienceId}/export'].post
+    update: {operationId: exportExperienceAnalytics, summary: Export experience analytics}
+  - target: $.paths['/v25-10-beta/analytics/sitewide/snapshot'].post
+    update: {operationId: getSitewideSnapshot, summary: Fetch sitewide snapshot}
+  - target: $.paths['/v25-10-beta/analytics/sitewide/timeseries'].post
+    update: {operationId: getSitewideTimeseries, summary: Fetch sitewide timeseries}
+  - target: $.paths['/v25-10-beta/analytics/sitewide/order-distribution'].post
+    update: {operationId: getSitewideOrderDistribution, summary: Fetch sitewide order distribution}
+  - target: $.paths['/v25-10-beta/analytics/sitewide/conversion-funnel'].post
+    update: {operationId: getSitewideConversionFunnel, summary: Fetch sitewide conversion funnel}
+  - target: $.paths['/v25-10-beta/analytics/event/snapshot'].post
+    update: {operationId: getHolidayBenchmarkSnapshot, summary: Fetch benchmark event snapshot}
+  - target: $.paths['/v25-10-beta/analytics/event/timeseries'].post
+    update: {operationId: getHolidayBenchmarkTimeseries, summary: Fetch benchmark event timeseries}
+  - target: $.paths['/v25-10-beta/custom-events'].put
+    update:
+      operationId: createOrUpdateCustomEvent
+      summary: Create or update custom event
+      x-plan-gated: 'returns 403 when the organization plan does not include custom-events tracking'
+  - target: $.components
+    update:
+      responses:
+        ValidationError:
+          description: 400 — invalid query/body values; per-field messages under properties.<field>.errors.
+        Unauthorized:
+          description: 401 — invalid or missing API key.
+        NotFound:
+          description: 404 — resource not found.
+        RateLimited:
+          description: 429 — token bucket exhausted; see x-ratelimit-* headers.
+        ServerError:
+          description: 500 — internal server error.
+      x-note: >-
+        Added from the published Errors page. Intelligems' own spec declares only 200
+        responses; the 4xx/5xx catalogue is documentation, not spec, upstream.

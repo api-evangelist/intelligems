@@ -1,7 +1,7 @@
 ---
 name: Pull Intelligems store analytics
 description: Retrieve sitewide analytics snapshots, time series, and conversion funnels for a Shopify store.
-api: openapi/intelligems-external-api-openapi.yml
+api: openapi/intelligems-analytics-api-openapi.yml
 operations: [getSitewideSnapshot, getSitewideTimeseries, getSitewideOrderDistribution, getSitewideConversionFunnel]
 ---
 
@@ -21,4 +21,6 @@ Send your Intelligems API key in the `intelligems-access-token` header.
 ## Conventions & errors
 - Sitewide analytics run a tighter token bucket (burst 10, refill 5 / 30s) — respect `x-ratelimit-*` headers.
 - `400` validation errors carry per-field messages under `properties.<field>.errors`; `401` means a bad `intelligems-access-token`.
+- Every analytics operation accepts the shared `filters` object (audience, landing page, behavior, product, order) — see the Filters reference. Operators that expect values return `400` when the value is empty.
+- Statistical metrics come back with `ci_low`/`ci_high`, `plus_minus`, `p2bb`, `p2bc` and `uplift`; report the interval, not just the point value.
 - See `conventions/intelligems-conventions.yml` and `rate-limits/intelligems-rate-limits.yml`.

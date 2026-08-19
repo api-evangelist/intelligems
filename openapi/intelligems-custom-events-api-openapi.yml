@@ -1,0 +1,2538 @@
+# x-apievangelist-provenance:
+#   generated: '2026-08-13'
+#   method: searched
+#   source: openapi/_original/intelligems-external-api-openapi.yml
+#   note: >-
+#     Operations, parameters, request bodies and 200 schemas are Intelligems' own published
+#     OpenAPI, harvested verbatim from the embedded spec blocks on its API-reference pages.
+#     API Evangelist added only: operationIds, summaries/descriptions, the canonical tag, and
+#     the documented 4xx/5xx error responses from the published Errors page. See
+#     overlays/intelligems-external-api-overlay.yaml.
+openapi: 3.1.0
+info:
+  title: Intelligems External Custom Events API
+  version: v25-10-beta
+  description: Programmatic access to manage Intelligems A/B tests, personalizations, and experiences, to define
+    custom events, and to pull experiment and sitewide analytics for a Shopify store. Authenticate with an API key
+    in the `intelligems-access-token` header.
+  contact:
+    name: Intelligems
+    url: https://docs.intelligems.io/developer-resources/external-api
+servers:
+- url: https://api.intelligems.io
+  description: Production
+security:
+- accessToken: []
+tags:
+- name: Custom Events
+  description: Define client-side custom events (clicks, scroll depth, page views) used as goals and triggers on
+    experiences.
+paths:
+  /v25-10-beta/custom-events:
+    put:
+      tags:
+      - Custom Events
+      description: Create a new custom event (click, scroll depth, page view, element viewed, JavaScript event),
+        or update an existing one in place by passing back its id. Accepts a single event object or an array of
+        up to 50.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                customEvent:
+                  anyOf:
+                  - oneOf:
+                    - type: object
+                      properties:
+                        id:
+                          type: string
+                          format: uuid
+                          pattern: ^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$
+                        name:
+                          type: string
+                          description: Display name shown in the Events Manager and when selecting metrics for an
+                            experience.
+                        description:
+                          description: Internal note explaining what this event tracks.
+                          anyOf:
+                          - type: string
+                          - type: 'null'
+                        applyToUrls:
+                          minItems: 1
+                          type: array
+                          items:
+                            type: object
+                            properties:
+                              matchBy:
+                                type: string
+                                enum:
+                                - equals
+                                - contains
+                                - startsWith
+                                - endsWith
+                                - doesNotEqual
+                                - doesNotContain
+                                - doesNotStartWith
+                                - doesNotEndWith
+                                - isNull
+                                - isNotNull
+                                - regex
+                              value:
+                                type: string
+                              error:
+                                anyOf:
+                                - type: string
+                                - type: 'null'
+                            required:
+                            - matchBy
+                            - value
+                          description: Optional URL rules restricting which pages this event fires on. Omit to track
+                            on all pages.
+                        type:
+                          type: string
+                          const: pageView
+                          description: Determines which visitor behavior is tracked and which `settings` shape is
+                            required. Use pageView for any page visit, productPageView/collectionPageView for specific
+                            product or collection pages, clickEvent/elementViewed for CSS-selector-targeted DOM
+                            interactions, scrollDepth for scroll-percentage milestones, and javascriptEvent for
+                            a custom JS snippet that fires the event.
+                        settings:
+                          type: object
+                          properties: {}
+                      required:
+                      - name
+                      - applyToUrls
+                      - type
+                      - settings
+                    - type: object
+                      properties:
+                        id:
+                          type: string
+                          format: uuid
+                          pattern: ^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$
+                        name:
+                          type: string
+                          description: Display name shown in the Events Manager and when selecting metrics for an
+                            experience.
+                        description:
+                          description: Internal note explaining what this event tracks.
+                          anyOf:
+                          - type: string
+                          - type: 'null'
+                        type:
+                          type: string
+                          const: productPageView
+                          description: Determines which visitor behavior is tracked and which `settings` shape is
+                            required. Use pageView for any page visit, productPageView/collectionPageView for specific
+                            product or collection pages, clickEvent/elementViewed for CSS-selector-targeted DOM
+                            interactions, scrollDepth for scroll-percentage milestones, and javascriptEvent for
+                            a custom JS snippet that fires the event.
+                        settings:
+                          minItems: 1
+                          type: array
+                          items:
+                            type: object
+                            properties:
+                              productId:
+                                type: string
+                                description: Shopify product ID to track page views for.
+                              handle:
+                                type: string
+                                description: Shopify product handle to track page views for.
+                            required:
+                            - productId
+                            - handle
+                      required:
+                      - name
+                      - type
+                      - settings
+                    - type: object
+                      properties:
+                        id:
+                          type: string
+                          format: uuid
+                          pattern: ^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$
+                        name:
+                          type: string
+                          description: Display name shown in the Events Manager and when selecting metrics for an
+                            experience.
+                        description:
+                          description: Internal note explaining what this event tracks.
+                          anyOf:
+                          - type: string
+                          - type: 'null'
+                        type:
+                          type: string
+                          const: collectionPageView
+                          description: Determines which visitor behavior is tracked and which `settings` shape is
+                            required. Use pageView for any page visit, productPageView/collectionPageView for specific
+                            product or collection pages, clickEvent/elementViewed for CSS-selector-targeted DOM
+                            interactions, scrollDepth for scroll-percentage milestones, and javascriptEvent for
+                            a custom JS snippet that fires the event.
+                        settings:
+                          minItems: 1
+                          type: array
+                          items:
+                            type: object
+                            properties:
+                              handle:
+                                type: string
+                                description: Shopify collection handle to track page views for.
+                            required:
+                            - handle
+                      required:
+                      - name
+                      - type
+                      - settings
+                    - type: object
+                      properties:
+                        id:
+                          type: string
+                          format: uuid
+                          pattern: ^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$
+                        name:
+                          type: string
+                          description: Display name shown in the Events Manager and when selecting metrics for an
+                            experience.
+                        description:
+                          description: Internal note explaining what this event tracks.
+                          anyOf:
+                          - type: string
+                          - type: 'null'
+                        applyToUrls:
+                          description: Optional URL rules restricting which pages this event fires on. Omit to track
+                            on all pages.
+                          anyOf:
+                          - type: array
+                            items:
+                              type: object
+                              properties:
+                                matchBy:
+                                  type: string
+                                  enum:
+                                  - equals
+                                  - contains
+                                  - startsWith
+                                  - endsWith
+                                  - doesNotEqual
+                                  - doesNotContain
+                                  - doesNotStartWith
+                                  - doesNotEndWith
+                                  - isNull
+                                  - isNotNull
+                                  - regex
+                                value:
+                                  type: string
+                                error:
+                                  anyOf:
+                                  - type: string
+                                  - type: 'null'
+                              required:
+                              - matchBy
+                              - value
+                          - type: 'null'
+                        type:
+                          type: string
+                          const: clickEvent
+                          description: Determines which visitor behavior is tracked and which `settings` shape is
+                            required. Use pageView for any page visit, productPageView/collectionPageView for specific
+                            product or collection pages, clickEvent/elementViewed for CSS-selector-targeted DOM
+                            interactions, scrollDepth for scroll-percentage milestones, and javascriptEvent for
+                            a custom JS snippet that fires the event.
+                        settings:
+                          type: object
+                          properties:
+                            selectors:
+                              minItems: 1
+                              type: array
+                              items:
+                                type: string
+                                minLength: 1
+                              description: CSS selectors identifying the elements whose clicks should be tracked.
+                          required:
+                          - selectors
+                      required:
+                      - name
+                      - type
+                      - settings
+                    - type: object
+                      properties:
+                        id:
+                          type: string
+                          format: uuid
+                          pattern: ^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$
+                        name:
+                          type: string
+                          description: Display name shown in the Events Manager and when selecting metrics for an
+                            experience.
+                        description:
+                          description: Internal note explaining what this event tracks.
+                          anyOf:
+                          - type: string
+                          - type: 'null'
+                        applyToUrls:
+                          description: Optional URL rules restricting which pages this event fires on. Omit to track
+                            on all pages.
+                          anyOf:
+                          - type: array
+                            items:
+                              type: object
+                              properties:
+                                matchBy:
+                                  type: string
+                                  enum:
+                                  - equals
+                                  - contains
+                                  - startsWith
+                                  - endsWith
+                                  - doesNotEqual
+                                  - doesNotContain
+                                  - doesNotStartWith
+                                  - doesNotEndWith
+                                  - isNull
+                                  - isNotNull
+                                  - regex
+                                value:
+                                  type: string
+                                error:
+                                  anyOf:
+                                  - type: string
+                                  - type: 'null'
+                              required:
+                              - matchBy
+                              - value
+                          - type: 'null'
+                        type:
+                          type: string
+                          const: elementViewed
+                          description: Determines which visitor behavior is tracked and which `settings` shape is
+                            required. Use pageView for any page visit, productPageView/collectionPageView for specific
+                            product or collection pages, clickEvent/elementViewed for CSS-selector-targeted DOM
+                            interactions, scrollDepth for scroll-percentage milestones, and javascriptEvent for
+                            a custom JS snippet that fires the event.
+                        settings:
+                          type: object
+                          properties:
+                            selectors:
+                              minItems: 1
+                              type: array
+                              items:
+                                type: string
+                                minLength: 1
+                              description: CSS selectors identifying the elements whose visibility in the viewport
+                                should be tracked.
+                          required:
+                          - selectors
+                      required:
+                      - name
+                      - type
+                      - settings
+                    - type: object
+                      properties:
+                        id:
+                          type: string
+                          format: uuid
+                          pattern: ^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$
+                        name:
+                          type: string
+                          description: Display name shown in the Events Manager and when selecting metrics for an
+                            experience.
+                        description:
+                          description: Internal note explaining what this event tracks.
+                          anyOf:
+                          - type: string
+                          - type: 'null'
+                        applyToUrls:
+                          description: Optional URL rules restricting which pages this event fires on. Omit to track
+                            on all pages.
+                          anyOf:
+                          - type: array
+                            items:
+                              type: object
+                              properties:
+                                matchBy:
+                                  type: string
+                                  enum:
+                                  - equals
+                                  - contains
+                                  - startsWith
+                                  - endsWith
+                                  - doesNotEqual
+                                  - doesNotContain
+                                  - doesNotStartWith
+                                  - doesNotEndWith
+                                  - isNull
+                                  - isNotNull
+                                  - regex
+                                value:
+                                  type: string
+                                error:
+                                  anyOf:
+                                  - type: string
+                                  - type: 'null'
+                              required:
+                              - matchBy
+                              - value
+                          - type: 'null'
+                        type:
+                          type: string
+                          const: scrollDepth
+                          description: Determines which visitor behavior is tracked and which `settings` shape is
+                            required. Use pageView for any page visit, productPageView/collectionPageView for specific
+                            product or collection pages, clickEvent/elementViewed for CSS-selector-targeted DOM
+                            interactions, scrollDepth for scroll-percentage milestones, and javascriptEvent for
+                            a custom JS snippet that fires the event.
+                        settings:
+                          type: object
+                          properties:
+                            mobile:
+                              type: object
+                              properties:
+                                percentage:
+                                  type: number
+                                  minimum: 0
+                                  maximum: 100
+                                  description: Percentage of page height scrolled (0-100) that triggers the event.
+                              required:
+                              - percentage
+                              description: Scroll depth threshold to track on mobile viewports.
+                            desktop:
+                              type: object
+                              properties:
+                                percentage:
+                                  type: number
+                                  minimum: 0
+                                  maximum: 100
+                                  description: Percentage of page height scrolled (0-100) that triggers the event.
+                              required:
+                              - percentage
+                              description: Scroll depth threshold to track on desktop viewports.
+                          required:
+                          - mobile
+                          - desktop
+                      required:
+                      - name
+                      - type
+                      - settings
+                    - type: object
+                      properties:
+                        id:
+                          type: string
+                          format: uuid
+                          pattern: ^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$
+                        name:
+                          type: string
+                          description: Display name shown in the Events Manager and when selecting metrics for an
+                            experience.
+                        description:
+                          description: Internal note explaining what this event tracks.
+                          anyOf:
+                          - type: string
+                          - type: 'null'
+                        applyToUrls:
+                          description: Optional URL rules restricting which pages this event fires on. Omit to track
+                            on all pages.
+                          anyOf:
+                          - type: array
+                            items:
+                              type: object
+                              properties:
+                                matchBy:
+                                  type: string
+                                  enum:
+                                  - equals
+                                  - contains
+                                  - startsWith
+                                  - endsWith
+                                  - doesNotEqual
+                                  - doesNotContain
+                                  - doesNotStartWith
+                                  - doesNotEndWith
+                                  - isNull
+                                  - isNotNull
+                                  - regex
+                                value:
+                                  type: string
+                                error:
+                                  anyOf:
+                                  - type: string
+                                  - type: 'null'
+                              required:
+                              - matchBy
+                              - value
+                          - type: 'null'
+                        type:
+                          type: string
+                          const: javascriptEvent
+                          description: Determines which visitor behavior is tracked and which `settings` shape is
+                            required. Use pageView for any page visit, productPageView/collectionPageView for specific
+                            product or collection pages, clickEvent/elementViewed for CSS-selector-targeted DOM
+                            interactions, scrollDepth for scroll-percentage milestones, and javascriptEvent for
+                            a custom JS snippet that fires the event.
+                        settings:
+                          type: object
+                          properties:
+                            code:
+                              type: string
+                              description: 'JavaScript snippet injected into a <script> tag on the page. To register
+                                an occurrence, it must call `window.igEvents.push({ event: "<identifier>" })` where
+                                `<identifier>` exactly matches this event''s own identifier. The identifier is server-generated
+                                and only returned after creation, so write a placeholder here and update the event''s
+                                code afterward with the returned identifier.'
+                          required:
+                          - code
+                      required:
+                      - name
+                      - type
+                      - settings
+                    type: object
+                  - maxItems: 50
+                    type: array
+                    items:
+                      oneOf:
+                      - type: object
+                        properties:
+                          id:
+                            type: string
+                            format: uuid
+                            pattern: ^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$
+                          name:
+                            type: string
+                            description: Display name shown in the Events Manager and when selecting metrics for
+                              an experience.
+                          description:
+                            description: Internal note explaining what this event tracks.
+                            anyOf:
+                            - type: string
+                            - type: 'null'
+                          applyToUrls:
+                            minItems: 1
+                            type: array
+                            items:
+                              type: object
+                              properties:
+                                matchBy:
+                                  type: string
+                                  enum:
+                                  - equals
+                                  - contains
+                                  - startsWith
+                                  - endsWith
+                                  - doesNotEqual
+                                  - doesNotContain
+                                  - doesNotStartWith
+                                  - doesNotEndWith
+                                  - isNull
+                                  - isNotNull
+                                  - regex
+                                value:
+                                  type: string
+                                error:
+                                  anyOf:
+                                  - type: string
+                                  - type: 'null'
+                              required:
+                              - matchBy
+                              - value
+                            description: Optional URL rules restricting which pages this event fires on. Omit to
+                              track on all pages.
+                          type:
+                            type: string
+                            const: pageView
+                            description: Determines which visitor behavior is tracked and which `settings` shape
+                              is required. Use pageView for any page visit, productPageView/collectionPageView for
+                              specific product or collection pages, clickEvent/elementViewed for CSS-selector-targeted
+                              DOM interactions, scrollDepth for scroll-percentage milestones, and javascriptEvent
+                              for a custom JS snippet that fires the event.
+                          settings:
+                            type: object
+                            properties: {}
+                        required:
+                        - name
+                        - applyToUrls
+                        - type
+                        - settings
+                      - type: object
+                        properties:
+                          id:
+                            type: string
+                            format: uuid
+                            pattern: ^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$
+                          name:
+                            type: string
+                            description: Display name shown in the Events Manager and when selecting metrics for
+                              an experience.
+                          description:
+                            description: Internal note explaining what this event tracks.
+                            anyOf:
+                            - type: string
+                            - type: 'null'
+                          type:
+                            type: string
+                            const: productPageView
+                            description: Determines which visitor behavior is tracked and which `settings` shape
+                              is required. Use pageView for any page visit, productPageView/collectionPageView for
+                              specific product or collection pages, clickEvent/elementViewed for CSS-selector-targeted
+                              DOM interactions, scrollDepth for scroll-percentage milestones, and javascriptEvent
+                              for a custom JS snippet that fires the event.
+                          settings:
+                            minItems: 1
+                            type: array
+                            items:
+                              type: object
+                              properties:
+                                productId:
+                                  type: string
+                                  description: Shopify product ID to track page views for.
+                                handle:
+                                  type: string
+                                  description: Shopify product handle to track page views for.
+                              required:
+                              - productId
+                              - handle
+                        required:
+                        - name
+                        - type
+                        - settings
+                      - type: object
+                        properties:
+                          id:
+                            type: string
+                            format: uuid
+                            pattern: ^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$
+                          name:
+                            type: string
+                            description: Display name shown in the Events Manager and when selecting metrics for
+                              an experience.
+                          description:
+                            description: Internal note explaining what this event tracks.
+                            anyOf:
+                            - type: string
+                            - type: 'null'
+                          type:
+                            type: string
+                            const: collectionPageView
+                            description: Determines which visitor behavior is tracked and which `settings` shape
+                              is required. Use pageView for any page visit, productPageView/collectionPageView for
+                              specific product or collection pages, clickEvent/elementViewed for CSS-selector-targeted
+                              DOM interactions, scrollDepth for scroll-percentage milestones, and javascriptEvent
+                              for a custom JS snippet that fires the event.
+                          settings:
+                            minItems: 1
+                            type: array
+                            items:
+                              type: object
+                              properties:
+                                handle:
+                                  type: string
+                                  description: Shopify collection handle to track page views for.
+                              required:
+                              - handle
+                        required:
+                        - name
+                        - type
+                        - settings
+                      - type: object
+                        properties:
+                          id:
+                            type: string
+                            format: uuid
+                            pattern: ^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$
+                          name:
+                            type: string
+                            description: Display name shown in the Events Manager and when selecting metrics for
+                              an experience.
+                          description:
+                            description: Internal note explaining what this event tracks.
+                            anyOf:
+                            - type: string
+                            - type: 'null'
+                          applyToUrls:
+                            description: Optional URL rules restricting which pages this event fires on. Omit to
+                              track on all pages.
+                            anyOf:
+                            - type: array
+                              items:
+                                type: object
+                                properties:
+                                  matchBy:
+                                    type: string
+                                    enum:
+                                    - equals
+                                    - contains
+                                    - startsWith
+                                    - endsWith
+                                    - doesNotEqual
+                                    - doesNotContain
+                                    - doesNotStartWith
+                                    - doesNotEndWith
+                                    - isNull
+                                    - isNotNull
+                                    - regex
+                                  value:
+                                    type: string
+                                  error:
+                                    anyOf:
+                                    - type: string
+                                    - type: 'null'
+                                required:
+                                - matchBy
+                                - value
+                            - type: 'null'
+                          type:
+                            type: string
+                            const: clickEvent
+                            description: Determines which visitor behavior is tracked and which `settings` shape
+                              is required. Use pageView for any page visit, productPageView/collectionPageView for
+                              specific product or collection pages, clickEvent/elementViewed for CSS-selector-targeted
+                              DOM interactions, scrollDepth for scroll-percentage milestones, and javascriptEvent
+                              for a custom JS snippet that fires the event.
+                          settings:
+                            type: object
+                            properties:
+                              selectors:
+                                minItems: 1
+                                type: array
+                                items:
+                                  type: string
+                                  minLength: 1
+                                description: CSS selectors identifying the elements whose clicks should be tracked.
+                            required:
+                            - selectors
+                        required:
+                        - name
+                        - type
+                        - settings
+                      - type: object
+                        properties:
+                          id:
+                            type: string
+                            format: uuid
+                            pattern: ^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$
+                          name:
+                            type: string
+                            description: Display name shown in the Events Manager and when selecting metrics for
+                              an experience.
+                          description:
+                            description: Internal note explaining what this event tracks.
+                            anyOf:
+                            - type: string
+                            - type: 'null'
+                          applyToUrls:
+                            description: Optional URL rules restricting which pages this event fires on. Omit to
+                              track on all pages.
+                            anyOf:
+                            - type: array
+                              items:
+                                type: object
+                                properties:
+                                  matchBy:
+                                    type: string
+                                    enum:
+                                    - equals
+                                    - contains
+                                    - startsWith
+                                    - endsWith
+                                    - doesNotEqual
+                                    - doesNotContain
+                                    - doesNotStartWith
+                                    - doesNotEndWith
+                                    - isNull
+                                    - isNotNull
+                                    - regex
+                                  value:
+                                    type: string
+                                  error:
+                                    anyOf:
+                                    - type: string
+                                    - type: 'null'
+                                required:
+                                - matchBy
+                                - value
+                            - type: 'null'
+                          type:
+                            type: string
+                            const: elementViewed
+                            description: Determines which visitor behavior is tracked and which `settings` shape
+                              is required. Use pageView for any page visit, productPageView/collectionPageView for
+                              specific product or collection pages, clickEvent/elementViewed for CSS-selector-targeted
+                              DOM interactions, scrollDepth for scroll-percentage milestones, and javascriptEvent
+                              for a custom JS snippet that fires the event.
+                          settings:
+                            type: object
+                            properties:
+                              selectors:
+                                minItems: 1
+                                type: array
+                                items:
+                                  type: string
+                                  minLength: 1
+                                description: CSS selectors identifying the elements whose visibility in the viewport
+                                  should be tracked.
+                            required:
+                            - selectors
+                        required:
+                        - name
+                        - type
+                        - settings
+                      - type: object
+                        properties:
+                          id:
+                            type: string
+                            format: uuid
+                            pattern: ^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$
+                          name:
+                            type: string
+                            description: Display name shown in the Events Manager and when selecting metrics for
+                              an experience.
+                          description:
+                            description: Internal note explaining what this event tracks.
+                            anyOf:
+                            - type: string
+                            - type: 'null'
+                          applyToUrls:
+                            description: Optional URL rules restricting which pages this event fires on. Omit to
+                              track on all pages.
+                            anyOf:
+                            - type: array
+                              items:
+                                type: object
+                                properties:
+                                  matchBy:
+                                    type: string
+                                    enum:
+                                    - equals
+                                    - contains
+                                    - startsWith
+                                    - endsWith
+                                    - doesNotEqual
+                                    - doesNotContain
+                                    - doesNotStartWith
+                                    - doesNotEndWith
+                                    - isNull
+                                    - isNotNull
+                                    - regex
+                                  value:
+                                    type: string
+                                  error:
+                                    anyOf:
+                                    - type: string
+                                    - type: 'null'
+                                required:
+                                - matchBy
+                                - value
+                            - type: 'null'
+                          type:
+                            type: string
+                            const: scrollDepth
+                            description: Determines which visitor behavior is tracked and which `settings` shape
+                              is required. Use pageView for any page visit, productPageView/collectionPageView for
+                              specific product or collection pages, clickEvent/elementViewed for CSS-selector-targeted
+                              DOM interactions, scrollDepth for scroll-percentage milestones, and javascriptEvent
+                              for a custom JS snippet that fires the event.
+                          settings:
+                            type: object
+                            properties:
+                              mobile:
+                                type: object
+                                properties:
+                                  percentage:
+                                    type: number
+                                    minimum: 0
+                                    maximum: 100
+                                    description: Percentage of page height scrolled (0-100) that triggers the event.
+                                required:
+                                - percentage
+                                description: Scroll depth threshold to track on mobile viewports.
+                              desktop:
+                                type: object
+                                properties:
+                                  percentage:
+                                    type: number
+                                    minimum: 0
+                                    maximum: 100
+                                    description: Percentage of page height scrolled (0-100) that triggers the event.
+                                required:
+                                - percentage
+                                description: Scroll depth threshold to track on desktop viewports.
+                            required:
+                            - mobile
+                            - desktop
+                        required:
+                        - name
+                        - type
+                        - settings
+                      - type: object
+                        properties:
+                          id:
+                            type: string
+                            format: uuid
+                            pattern: ^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$
+                          name:
+                            type: string
+                            description: Display name shown in the Events Manager and when selecting metrics for
+                              an experience.
+                          description:
+                            description: Internal note explaining what this event tracks.
+                            anyOf:
+                            - type: string
+                            - type: 'null'
+                          applyToUrls:
+                            description: Optional URL rules restricting which pages this event fires on. Omit to
+                              track on all pages.
+                            anyOf:
+                            - type: array
+                              items:
+                                type: object
+                                properties:
+                                  matchBy:
+                                    type: string
+                                    enum:
+                                    - equals
+                                    - contains
+                                    - startsWith
+                                    - endsWith
+                                    - doesNotEqual
+                                    - doesNotContain
+                                    - doesNotStartWith
+                                    - doesNotEndWith
+                                    - isNull
+                                    - isNotNull
+                                    - regex
+                                  value:
+                                    type: string
+                                  error:
+                                    anyOf:
+                                    - type: string
+                                    - type: 'null'
+                                required:
+                                - matchBy
+                                - value
+                            - type: 'null'
+                          type:
+                            type: string
+                            const: javascriptEvent
+                            description: Determines which visitor behavior is tracked and which `settings` shape
+                              is required. Use pageView for any page visit, productPageView/collectionPageView for
+                              specific product or collection pages, clickEvent/elementViewed for CSS-selector-targeted
+                              DOM interactions, scrollDepth for scroll-percentage milestones, and javascriptEvent
+                              for a custom JS snippet that fires the event.
+                          settings:
+                            type: object
+                            properties:
+                              code:
+                                type: string
+                                description: 'JavaScript snippet injected into a <script> tag on the page. To register
+                                  an occurrence, it must call `window.igEvents.push({ event: "<identifier>" })`
+                                  where `<identifier>` exactly matches this event''s own identifier. The identifier
+                                  is server-generated and only returned after creation, so write a placeholder here
+                                  and update the event''s code afterward with the returned identifier.'
+                            required:
+                            - code
+                        required:
+                        - name
+                        - type
+                        - settings
+                      type: object
+              required:
+              - customEvent
+      responses:
+        '200':
+          description: OK
+          headers:
+            access-control-allow-origin:
+              schema:
+                type: string
+              description: CORS allow-origin header.
+            access-control-allow-credentials:
+              schema:
+                type: string
+              description: CORS allow-credentials header.
+            content-type:
+              schema:
+                type: string
+              description: Response content type.
+            Timing-Allow-Origin:
+              schema:
+                type: string
+              description: Allowed origin for Timing headers.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  customEvent:
+                    anyOf:
+                    - oneOf:
+                      - type: object
+                        properties:
+                          id:
+                            type: string
+                            format: uuid
+                            pattern: ^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$
+                          identifier:
+                            type: string
+                          name:
+                            type: string
+                          description:
+                            anyOf:
+                            - type: string
+                            - type: 'null'
+                          eventCountLastDay:
+                            anyOf:
+                            - type: number
+                            - type: 'null'
+                          lastEventTs:
+                            anyOf:
+                            - type: number
+                            - type: 'null'
+                          error:
+                            anyOf:
+                            - type: string
+                            - type: 'null'
+                          createdAtTs:
+                            type: number
+                          archivedAtTs:
+                            anyOf:
+                            - type: number
+                            - type: 'null'
+                          applyToUrls:
+                            anyOf:
+                            - type: array
+                              items:
+                                type: object
+                                properties:
+                                  matchBy:
+                                    type: string
+                                    enum:
+                                    - equals
+                                    - contains
+                                    - startsWith
+                                    - endsWith
+                                    - doesNotEqual
+                                    - doesNotContain
+                                    - doesNotStartWith
+                                    - doesNotEndWith
+                                    - isNull
+                                    - isNotNull
+                                    - regex
+                                  value:
+                                    type: string
+                                  error:
+                                    anyOf:
+                                    - type: string
+                                    - type: 'null'
+                                required:
+                                - matchBy
+                                - value
+                                additionalProperties: false
+                            - type: 'null'
+                          experiencesList:
+                            anyOf:
+                            - default: []
+                              type: array
+                              items:
+                                type: string
+                            - type: 'null'
+                          type:
+                            type: string
+                            const: pageView
+                          settings:
+                            type: object
+                            properties: {}
+                            additionalProperties: false
+                        required:
+                        - id
+                        - identifier
+                        - name
+                        - createdAtTs
+                        - type
+                        - settings
+                        additionalProperties: false
+                      - type: object
+                        properties:
+                          id:
+                            type: string
+                            format: uuid
+                            pattern: ^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$
+                          identifier:
+                            type: string
+                          name:
+                            type: string
+                          description:
+                            anyOf:
+                            - type: string
+                            - type: 'null'
+                          eventCountLastDay:
+                            anyOf:
+                            - type: number
+                            - type: 'null'
+                          lastEventTs:
+                            anyOf:
+                            - type: number
+                            - type: 'null'
+                          error:
+                            anyOf:
+                            - type: string
+                            - type: 'null'
+                          createdAtTs:
+                            type: number
+                          archivedAtTs:
+                            anyOf:
+                            - type: number
+                            - type: 'null'
+                          applyToUrls:
+                            anyOf:
+                            - type: array
+                              items:
+                                type: object
+                                properties:
+                                  matchBy:
+                                    type: string
+                                    enum:
+                                    - equals
+                                    - contains
+                                    - startsWith
+                                    - endsWith
+                                    - doesNotEqual
+                                    - doesNotContain
+                                    - doesNotStartWith
+                                    - doesNotEndWith
+                                    - isNull
+                                    - isNotNull
+                                    - regex
+                                  value:
+                                    type: string
+                                  error:
+                                    anyOf:
+                                    - type: string
+                                    - type: 'null'
+                                required:
+                                - matchBy
+                                - value
+                                additionalProperties: false
+                            - type: 'null'
+                          experiencesList:
+                            anyOf:
+                            - default: []
+                              type: array
+                              items:
+                                type: string
+                            - type: 'null'
+                          type:
+                            type: string
+                            const: productPageView
+                          settings:
+                            type: array
+                            items:
+                              type: object
+                              properties:
+                                productId:
+                                  type: string
+                                handle:
+                                  type: string
+                              required:
+                              - productId
+                              - handle
+                              additionalProperties: false
+                        required:
+                        - id
+                        - identifier
+                        - name
+                        - createdAtTs
+                        - type
+                        - settings
+                        additionalProperties: false
+                      - type: object
+                        properties:
+                          id:
+                            type: string
+                            format: uuid
+                            pattern: ^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$
+                          identifier:
+                            type: string
+                          name:
+                            type: string
+                          description:
+                            anyOf:
+                            - type: string
+                            - type: 'null'
+                          eventCountLastDay:
+                            anyOf:
+                            - type: number
+                            - type: 'null'
+                          lastEventTs:
+                            anyOf:
+                            - type: number
+                            - type: 'null'
+                          error:
+                            anyOf:
+                            - type: string
+                            - type: 'null'
+                          createdAtTs:
+                            type: number
+                          archivedAtTs:
+                            anyOf:
+                            - type: number
+                            - type: 'null'
+                          applyToUrls:
+                            anyOf:
+                            - type: array
+                              items:
+                                type: object
+                                properties:
+                                  matchBy:
+                                    type: string
+                                    enum:
+                                    - equals
+                                    - contains
+                                    - startsWith
+                                    - endsWith
+                                    - doesNotEqual
+                                    - doesNotContain
+                                    - doesNotStartWith
+                                    - doesNotEndWith
+                                    - isNull
+                                    - isNotNull
+                                    - regex
+                                  value:
+                                    type: string
+                                  error:
+                                    anyOf:
+                                    - type: string
+                                    - type: 'null'
+                                required:
+                                - matchBy
+                                - value
+                                additionalProperties: false
+                            - type: 'null'
+                          experiencesList:
+                            anyOf:
+                            - default: []
+                              type: array
+                              items:
+                                type: string
+                            - type: 'null'
+                          type:
+                            type: string
+                            const: collectionPageView
+                          settings:
+                            type: array
+                            items:
+                              type: object
+                              properties:
+                                handle:
+                                  type: string
+                              required:
+                              - handle
+                              additionalProperties: false
+                        required:
+                        - id
+                        - identifier
+                        - name
+                        - createdAtTs
+                        - type
+                        - settings
+                        additionalProperties: false
+                      - type: object
+                        properties:
+                          id:
+                            type: string
+                            format: uuid
+                            pattern: ^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$
+                          identifier:
+                            type: string
+                          name:
+                            type: string
+                          description:
+                            anyOf:
+                            - type: string
+                            - type: 'null'
+                          eventCountLastDay:
+                            anyOf:
+                            - type: number
+                            - type: 'null'
+                          lastEventTs:
+                            anyOf:
+                            - type: number
+                            - type: 'null'
+                          error:
+                            anyOf:
+                            - type: string
+                            - type: 'null'
+                          createdAtTs:
+                            type: number
+                          archivedAtTs:
+                            anyOf:
+                            - type: number
+                            - type: 'null'
+                          applyToUrls:
+                            anyOf:
+                            - type: array
+                              items:
+                                type: object
+                                properties:
+                                  matchBy:
+                                    type: string
+                                    enum:
+                                    - equals
+                                    - contains
+                                    - startsWith
+                                    - endsWith
+                                    - doesNotEqual
+                                    - doesNotContain
+                                    - doesNotStartWith
+                                    - doesNotEndWith
+                                    - isNull
+                                    - isNotNull
+                                    - regex
+                                  value:
+                                    type: string
+                                  error:
+                                    anyOf:
+                                    - type: string
+                                    - type: 'null'
+                                required:
+                                - matchBy
+                                - value
+                                additionalProperties: false
+                            - type: 'null'
+                          experiencesList:
+                            anyOf:
+                            - default: []
+                              type: array
+                              items:
+                                type: string
+                            - type: 'null'
+                          type:
+                            type: string
+                            const: clickEvent
+                          settings:
+                            type: object
+                            properties:
+                              selectors:
+                                type: array
+                                items:
+                                  type: string
+                            required:
+                            - selectors
+                            additionalProperties: false
+                        required:
+                        - id
+                        - identifier
+                        - name
+                        - createdAtTs
+                        - type
+                        - settings
+                        additionalProperties: false
+                      - type: object
+                        properties:
+                          id:
+                            type: string
+                            format: uuid
+                            pattern: ^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$
+                          identifier:
+                            type: string
+                          name:
+                            type: string
+                          description:
+                            anyOf:
+                            - type: string
+                            - type: 'null'
+                          eventCountLastDay:
+                            anyOf:
+                            - type: number
+                            - type: 'null'
+                          lastEventTs:
+                            anyOf:
+                            - type: number
+                            - type: 'null'
+                          error:
+                            anyOf:
+                            - type: string
+                            - type: 'null'
+                          createdAtTs:
+                            type: number
+                          archivedAtTs:
+                            anyOf:
+                            - type: number
+                            - type: 'null'
+                          applyToUrls:
+                            anyOf:
+                            - type: array
+                              items:
+                                type: object
+                                properties:
+                                  matchBy:
+                                    type: string
+                                    enum:
+                                    - equals
+                                    - contains
+                                    - startsWith
+                                    - endsWith
+                                    - doesNotEqual
+                                    - doesNotContain
+                                    - doesNotStartWith
+                                    - doesNotEndWith
+                                    - isNull
+                                    - isNotNull
+                                    - regex
+                                  value:
+                                    type: string
+                                  error:
+                                    anyOf:
+                                    - type: string
+                                    - type: 'null'
+                                required:
+                                - matchBy
+                                - value
+                                additionalProperties: false
+                            - type: 'null'
+                          experiencesList:
+                            anyOf:
+                            - default: []
+                              type: array
+                              items:
+                                type: string
+                            - type: 'null'
+                          type:
+                            type: string
+                            const: elementViewed
+                          settings:
+                            type: object
+                            properties:
+                              selectors:
+                                type: array
+                                items:
+                                  type: string
+                            required:
+                            - selectors
+                            additionalProperties: false
+                        required:
+                        - id
+                        - identifier
+                        - name
+                        - createdAtTs
+                        - type
+                        - settings
+                        additionalProperties: false
+                      - type: object
+                        properties:
+                          id:
+                            type: string
+                            format: uuid
+                            pattern: ^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$
+                          identifier:
+                            type: string
+                          name:
+                            type: string
+                          description:
+                            anyOf:
+                            - type: string
+                            - type: 'null'
+                          eventCountLastDay:
+                            anyOf:
+                            - type: number
+                            - type: 'null'
+                          lastEventTs:
+                            anyOf:
+                            - type: number
+                            - type: 'null'
+                          error:
+                            anyOf:
+                            - type: string
+                            - type: 'null'
+                          createdAtTs:
+                            type: number
+                          archivedAtTs:
+                            anyOf:
+                            - type: number
+                            - type: 'null'
+                          applyToUrls:
+                            anyOf:
+                            - type: array
+                              items:
+                                type: object
+                                properties:
+                                  matchBy:
+                                    type: string
+                                    enum:
+                                    - equals
+                                    - contains
+                                    - startsWith
+                                    - endsWith
+                                    - doesNotEqual
+                                    - doesNotContain
+                                    - doesNotStartWith
+                                    - doesNotEndWith
+                                    - isNull
+                                    - isNotNull
+                                    - regex
+                                  value:
+                                    type: string
+                                  error:
+                                    anyOf:
+                                    - type: string
+                                    - type: 'null'
+                                required:
+                                - matchBy
+                                - value
+                                additionalProperties: false
+                            - type: 'null'
+                          experiencesList:
+                            anyOf:
+                            - default: []
+                              type: array
+                              items:
+                                type: string
+                            - type: 'null'
+                          type:
+                            type: string
+                            const: scrollDepth
+                          settings:
+                            type: object
+                            properties:
+                              mobile:
+                                type: object
+                                properties:
+                                  percentage:
+                                    type: number
+                                required:
+                                - percentage
+                                additionalProperties: false
+                              desktop:
+                                type: object
+                                properties:
+                                  percentage:
+                                    type: number
+                                required:
+                                - percentage
+                                additionalProperties: false
+                            required:
+                            - mobile
+                            - desktop
+                            additionalProperties: false
+                        required:
+                        - id
+                        - identifier
+                        - name
+                        - createdAtTs
+                        - type
+                        - settings
+                        additionalProperties: false
+                      - type: object
+                        properties:
+                          id:
+                            type: string
+                            format: uuid
+                            pattern: ^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$
+                          identifier:
+                            type: string
+                          name:
+                            type: string
+                          description:
+                            anyOf:
+                            - type: string
+                            - type: 'null'
+                          eventCountLastDay:
+                            anyOf:
+                            - type: number
+                            - type: 'null'
+                          lastEventTs:
+                            anyOf:
+                            - type: number
+                            - type: 'null'
+                          error:
+                            anyOf:
+                            - type: string
+                            - type: 'null'
+                          createdAtTs:
+                            type: number
+                          archivedAtTs:
+                            anyOf:
+                            - type: number
+                            - type: 'null'
+                          applyToUrls:
+                            anyOf:
+                            - type: array
+                              items:
+                                type: object
+                                properties:
+                                  matchBy:
+                                    type: string
+                                    enum:
+                                    - equals
+                                    - contains
+                                    - startsWith
+                                    - endsWith
+                                    - doesNotEqual
+                                    - doesNotContain
+                                    - doesNotStartWith
+                                    - doesNotEndWith
+                                    - isNull
+                                    - isNotNull
+                                    - regex
+                                  value:
+                                    type: string
+                                  error:
+                                    anyOf:
+                                    - type: string
+                                    - type: 'null'
+                                required:
+                                - matchBy
+                                - value
+                                additionalProperties: false
+                            - type: 'null'
+                          experiencesList:
+                            anyOf:
+                            - default: []
+                              type: array
+                              items:
+                                type: string
+                            - type: 'null'
+                          type:
+                            type: string
+                            const: javascriptEvent
+                          settings:
+                            type: object
+                            properties:
+                              code:
+                                type: string
+                            required:
+                            - code
+                            additionalProperties: false
+                        required:
+                        - id
+                        - identifier
+                        - name
+                        - createdAtTs
+                        - type
+                        - settings
+                        additionalProperties: false
+                      - type: object
+                        properties:
+                          id:
+                            type: string
+                            format: uuid
+                            pattern: ^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$
+                          identifier:
+                            type: string
+                          name:
+                            type: string
+                          description:
+                            anyOf:
+                            - type: string
+                            - type: 'null'
+                          eventCountLastDay:
+                            anyOf:
+                            - type: number
+                            - type: 'null'
+                          lastEventTs:
+                            anyOf:
+                            - type: number
+                            - type: 'null'
+                          error:
+                            anyOf:
+                            - type: string
+                            - type: 'null'
+                          createdAtTs:
+                            type: number
+                          archivedAtTs:
+                            anyOf:
+                            - type: number
+                            - type: 'null'
+                          applyToUrls:
+                            anyOf:
+                            - type: array
+                              items:
+                                type: object
+                                properties:
+                                  matchBy:
+                                    type: string
+                                    enum:
+                                    - equals
+                                    - contains
+                                    - startsWith
+                                    - endsWith
+                                    - doesNotEqual
+                                    - doesNotContain
+                                    - doesNotStartWith
+                                    - doesNotEndWith
+                                    - isNull
+                                    - isNotNull
+                                    - regex
+                                  value:
+                                    type: string
+                                  error:
+                                    anyOf:
+                                    - type: string
+                                    - type: 'null'
+                                required:
+                                - matchBy
+                                - value
+                                additionalProperties: false
+                            - type: 'null'
+                          experiencesList:
+                            anyOf:
+                            - default: []
+                              type: array
+                              items:
+                                type: string
+                            - type: 'null'
+                          type:
+                            type: string
+                            const: javascriptImportedEvent
+                          settings:
+                            type: object
+                            properties:
+                              registered:
+                                type: boolean
+                            required:
+                            - registered
+                            additionalProperties: false
+                        required:
+                        - id
+                        - identifier
+                        - name
+                        - createdAtTs
+                        - type
+                        - settings
+                        additionalProperties: false
+                      type: object
+                    - type: array
+                      items:
+                        oneOf:
+                        - type: object
+                          properties:
+                            id:
+                              type: string
+                              format: uuid
+                              pattern: ^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$
+                            identifier:
+                              type: string
+                            name:
+                              type: string
+                            description:
+                              anyOf:
+                              - type: string
+                              - type: 'null'
+                            eventCountLastDay:
+                              anyOf:
+                              - type: number
+                              - type: 'null'
+                            lastEventTs:
+                              anyOf:
+                              - type: number
+                              - type: 'null'
+                            error:
+                              anyOf:
+                              - type: string
+                              - type: 'null'
+                            createdAtTs:
+                              type: number
+                            archivedAtTs:
+                              anyOf:
+                              - type: number
+                              - type: 'null'
+                            applyToUrls:
+                              anyOf:
+                              - type: array
+                                items:
+                                  type: object
+                                  properties:
+                                    matchBy:
+                                      type: string
+                                      enum:
+                                      - equals
+                                      - contains
+                                      - startsWith
+                                      - endsWith
+                                      - doesNotEqual
+                                      - doesNotContain
+                                      - doesNotStartWith
+                                      - doesNotEndWith
+                                      - isNull
+                                      - isNotNull
+                                      - regex
+                                    value:
+                                      type: string
+                                    error:
+                                      anyOf:
+                                      - type: string
+                                      - type: 'null'
+                                  required:
+                                  - matchBy
+                                  - value
+                                  additionalProperties: false
+                              - type: 'null'
+                            experiencesList:
+                              anyOf:
+                              - default: []
+                                type: array
+                                items:
+                                  type: string
+                              - type: 'null'
+                            type:
+                              type: string
+                              const: pageView
+                            settings:
+                              type: object
+                              properties: {}
+                              additionalProperties: false
+                          required:
+                          - id
+                          - identifier
+                          - name
+                          - createdAtTs
+                          - type
+                          - settings
+                          additionalProperties: false
+                        - type: object
+                          properties:
+                            id:
+                              type: string
+                              format: uuid
+                              pattern: ^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$
+                            identifier:
+                              type: string
+                            name:
+                              type: string
+                            description:
+                              anyOf:
+                              - type: string
+                              - type: 'null'
+                            eventCountLastDay:
+                              anyOf:
+                              - type: number
+                              - type: 'null'
+                            lastEventTs:
+                              anyOf:
+                              - type: number
+                              - type: 'null'
+                            error:
+                              anyOf:
+                              - type: string
+                              - type: 'null'
+                            createdAtTs:
+                              type: number
+                            archivedAtTs:
+                              anyOf:
+                              - type: number
+                              - type: 'null'
+                            applyToUrls:
+                              anyOf:
+                              - type: array
+                                items:
+                                  type: object
+                                  properties:
+                                    matchBy:
+                                      type: string
+                                      enum:
+                                      - equals
+                                      - contains
+                                      - startsWith
+                                      - endsWith
+                                      - doesNotEqual
+                                      - doesNotContain
+                                      - doesNotStartWith
+                                      - doesNotEndWith
+                                      - isNull
+                                      - isNotNull
+                                      - regex
+                                    value:
+                                      type: string
+                                    error:
+                                      anyOf:
+                                      - type: string
+                                      - type: 'null'
+                                  required:
+                                  - matchBy
+                                  - value
+                                  additionalProperties: false
+                              - type: 'null'
+                            experiencesList:
+                              anyOf:
+                              - default: []
+                                type: array
+                                items:
+                                  type: string
+                              - type: 'null'
+                            type:
+                              type: string
+                              const: productPageView
+                            settings:
+                              type: array
+                              items:
+                                type: object
+                                properties:
+                                  productId:
+                                    type: string
+                                  handle:
+                                    type: string
+                                required:
+                                - productId
+                                - handle
+                                additionalProperties: false
+                          required:
+                          - id
+                          - identifier
+                          - name
+                          - createdAtTs
+                          - type
+                          - settings
+                          additionalProperties: false
+                        - type: object
+                          properties:
+                            id:
+                              type: string
+                              format: uuid
+                              pattern: ^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$
+                            identifier:
+                              type: string
+                            name:
+                              type: string
+                            description:
+                              anyOf:
+                              - type: string
+                              - type: 'null'
+                            eventCountLastDay:
+                              anyOf:
+                              - type: number
+                              - type: 'null'
+                            lastEventTs:
+                              anyOf:
+                              - type: number
+                              - type: 'null'
+                            error:
+                              anyOf:
+                              - type: string
+                              - type: 'null'
+                            createdAtTs:
+                              type: number
+                            archivedAtTs:
+                              anyOf:
+                              - type: number
+                              - type: 'null'
+                            applyToUrls:
+                              anyOf:
+                              - type: array
+                                items:
+                                  type: object
+                                  properties:
+                                    matchBy:
+                                      type: string
+                                      enum:
+                                      - equals
+                                      - contains
+                                      - startsWith
+                                      - endsWith
+                                      - doesNotEqual
+                                      - doesNotContain
+                                      - doesNotStartWith
+                                      - doesNotEndWith
+                                      - isNull
+                                      - isNotNull
+                                      - regex
+                                    value:
+                                      type: string
+                                    error:
+                                      anyOf:
+                                      - type: string
+                                      - type: 'null'
+                                  required:
+                                  - matchBy
+                                  - value
+                                  additionalProperties: false
+                              - type: 'null'
+                            experiencesList:
+                              anyOf:
+                              - default: []
+                                type: array
+                                items:
+                                  type: string
+                              - type: 'null'
+                            type:
+                              type: string
+                              const: collectionPageView
+                            settings:
+                              type: array
+                              items:
+                                type: object
+                                properties:
+                                  handle:
+                                    type: string
+                                required:
+                                - handle
+                                additionalProperties: false
+                          required:
+                          - id
+                          - identifier
+                          - name
+                          - createdAtTs
+                          - type
+                          - settings
+                          additionalProperties: false
+                        - type: object
+                          properties:
+                            id:
+                              type: string
+                              format: uuid
+                              pattern: ^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$
+                            identifier:
+                              type: string
+                            name:
+                              type: string
+                            description:
+                              anyOf:
+                              - type: string
+                              - type: 'null'
+                            eventCountLastDay:
+                              anyOf:
+                              - type: number
+                              - type: 'null'
+                            lastEventTs:
+                              anyOf:
+                              - type: number
+                              - type: 'null'
+                            error:
+                              anyOf:
+                              - type: string
+                              - type: 'null'
+                            createdAtTs:
+                              type: number
+                            archivedAtTs:
+                              anyOf:
+                              - type: number
+                              - type: 'null'
+                            applyToUrls:
+                              anyOf:
+                              - type: array
+                                items:
+                                  type: object
+                                  properties:
+                                    matchBy:
+                                      type: string
+                                      enum:
+                                      - equals
+                                      - contains
+                                      - startsWith
+                                      - endsWith
+                                      - doesNotEqual
+                                      - doesNotContain
+                                      - doesNotStartWith
+                                      - doesNotEndWith
+                                      - isNull
+                                      - isNotNull
+                                      - regex
+                                    value:
+                                      type: string
+                                    error:
+                                      anyOf:
+                                      - type: string
+                                      - type: 'null'
+                                  required:
+                                  - matchBy
+                                  - value
+                                  additionalProperties: false
+                              - type: 'null'
+                            experiencesList:
+                              anyOf:
+                              - default: []
+                                type: array
+                                items:
+                                  type: string
+                              - type: 'null'
+                            type:
+                              type: string
+                              const: clickEvent
+                            settings:
+                              type: object
+                              properties:
+                                selectors:
+                                  type: array
+                                  items:
+                                    type: string
+                              required:
+                              - selectors
+                              additionalProperties: false
+                          required:
+                          - id
+                          - identifier
+                          - name
+                          - createdAtTs
+                          - type
+                          - settings
+                          additionalProperties: false
+                        - type: object
+                          properties:
+                            id:
+                              type: string
+                              format: uuid
+                              pattern: ^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$
+                            identifier:
+                              type: string
+                            name:
+                              type: string
+                            description:
+                              anyOf:
+                              - type: string
+                              - type: 'null'
+                            eventCountLastDay:
+                              anyOf:
+                              - type: number
+                              - type: 'null'
+                            lastEventTs:
+                              anyOf:
+                              - type: number
+                              - type: 'null'
+                            error:
+                              anyOf:
+                              - type: string
+                              - type: 'null'
+                            createdAtTs:
+                              type: number
+                            archivedAtTs:
+                              anyOf:
+                              - type: number
+                              - type: 'null'
+                            applyToUrls:
+                              anyOf:
+                              - type: array
+                                items:
+                                  type: object
+                                  properties:
+                                    matchBy:
+                                      type: string
+                                      enum:
+                                      - equals
+                                      - contains
+                                      - startsWith
+                                      - endsWith
+                                      - doesNotEqual
+                                      - doesNotContain
+                                      - doesNotStartWith
+                                      - doesNotEndWith
+                                      - isNull
+                                      - isNotNull
+                                      - regex
+                                    value:
+                                      type: string
+                                    error:
+                                      anyOf:
+                                      - type: string
+                                      - type: 'null'
+                                  required:
+                                  - matchBy
+                                  - value
+                                  additionalProperties: false
+                              - type: 'null'
+                            experiencesList:
+                              anyOf:
+                              - default: []
+                                type: array
+                                items:
+                                  type: string
+                              - type: 'null'
+                            type:
+                              type: string
+                              const: elementViewed
+                            settings:
+                              type: object
+                              properties:
+                                selectors:
+                                  type: array
+                                  items:
+                                    type: string
+                              required:
+                              - selectors
+                              additionalProperties: false
+                          required:
+                          - id
+                          - identifier
+                          - name
+                          - createdAtTs
+                          - type
+                          - settings
+                          additionalProperties: false
+                        - type: object
+                          properties:
+                            id:
+                              type: string
+                              format: uuid
+                              pattern: ^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$
+                            identifier:
+                              type: string
+                            name:
+                              type: string
+                            description:
+                              anyOf:
+                              - type: string
+                              - type: 'null'
+                            eventCountLastDay:
+                              anyOf:
+                              - type: number
+                              - type: 'null'
+                            lastEventTs:
+                              anyOf:
+                              - type: number
+                              - type: 'null'
+                            error:
+                              anyOf:
+                              - type: string
+                              - type: 'null'
+                            createdAtTs:
+                              type: number
+                            archivedAtTs:
+                              anyOf:
+                              - type: number
+                              - type: 'null'
+                            applyToUrls:
+                              anyOf:
+                              - type: array
+                                items:
+                                  type: object
+                                  properties:
+                                    matchBy:
+                                      type: string
+                                      enum:
+                                      - equals
+                                      - contains
+                                      - startsWith
+                                      - endsWith
+                                      - doesNotEqual
+                                      - doesNotContain
+                                      - doesNotStartWith
+                                      - doesNotEndWith
+                                      - isNull
+                                      - isNotNull
+                                      - regex
+                                    value:
+                                      type: string
+                                    error:
+                                      anyOf:
+                                      - type: string
+                                      - type: 'null'
+                                  required:
+                                  - matchBy
+                                  - value
+                                  additionalProperties: false
+                              - type: 'null'
+                            experiencesList:
+                              anyOf:
+                              - default: []
+                                type: array
+                                items:
+                                  type: string
+                              - type: 'null'
+                            type:
+                              type: string
+                              const: scrollDepth
+                            settings:
+                              type: object
+                              properties:
+                                mobile:
+                                  type: object
+                                  properties:
+                                    percentage:
+                                      type: number
+                                  required:
+                                  - percentage
+                                  additionalProperties: false
+                                desktop:
+                                  type: object
+                                  properties:
+                                    percentage:
+                                      type: number
+                                  required:
+                                  - percentage
+                                  additionalProperties: false
+                              required:
+                              - mobile
+                              - desktop
+                              additionalProperties: false
+                          required:
+                          - id
+                          - identifier
+                          - name
+                          - createdAtTs
+                          - type
+                          - settings
+                          additionalProperties: false
+                        - type: object
+                          properties:
+                            id:
+                              type: string
+                              format: uuid
+                              pattern: ^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$
+                            identifier:
+                              type: string
+                            name:
+                              type: string
+                            description:
+                              anyOf:
+                              - type: string
+                              - type: 'null'
+                            eventCountLastDay:
+                              anyOf:
+                              - type: number
+                              - type: 'null'
+                            lastEventTs:
+                              anyOf:
+                              - type: number
+                              - type: 'null'
+                            error:
+                              anyOf:
+                              - type: string
+                              - type: 'null'
+                            createdAtTs:
+                              type: number
+                            archivedAtTs:
+                              anyOf:
+                              - type: number
+                              - type: 'null'
+                            applyToUrls:
+                              anyOf:
+                              - type: array
+                                items:
+                                  type: object
+                                  properties:
+                                    matchBy:
+                                      type: string
+                                      enum:
+                                      - equals
+                                      - contains
+                                      - startsWith
+                                      - endsWith
+                                      - doesNotEqual
+                                      - doesNotContain
+                                      - doesNotStartWith
+                                      - doesNotEndWith
+                                      - isNull
+                                      - isNotNull
+                                      - regex
+                                    value:
+                                      type: string
+                                    error:
+                                      anyOf:
+                                      - type: string
+                                      - type: 'null'
+                                  required:
+                                  - matchBy
+                                  - value
+                                  additionalProperties: false
+                              - type: 'null'
+                            experiencesList:
+                              anyOf:
+                              - default: []
+                                type: array
+                                items:
+                                  type: string
+                              - type: 'null'
+                            type:
+                              type: string
+                              const: javascriptEvent
+                            settings:
+                              type: object
+                              properties:
+                                code:
+                                  type: string
+                              required:
+                              - code
+                              additionalProperties: false
+                          required:
+                          - id
+                          - identifier
+                          - name
+                          - createdAtTs
+                          - type
+                          - settings
+                          additionalProperties: false
+                        - type: object
+                          properties:
+                            id:
+                              type: string
+                              format: uuid
+                              pattern: ^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$
+                            identifier:
+                              type: string
+                            name:
+                              type: string
+                            description:
+                              anyOf:
+                              - type: string
+                              - type: 'null'
+                            eventCountLastDay:
+                              anyOf:
+                              - type: number
+                              - type: 'null'
+                            lastEventTs:
+                              anyOf:
+                              - type: number
+                              - type: 'null'
+                            error:
+                              anyOf:
+                              - type: string
+                              - type: 'null'
+                            createdAtTs:
+                              type: number
+                            archivedAtTs:
+                              anyOf:
+                              - type: number
+                              - type: 'null'
+                            applyToUrls:
+                              anyOf:
+                              - type: array
+                                items:
+                                  type: object
+                                  properties:
+                                    matchBy:
+                                      type: string
+                                      enum:
+                                      - equals
+                                      - contains
+                                      - startsWith
+                                      - endsWith
+                                      - doesNotEqual
+                                      - doesNotContain
+                                      - doesNotStartWith
+                                      - doesNotEndWith
+                                      - isNull
+                                      - isNotNull
+                                      - regex
+                                    value:
+                                      type: string
+                                    error:
+                                      anyOf:
+                                      - type: string
+                                      - type: 'null'
+                                  required:
+                                  - matchBy
+                                  - value
+                                  additionalProperties: false
+                              - type: 'null'
+                            experiencesList:
+                              anyOf:
+                              - default: []
+                                type: array
+                                items:
+                                  type: string
+                              - type: 'null'
+                            type:
+                              type: string
+                              const: javascriptImportedEvent
+                            settings:
+                              type: object
+                              properties:
+                                registered:
+                                  type: boolean
+                              required:
+                              - registered
+                              additionalProperties: false
+                          required:
+                          - id
+                          - identifier
+                          - name
+                          - createdAtTs
+                          - type
+                          - settings
+                          additionalProperties: false
+                        type: object
+                required:
+                - customEvent
+                additionalProperties: false
+        '400':
+          $ref: '#/components/responses/ValidationError'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '429':
+          $ref: '#/components/responses/RateLimited'
+        '500':
+          $ref: '#/components/responses/ServerError'
+        '403':
+          $ref: '#/components/responses/PlanRestricted'
+      operationId: createOrUpdateCustomEvent
+      summary: Create or update custom event
+      x-source-page: https://docs.intelligems.io/developer-resources/external-api/create-custom-event
+components:
+  responses:
+    OK:
+      description: Success.
+      content:
+        application/json:
+          schema:
+            type: object
+            additionalProperties: true
+    ValidationError:
+      description: Validation error (invalid query/body values). Per-field messages under properties.<field>.errors.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ValidationError'
+    Unauthorized:
+      description: Unauthorized (invalid or missing API key).
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/AuthError'
+    NotFound:
+      description: Resource not found.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/AuthError'
+    RateLimited:
+      description: Rate limit exceeded. See x-ratelimit-limit / x-ratelimit-remaining / x-ratelimit-reset headers.
+      headers:
+        x-ratelimit-limit:
+          schema:
+            type: integer
+          description: Bucket size for the endpoint.
+        x-ratelimit-remaining:
+          schema:
+            type: integer
+          description: Remaining tokens in the current bucket.
+        x-ratelimit-reset:
+          schema:
+            type: integer
+          description: Unix timestamp (ms) at which the bucket next refills.
+    ServerError:
+      description: Internal server error.
+    PlanRestricted:
+      description: Forbidden — the organization's plan does not include custom-events tracking.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/AuthError'
+  schemas:
+    ValidationError:
+      type: object
+      description: Validation error envelope. Top-level errors[] is for request-level errors; per-field messages
+        live under properties.<field>.errors.
+      properties:
+        errors:
+          type: array
+          items:
+            type: string
+        properties:
+          type: object
+          additionalProperties:
+            type: object
+            properties:
+              errors:
+                type: array
+                items:
+                  type: string
+    AuthError:
+      type: object
+      properties:
+        error:
+          type: string
+          description: Error message, e.g. "Unauthorized" or "Unauthorized!".
+  securitySchemes:
+    accessToken:
+      type: apiKey
+      in: header
+      name: intelligems-access-token
+      description: API key issued by Intelligems, sent in the intelligems-access-token header.

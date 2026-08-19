@@ -1,4 +1,4 @@
-generated: '2026-07-19'
+generated: '2026-08-13'
 method: searched
 source: https://docs.intelligems.io/developer-resources/external-api
 versioning:
@@ -9,11 +9,39 @@ versioning:
 deprecation:
   policy_url: null
   sunset_header: false
-  notes: No public deprecation/sunset policy was found.
+  notes: >-
+    No published deprecation or sunset policy, and no RFC 8594 Sunset/Deprecation header
+    support is documented. Deprecation is communicated per operation inside the reference:
+    the Available Endpoints page marks the legacy query-parameter analytics endpoint as
+    deprecated and states it is "kept only as a beta compatibility path and removed when
+    the beta ends", and Intelligems' own published OpenAPI carries deprecated: true on
+    that operation. The Filters reference likewise marks the `landingPage` filter
+    deprecated in favour of `landingPageFilters`.
 sla:
   url: null
 status_page: null
-deprecated_operations: []
+status_page_notes: >-
+  No status page found — status.intelligems.io does not resolve, and neither the docs nor
+  the marketing site links to a third-party status provider.
+change_log:
+  platform: https://www.intelligems.io/resources/product-updates
+  sdk: https://headless.intelligems.io/change-log
+  see: changelog/intelligems-changelog.yml
+deprecated_operations:
+  - operation: openapi/intelligems-analytics-api-openapi.yml#getExperienceAnalytics
+    path: GET /v25-10-beta/analytics/resource/{experienceId}
+    replacement: openapi/intelligems-analytics-api-openapi.yml#queryExperienceAnalytics
+    removal: when the v25-10-beta beta ends (no date published)
+    evidence: >-
+      deprecated: true in Intelligems' published OpenAPI, and the Available Endpoints page.
+deprecated_fields:
+  - field: filters.landingPage
+    replacement: filters.landingPageFilters
+    evidence: https://docs.intelligems.io/developer-resources/external-api/intelligems-external-api/filters-reference
 notes: >-
-  The External API is offered as a beta (v25-10-beta). No status page, SLA, or
-  formal deprecation policy is published on the developer surface.
+  The External API is offered as a beta (v25-10-beta). Intelligems does publish a dated
+  product-updates stream and a versioned SDK change log, but no status page, no SLA and no
+  formal deprecation policy exist on the developer surface.
+x-evidence:
+  - {url: 'https://docs.intelligems.io/developer-resources/external-api/intelligems-external-api/available-endpoints.md', status: 200, fetched: '2026-08-13'}
+  - {url: 'https://status.intelligems.io', status: 0, fetched: '2026-08-13', note: DNS does not resolve}

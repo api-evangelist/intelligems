@@ -1,0 +1,85 @@
+generated: '2026-08-13'
+method: searched
+source: https://www.intelligems.io/resources/product-updates
+note: >-
+  Intelligems runs two dated change surfaces: a product-updates stream on the marketing
+  site (platform-wide, roughly monthly with quarterly recaps) and a versioned change log
+  for the @intelligems/headless SDK. Neither the External API nor the MCP server has its
+  own changelog — API changes surface inside the platform product updates. Recent window
+  only; the live pages are the source of truth.
+streams:
+  - id: platform
+    name: Product Updates
+    url: https://www.intelligems.io/resources/product-updates
+    scheme: dated posts (monthly) with quarterly recaps
+    entries:
+      - {date: '2026-07-27', title: 'Product Updates - July 27, 2026', highlights: [AI QA agent, Shipping Progress Bar checkout block]}
+      - {date: '2026-07-08', title: 'Q2 2026 Product Recap', type: recap}
+      - {date: '2026-05-26', title: 'Introducing the AI Visual Builder by Intelligems'}
+      - {date: '2026-05-21', title: 'Product Updates - May 21, 2026', highlights: [AI Visual Builder Beta, analytics summaries, subscription discounts]}
+      - {date: '2026-04-15', title: 'Product Updates - April 15, 2026', highlights: [Dynamic Checkout Upsells, Slack Bot, Post-Test Metrics]}
+      - {date: '2026-04-02', title: 'Q1 2026 Product Recap', type: recap, highlights: ['50+ updates', 'MCP server', 'Smart Test Recommendations Beta']}
+      - {date: '2026-04-02', title: Introducing the Intelligems Slack Bot}
+      - {date: '2026-03-18', title: 'Product Updates - March 18, 2026', highlights: [Visual Editor, checkout analytics, Sitewide Analytics Conversion page]}
+      - {date: '2026-02-26', title: 'Product Updates - February 26, 2026', highlights: [Get Inspired page, smart test recommendations, custom metrics]}
+      - {date: '2026-02-06', title: 'Product Updates - February 6, 2026', highlights: [Klaviyo integration, Share Test Results]}
+  - id: headless-sdk
+    name: '@intelligems/headless Change Log'
+    url: https://headless.intelligems.io/change-log
+    scheme: semver, one section per released version (undated on the page; dates below are the npm publish dates)
+    current_version: 1.2.18
+    entries:
+      - version: 1.2.18
+        date: '2026-08-10'
+        breaking: false
+        highlights: ['Fix: useIgCart was not updating cart metafields']
+      - version: 1.2.17
+        date: '2026-05-06'
+        breaking: false
+        highlights: ['Fix: preview widget could fail to display or appear on first page load']
+      - version: 1.2.16
+        date: '2026-02-09'
+        breaking: false
+        highlights:
+          - 'New: intelligemsVitePlugin() exported from the hydrogen-only entry point'
+          - 'New: Redirects API — useIgVariation/useIgVariations return a redirects field'
+          - 'New: productId and plpCollectionId included in page-view tracking payloads'
+          - 'New: product targeting supported in experience evaluation'
+      - version: 1.2.15-beta
+        date: '2025-10-02'
+        breaking: false
+        highlights: ['Fix: flash of default content before the test group rendered when using the Intelligems loader']
+      - version: 1.2.14
+        date: '2025-08-25'
+        breaking: false
+        highlights: ['New: active currency inferred from the cart for targeting', 'Fix: duplicate GA/integration tracking events']
+      - version: 1.2.13
+        date: '2025-08-20'
+        breaking: false
+        highlights: ['New: useLocation hook (Hydrogen only)', 'New: window.igVersion set by the provider']
+      - version: 1.2.11
+        date: '2025-08-05'
+        breaking: false
+        highlights: ['New: useIgPrices returns experienceId and variationId alongside price data']
+      - version: 1.1.0
+        date: '2025-02-25'
+        breaking: false
+        highlights: [Personalization and Gift with Purchase support, shipping test support, 'new hooks: useIgOffer / useIgOfferTier / useIgOffers']
+      - version: 1.0.0
+        date: '2024-08-06'
+        breaking: true
+        highlights:
+          - 'Breaking: useIgExperiments -> useIgExperiences, useIgTestGroups -> useIgVariations, useIgTestGroup -> useIgVariation'
+          - 'Breaking: useIgCheckout removed, combined into useIgCart'
+          - 'New: exclusion groups and custom events supported'
+api_versioning:
+  external_api: v25-10-beta
+  note: >-
+    The External API carries a calendar-style beta version in the path. The Available
+    Endpoints page marks GET /v25-10-beta/analytics/resource/{experienceId} as deprecated
+    and states it is removed when the beta ends — the only documented API-level change
+    notice found.
+x-evidence:
+  - {url: 'https://www.intelligems.io/resources/product-updates', status: 200, fetched: '2026-08-13'}
+  - {url: 'https://headless.intelligems.io/change-log.md', status: 200, fetched: '2026-08-13'}
+  - {url: 'https://registry.npmjs.org/@intelligems/headless', status: 200, fetched: '2026-08-13', note: version publish dates}

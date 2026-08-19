@@ -1,0 +1,60 @@
+generated: '2026-08-13'
+method: searched
+source: https://www.intelligems.io/pricing
+note: >-
+  Intelligems prices the merchant platform, not API access — there is no separate API
+  plan, no per-call pricing and no published API quota. Every plan is billed per
+  Shopify store with a three-month minimum commitment; the External API and the MCP
+  server are included with the subscription and are not sold separately. Individual
+  module list prices are shown on the page through a configurator rather than as a
+  static table, so only the values printed on the page are recorded here.
+currency: USD
+billing_periods: [monthly, annual]
+annual_discount: 'extra 20% off when billed annually'
+minimum_commitment: 3 months
+trial:
+  available: true
+  length_days: 14
+  credit_card_required: false
+plan_count: 2
+plans:
+  - name: Unlimited
+    price: 1279
+    list_price: 2894
+    currency: USD
+    period: month
+    discount_note: 'Save 44% off the regular $2,894/month'
+    minimum_commitment: 3 months
+    quota:
+      orders: 'Up to 200,000 orders'
+    included_modules: [Smart Content, Smart Merchandising, Smart Pricing, Smart Shipping, Smart Checkout, Smart Post-Purchase]
+    features:
+      - Unlimited testing and personalizations
+      - Unlimited AI usage
+      - Dedicated success manager
+      - Storefront audit
+      - White-glove onboarding
+    api_access: included
+  - name: Build Your Own
+    price: null
+    currency: USD
+    period: month
+    description: >-
+      Select individual modules; the price is the sum of the chosen modules with a
+      bundle discount. Module tiers are published for Smart Pricing.
+    bundle_discounts:
+      - {modules: 2, discount: '5%'}
+      - {modules: 3, discount: '10%'}
+      - {modules: '4+', discount: '15%'}
+    module_tiers:
+      - module: Smart Pricing
+        tiers:
+          - {name: 'Limited (Tier 1)', limit: '1 price test per month (12 per year)', minimum_commitment: 3 months}
+          - {name: 'Unlimited (Tier 2)', limit: 'Unlimited concurrent tests, plus multi-currency support', minimum_commitment: 3 months}
+    api_access: included
+enterprise_contact_sales: false
+custom_pricing_note: Agencies and multi-brand partners are directed to request custom pricing.
+signup: https://apps.shopify.com/intelligems
+demo: https://www.intelligems.io/book-a-demo
+x-evidence:
+  - {url: 'https://www.intelligems.io/pricing', status: 200, fetched: '2026-08-13'}

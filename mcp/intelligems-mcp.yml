@@ -1,60 +1,244 @@
-generated: '2026-07-19'
+generated: '2026-08-13'
 method: searched
 status: published
-source: https://docs.intelligems.io/developer-resources/mcp-server
+source: https://docs.intelligems.io/developer-resources/mcp-server/available-tools
+note: >-
+  Rewritten 2026-08-13 from Intelligems' own "Available Tools" reference. The tool surface
+  has grown from the 30 tools captured on 2026-07-19 to 46, adding the price-test
+  prepare/review/commit tools, the get_variation_* analytics family, the Shopify
+  catalog/ShopifyQL reporting tools and get_shop_info; `switch_organization` is gone (every
+  tool now takes an optional `organization` parameter instead). Live `tools/list`
+  introspection is OAuth-gated (HTTP 401 + WWW-Authenticate), so tool names, descriptions
+  and parameters below are the provider's published documentation rather than a live
+  schema dump — no inputSchema is asserted. The previous version of this file had a YAML
+  quoting defect that split tool descriptions on commas and lost one tool name; that is
+  fixed here.
+deployment:
+  mode: remote
+  endpoint: https://ai.intelligems.io/mcp
+  auth: oauth
+  verified: probed
+  probe:
+    url: https://ai.intelligems.io/mcp
+    method: POST tools/list
+    status: 401
+    challenge: 'Bearer realm="mcp", resource="https://ai.intelligems.io/mcp"'
+    checked: '2026-08-13'
+  note: >-
+    Hosted remote server — an MCP client POSTs directly to the endpoint after an OAuth
+    authorization-code (PKCE S256) flow with dynamic client registration. Intelligems
+    ships no stdio package; there is nothing to npx or pip install.
 server:
   name: intelligems
   transport: http
   url: https://ai.intelligems.io/mcp
   sse_url: https://ai.intelligems.io/mcp/sse
   auth: oauth2
+  auth_metadata:
+    authorization_server: https://ai.intelligems.io/.well-known/oauth-authorization-server
+    protected_resource: https://ai.intelligems.io/.well-known/oauth-protected-resource
+    scopes: [member]
   auth_notes: >-
-    OAuth2-authenticated. During setup you authenticate with an Intelligems
-    organization account; most tools accept an optional `organization` parameter
-    to select which organization's data to access.
+    Authenticate with an Intelligems organization account during client setup. Every tool
+    accepts an optional `organization` parameter (name or ID) so agencies and multi-store
+    operators can work across organizations in one session.
+  conventions:
+    ids: Experience and experiment IDs are UUIDs.
+    currency: Money values are returned in the store's default currency; check with get_shop_info.
+    large_results: >-
+      Tools that can return very large datasets (exports, full price matrices) return a
+      presigned S3 download URL valid for roughly 15 minutes instead of inlining data.
+    writes: Write tools prompt the user for confirmation in the AI client.
   clients:
-    - name: Claude
-      docs: https://docs.intelligems.io/developer-resources/mcp-server/claude
-      recommended: true
-    - name: ChatGPT
-      docs: https://docs.intelligems.io/developer-resources/mcp-server/chatgpt
-    - name: Google Gemini
-      docs: https://docs.intelligems.io/developer-resources/mcp-server/google-gemini
+    - {name: Claude, docs: 'https://docs.intelligems.io/developer-resources/mcp-server/claude', recommended: true}
+    - {name: ChatGPT, docs: 'https://docs.intelligems.io/developer-resources/mcp-server/chatgpt'}
+    - {name: Google Gemini, docs: 'https://docs.intelligems.io/developer-resources/mcp-server/google-gemini'}
+tool_count: 46
 tools:
-  # Organization & Configuration
-  - { name: list_organizations, description: List Intelligems organizations you have access to (filter by install status, sortable). }
-  - { name: get_organization, description: Get org details including currency, timezone, Shopify settings, and enabled features. }
-  - { name: switch_organization, description: Switch the active organization context for subsequent tool calls. }
-  - { name: list_integrations, description: List active integrations (Google Analytics, Klaviyo, Recharge, Slack, etc.). }
-  # Experiences & Experiments
-  - { name: search_experiences, description: Discover experiences of any type; returns minimal info. }
-  - { name: search_experiments, description: Search A/B tests and experiments (minimal return). }
-  - { name: search_personalizations, description: Search personalizations (minimal return). }
-  - { name: list_experiments, description: Full experiment details including variations, targeting rules, and configuration. }
-  - { name: list_personalizations, description: Full personalization details including variations, targeting rules, and configuration. }
-  - { name: get_experience, description: Detailed info about a specific experience (variations, targeting, configuration). }
-  - { name: get_experience_metrics_config, description: Configured success metrics for an experience (revenue, conversion rate, AOV, custom goals). }
-  - { name: create_experience, description: Create a new experience/experiment with org-specific configuration fields. }
-  - { name: update_experience, description: Update variations, targeting rules, traffic allocation, or other configuration. }
-  - { name: experience_action, description: Perform a lifecycle action on an experience (start, pause, end). }
-  - { name: analyze_experience, description: A/B test results, statistical significance, and variation comparison. }
-  # Shopify Store Data
-  - { name: search_products, description: Search the Shopify product catalog by keyword, name, or description. }
-  - { name: list_collections, description: Browse or search product collections in the Shopify store. }
-  - { name: list_pages, description: Browse or search content pages (About, Contact, FAQ, Terms, etc.). }
-  - { name: search_policies, description: Search store policies, FAQs, shipping, returns, privacy, and store rules. }
-  # Analytics & Audience Data
-  - { name: get_sitewide_analytics, description: Sitewide analytics summary (revenue per visitor, net revenue, conversion rate). }
-  - { name: get_audience_by_country, description: A/B test performance by visitor country/geography. }
-  - { name: get_audience_by_device, description: A/B test performance by device type (desktop, mobile, tablet). }
-  - { name: get_audience_by_visitor_type, description: Compare A/B test performance for new vs returning visitors. }
-  - { name: get_audience_by_source_channel, description: A/B test performance by acquisition channel (organic, paid, social, email, direct). }
-  - { name: get_audience_by_source_site, description: A/B test performance by referring website/domain. }
-  - { name: get_audience_by_landing_page, description: A/B test performance by landing page URL. }
-  # Visualization & Charting
-  - { name: generate_intelligems_graph, description: Generate official Intelligems analytics chart images for an experiment. }
-  - { name: generate_custom_graph, description: Generate a branded Intelligems chart from raw data. }
-  # Custom Events
-  - { name: list_custom_events, description: List custom tracking events (page views, clicks, scroll depth, custom JS events). }
-  # Offers
-  - { name: list_offers, description: List offers (tiered discounts, cart discounts, free gifts, free shipping). }
+  - name: list_organizations
+    category: organization
+    description: "List all Intelligems organizations you have access to; filter by installation status and sort."
+    parameters: [isInstalled, sortBy, nameContains, limit]
+  - name: get_organization
+    category: organization
+    description: "Organization detail including currency, timezone, Shopify settings and enabled features."
+    parameters: [organization]
+  - name: get_shop_info
+    category: organization
+    description: "Store metadata: store name, domain, currency, Shopify plan and timezone."
+    parameters: [organization]
+  - name: list_integrations
+    category: organization
+    description: "List active integrations for an organization (Google Analytics, Klaviyo, Recharge, Slack, etc.)."
+    parameters: [enabled, integrationName, nameContains, limit, organization]
+  - name: search_experiments
+    category: discovery
+    description: "Find A/B tests, price tests and experiments; returns minimal info (id, name, status, type, timestamps, variation count)."
+    parameters: [status, nameContains, sortBy, sortOrder, limit, page, organization]
+  - name: search_experiences
+    category: discovery
+    description: "Same as search_experiments but for experiences (long-running, evergreen shopper experiences)."
+    parameters: [status, nameContains, sortBy, sortOrder, limit, page, organization]
+  - name: list_experiments
+    category: discovery
+    description: "Full experiment details including variations, targeting rules and configuration."
+    parameters: [status, nameContains, sortBy, sortOrder, limit, page, organization]
+  - name: get_experiences_list_full
+    category: discovery
+    description: "Full experience details including variations, targeting rules and configuration."
+    parameters: [status, nameContains, sortBy, sortOrder, limit, page, organization]
+  - name: get_experience
+    category: discovery
+    description: "Detailed information about one specific experiment or experience."
+    parameters: [id, organization]
+  - name: get_experience_metrics_config
+    category: discovery
+    description: "The success metrics configured for a test (revenue, conversion rate, AOV, custom goals) — configuration only, not results."
+    parameters: [experienceId, organization]
+  - name: create_experience
+    category: write
+    description: "Create a new experience or experiment; created as a draft that reaches no shoppers until started."
+    parameters: [experience configuration fields, organization]
+  - name: update_experience
+    category: write
+    description: "Update the non-price fields of an experience: metadata, variations, targeting rules, traffic allocation."
+    parameters: [id, fields to change, organization]
+  - name: experience_action
+    category: write
+    description: "Perform a lifecycle action on an experience: start, pause or end."
+    parameters: [id, action, organization]
+  - name: get_price_test_products
+    category: price-test
+    description: "Read current per-variant prices and test groups for a price test; large result sets return a presigned S3 URL."
+    parameters: [experienceId, productTitleContains, variantTitleContains, organization]
+  - name: prepare_price_test_products
+    category: price-test
+    description: "Stage a relative price transform (percent or dollar delta, optional rounding) across a test group and return a diff plus a productVariantAction reference."
+    parameters: [experienceId, scope, transform, organization]
+  - name: commit_price_test_products
+    category: price-test
+    description: "Apply a staged price change by passing back the productVariantAction reference; processed asynchronously."
+    parameters: [experienceId, productVariantAction, organization]
+  - name: analyze_experience
+    category: analytics
+    description: "The main results tool — performance metrics, statistical significance and variation comparisons, with optional verdict and rendered charts."
+    parameters: [experienceId, view, audience, testResult, analyticsViewType, includeInTestOrders, topN, graphs, start, end, filters, organization]
+  - name: get_variation_overview
+    category: analytics
+    description: "Overall performance metrics per variation with uplift vs control, p2bb, p2bc and confidence intervals."
+    parameters: [id, metrics, startTs, endTs, filters, organization]
+  - name: get_variation_audience
+    category: analytics
+    description: "The same metrics as get_variation_overview broken out per segment per variation."
+    parameters: [id, audience, topN, metrics, startTs, endTs, filters, organization]
+  - name: get_variation_products
+    category: analytics
+    description: "Product-level or variant-level test metrics per variation, including profit columns when COGS is configured."
+    parameters: [id, returnVariants, topN, includeCheckoutUpsellBreakdown, includePostPurchaseOfferBreakdown, filters, organization]
+  - name: get_variation_timeseries
+    category: analytics
+    description: "Test metrics over time per variation, cumulative or discrete."
+    parameters: [id, interval, mode, metrics, startTs, endTs, filters, organization]
+  - name: get_experience_timeseries
+    category: analytics
+    description: "Per-variant metrics over time using a filters object rather than flat filter parameters."
+    parameters: [experienceId, granularity, mode, metrics, startTs, endTs, filters, organization]
+  - name: get_experience_export
+    category: analytics
+    description: "Order-level or line-item-level CSV export for an experience; returns a presigned S3 URL valid roughly 15 minutes."
+    parameters: [experienceId, exportType, startTs, endTs, filters, organization]
+  - name: get_sitewide_snapshot
+    category: sitewide
+    description: "Current-state store KPIs with period-over-period percent change."
+    parameters: [feature, start, end, filters, organization]
+  - name: get_sitewide_timeseries
+    category: sitewide
+    description: "Sitewide metrics over time, including per-session and per-unit rates the snapshot cannot compute."
+    parameters: [feature, granularity, start, end, filters, organization]
+  - name: get_sitewide_order_distribution
+    category: sitewide
+    description: "Order-value histogram plus unit-mix breakdown for the store."
+    parameters: [start, end, filters, organization]
+  - name: get_sitewide_conversion_funnel
+    category: sitewide
+    description: "Sitewide conversion funnel as a Sankey graph across traffic source, landing page, cart, checkout and conversion."
+    parameters: [start, end, filters, organization]
+  - name: get_event_snapshot
+    category: benchmark
+    description: "KPI snapshot for a seasonal event (BFCM, Labor Day, Memorial Day, Presidents' Day) versus prior years."
+    parameters: [event selector, comparison period, organization]
+  - name: get_event_timeseries
+    category: benchmark
+    description: "Seasonal event benchmarking data as a time series across the event window."
+    parameters: [event selector, comparison period, granularity, organization]
+  - name: search_products
+    category: shopify-catalog
+    description: "Search the Shopify product catalog by keyword, title, description or tags."
+    parameters: [query, limit, organization]
+  - name: list_products
+    category: shopify-catalog
+    description: "List store products via the Shopify Admin API with filtering by title, vendor or tag."
+    parameters: [title, vendor, tag, pagination, organization]
+  - name: get_product
+    category: shopify-catalog
+    description: "Detail for a single product by handle or ID; pass format json to get variant IDs."
+    parameters: [handle or id, format, organization]
+  - name: get_products
+    category: shopify-catalog
+    description: "Title, product type and collection membership for many products by ID in one call."
+    parameters: [product ids, organization]
+  - name: list_collections
+    category: shopify-catalog
+    description: "Browse or search product collections."
+    parameters: [first, after, query, organization]
+  - name: get_collection_products
+    category: shopify-catalog
+    description: "Products within a collection by URL handle — the usual way to scope a price test."
+    parameters: [collection handle, organization]
+  - name: list_pages
+    category: shopify-catalog
+    description: "Browse or search store content pages (About, Contact, FAQ, Terms)."
+    parameters: [first, after, query, organization]
+  - name: search_policies
+    category: shopify-catalog
+    description: "Search store policies, FAQs, shipping info, returns, privacy and other store rules."
+    parameters: [query, organization]
+  - name: get_sales_overview
+    category: shopify-sales
+    description: "Overall store performance from Shopify's own data: total sales, orders, AOV and returning-customer rate by period."
+    parameters: [period, start_ts, end_ts, group_by, format, organization]
+  - name: get_revenue_by_product
+    category: shopify-sales
+    description: "Product revenue rankings: net_sales, orders, net_items_sold and pct_revenue."
+    parameters: [sort, limit, period, start_ts, end_ts, format, organization]
+  - name: get_revenue_by_product_timeseries
+    category: shopify-sales
+    description: "Product metrics over time as a pivot table per metric."
+    parameters: [period, start_ts, end_ts, granularity, format, organization]
+  - name: get_shopifyql_reference
+    category: shopify-sales
+    description: "Discover the ShopifyQL datasets and fields available to the store."
+    parameters: [organization]
+  - name: run_shopifyql_query
+    category: shopify-sales
+    description: "Execute an arbitrary ShopifyQL query against the Shopify Analytics API; paginated automatically up to 10,000 rows."
+    parameters: [query, format, organization]
+  - name: generate_intelligems_graph
+    category: charts
+    description: "Render branded Intelligems chart images for an experiment; 30 chart IDs available. Returns S3 URLs to PNGs."
+    parameters: [experienceId, graphs, organization]
+  - name: generate_custom_graph
+    category: charts
+    description: "Render a branded Intelligems chart image from raw data for custom datasets or metrics."
+    parameters: [data, organization]
+  - name: list_custom_events
+    category: events-offers
+    description: "List custom tracking events configured for the organization (page views, clicks, scroll depth, custom JS) — configuration, not event data."
+    parameters: [organization]
+  - name: list_offers
+    category: events-offers
+    description: "List offers configured for the organization: tiered discounts, cart discounts, free gifts, free shipping."
+    parameters: [enabled, isTest, isArchived, applicationType, nameContains, limit, organization]
+x-evidence:
+  - {url: 'https://docs.intelligems.io/developer-resources/mcp-server/available-tools.md', status: 200, fetched: '2026-08-13'}
+  - {url: 'https://ai.intelligems.io/mcp', status: 401, fetched: '2026-08-13', note: 'tools/list is OAuth-gated'}

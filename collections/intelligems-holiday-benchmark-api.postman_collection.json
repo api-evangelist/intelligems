@@ -1,0 +1,747 @@
+{
+  "item": [
+    {
+      "id": "0c2819c8-d2eb-4934-9716-e2ec23a19f9d",
+      "name": "Holiday Benchmark",
+      "description": {
+        "content": "Seasonal event / holiday benchmark analytics.",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "20ca31fc-5d6b-48be-b669-ef0894c307c9",
+          "name": "Fetch benchmark event snapshot",
+          "request": {
+            "name": "Fetch benchmark event snapshot",
+            "description": {
+              "content": "Benchmark event snapshot metrics for a seasonal event.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v25-10-beta",
+                "analytics",
+                "event",
+                "snapshot"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"event\": \"<string>\",\n  \"metric\": \"<string>\",\n  \"start\": \"<dateTime>\",\n  \"end\": \"<dateTime>\",\n  \"year\": \"<integer>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "a90a9b7d-1d29-4f2d-900a-d7101b5e95d0",
+              "name": "OK",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v25-10-beta",
+                    "analytics",
+                    "event",
+                    "snapshot"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "intelligems-access-token",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"event\": \"<string>\",\n  \"metric\": \"<string>\",\n  \"start\": \"<dateTime>\",\n  \"end\": \"<dateTime>\",\n  \"year\": \"<integer>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "disabled": false,
+                  "description": "CORS allow-origin header.",
+                  "key": "access-control-allow-origin",
+                  "value": "string"
+                },
+                {
+                  "disabled": false,
+                  "description": "CORS allow-credentials header.",
+                  "key": "access-control-allow-credentials",
+                  "value": "string"
+                },
+                {
+                  "disabled": false,
+                  "description": "Allowed origin for Timing headers.",
+                  "key": "Timing-Allow-Origin",
+                  "value": "string"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"currency\": \"string\",\n  \"snapshot\": {\n    \"periodToDateValue\": 8887.514416273165,\n    \"vsLastYear\": 3349.5639049040137,\n    \"avgDailyIndexPercent\": 5860.908383262755,\n    \"currentIndexPercent\": 9930.994947022902\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "c88c1e5c-f628-4fe1-9dec-872b117e9747",
+              "name": "Validation error (invalid query/body values). Per-field messages under properties.<field>.errors.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v25-10-beta",
+                    "analytics",
+                    "event",
+                    "snapshot"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "intelligems-access-token",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"event\": \"<string>\",\n  \"metric\": \"<string>\",\n  \"start\": \"<dateTime>\",\n  \"end\": \"<dateTime>\",\n  \"year\": \"<integer>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"errors\": [\n    \"string\",\n    \"string\"\n  ],\n  \"properties\": {\n    \"key_0\": {\n      \"errors\": [\n        \"string\",\n        \"string\"\n      ]\n    }\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "dd1fca62-ca73-4c57-8109-480e2a51d08b",
+              "name": "Unauthorized (invalid or missing API key).",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v25-10-beta",
+                    "analytics",
+                    "event",
+                    "snapshot"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "intelligems-access-token",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"event\": \"<string>\",\n  \"metric\": \"<string>\",\n  \"start\": \"<dateTime>\",\n  \"end\": \"<dateTime>\",\n  \"year\": \"<integer>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "e50f0cec-fd4d-4b1c-b796-ac0ded7a32c4",
+              "name": "Rate limit exceeded. See x-ratelimit-limit / x-ratelimit-remaining / x-ratelimit-reset headers.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v25-10-beta",
+                    "analytics",
+                    "event",
+                    "snapshot"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "intelligems-access-token",
+                    "value": "<API Key>"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"event\": \"<string>\",\n  \"metric\": \"<string>\",\n  \"start\": \"<dateTime>\",\n  \"end\": \"<dateTime>\",\n  \"year\": \"<integer>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Too Many Requests",
+              "code": 429,
+              "header": [
+                {
+                  "disabled": false,
+                  "description": "Bucket size for the endpoint.",
+                  "key": "x-ratelimit-limit",
+                  "value": "3317"
+                },
+                {
+                  "disabled": false,
+                  "description": "Remaining tokens in the current bucket.",
+                  "key": "x-ratelimit-remaining",
+                  "value": "3317"
+                },
+                {
+                  "disabled": false,
+                  "description": "Unix timestamp (ms) at which the bucket next refills.",
+                  "key": "x-ratelimit-reset",
+                  "value": "3317"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "5d41c0a9-ad9c-4e8a-b105-768b3a646aee",
+              "name": "Internal server error.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v25-10-beta",
+                    "analytics",
+                    "event",
+                    "snapshot"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "intelligems-access-token",
+                    "value": "<API Key>"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"event\": \"<string>\",\n  \"metric\": \"<string>\",\n  \"start\": \"<dateTime>\",\n  \"end\": \"<dateTime>\",\n  \"year\": \"<integer>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "e0586df5-930c-42a5-b5e2-06d6ecef5d68",
+          "name": "Fetch benchmark event timeseries",
+          "request": {
+            "name": "Fetch benchmark event timeseries",
+            "description": {
+              "content": "Benchmark event metric-over-time data.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v25-10-beta",
+                "analytics",
+                "event",
+                "timeseries"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"event\": \"<string>\",\n  \"metric\": \"<string>\",\n  \"xAxis\": \"<string>\",\n  \"granularity\": \"<string>\",\n  \"mode\": \"<string>\",\n  \"start\": \"<dateTime>\",\n  \"end\": \"<dateTime>\",\n  \"year\": \"<integer>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "112fe24e-fcc6-4170-9f90-47d685f4b88e",
+              "name": "OK",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v25-10-beta",
+                    "analytics",
+                    "event",
+                    "timeseries"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "intelligems-access-token",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"event\": \"<string>\",\n  \"metric\": \"<string>\",\n  \"xAxis\": \"<string>\",\n  \"granularity\": \"<string>\",\n  \"mode\": \"<string>\",\n  \"start\": \"<dateTime>\",\n  \"end\": \"<dateTime>\",\n  \"year\": \"<integer>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "disabled": false,
+                  "description": "CORS allow-origin header.",
+                  "key": "access-control-allow-origin",
+                  "value": "string"
+                },
+                {
+                  "disabled": false,
+                  "description": "CORS allow-credentials header.",
+                  "key": "access-control-allow-credentials",
+                  "value": "string"
+                },
+                {
+                  "disabled": false,
+                  "description": "Allowed origin for Timing headers.",
+                  "key": "Timing-Allow-Origin",
+                  "value": "string"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"currency\": \"string\",\n  \"data\": [\n    {\n      \"dt\": \"string\",\n      \"dayOffset\": -4559482508086894,\n      \"currentValue\": 2431.288243746852,\n      \"baselineValue\": 9639.333712604735,\n      \"priorYearValue\": 222.09318137645374,\n      \"currentYearIndex\": 1256.7344793987845,\n      \"priorYearIndex\": 1169.8052767245003,\n      \"brandIndex\": 8164.623314227239\n    },\n    {\n      \"dt\": \"string\",\n      \"dayOffset\": -1602900435659858,\n      \"currentValue\": 620.909193123903,\n      \"baselineValue\": 5930.0070352738885,\n      \"priorYearValue\": 4384.203911035318,\n      \"currentYearIndex\": 8063.757096288538,\n      \"priorYearIndex\": 1409.5134391576091,\n      \"brandIndex\": 515.311834452028\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "5ad329e4-28e5-400b-b032-cbbb7f43e304",
+              "name": "Validation error (invalid query/body values). Per-field messages under properties.<field>.errors.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v25-10-beta",
+                    "analytics",
+                    "event",
+                    "timeseries"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "intelligems-access-token",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"event\": \"<string>\",\n  \"metric\": \"<string>\",\n  \"xAxis\": \"<string>\",\n  \"granularity\": \"<string>\",\n  \"mode\": \"<string>\",\n  \"start\": \"<dateTime>\",\n  \"end\": \"<dateTime>\",\n  \"year\": \"<integer>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"errors\": [\n    \"string\",\n    \"string\"\n  ],\n  \"properties\": {\n    \"key_0\": {\n      \"errors\": [\n        \"string\",\n        \"string\"\n      ]\n    },\n    \"key_1\": {\n      \"errors\": [\n        \"string\",\n        \"string\"\n      ]\n    }\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "f5a18b4d-b7a3-4ba9-a322-c0bb609cf259",
+              "name": "Unauthorized (invalid or missing API key).",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v25-10-beta",
+                    "analytics",
+                    "event",
+                    "timeseries"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "intelligems-access-token",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"event\": \"<string>\",\n  \"metric\": \"<string>\",\n  \"xAxis\": \"<string>\",\n  \"granularity\": \"<string>\",\n  \"mode\": \"<string>\",\n  \"start\": \"<dateTime>\",\n  \"end\": \"<dateTime>\",\n  \"year\": \"<integer>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "4f1ec392-6169-4e7c-93fe-f2b775161009",
+              "name": "Rate limit exceeded. See x-ratelimit-limit / x-ratelimit-remaining / x-ratelimit-reset headers.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v25-10-beta",
+                    "analytics",
+                    "event",
+                    "timeseries"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "intelligems-access-token",
+                    "value": "<API Key>"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"event\": \"<string>\",\n  \"metric\": \"<string>\",\n  \"xAxis\": \"<string>\",\n  \"granularity\": \"<string>\",\n  \"mode\": \"<string>\",\n  \"start\": \"<dateTime>\",\n  \"end\": \"<dateTime>\",\n  \"year\": \"<integer>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Too Many Requests",
+              "code": 429,
+              "header": [
+                {
+                  "disabled": false,
+                  "description": "Bucket size for the endpoint.",
+                  "key": "x-ratelimit-limit",
+                  "value": "3317"
+                },
+                {
+                  "disabled": false,
+                  "description": "Remaining tokens in the current bucket.",
+                  "key": "x-ratelimit-remaining",
+                  "value": "3317"
+                },
+                {
+                  "disabled": false,
+                  "description": "Unix timestamp (ms) at which the bucket next refills.",
+                  "key": "x-ratelimit-reset",
+                  "value": "3317"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "36b18b45-54d3-479a-b965-4cb41ee0ba16",
+              "name": "Internal server error.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v25-10-beta",
+                    "analytics",
+                    "event",
+                    "timeseries"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "intelligems-access-token",
+                    "value": "<API Key>"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"event\": \"<string>\",\n  \"metric\": \"<string>\",\n  \"xAxis\": \"<string>\",\n  \"granularity\": \"<string>\",\n  \"mode\": \"<string>\",\n  \"start\": \"<dateTime>\",\n  \"end\": \"<dateTime>\",\n  \"year\": \"<integer>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "https://api.intelligems.io",
+      "key": "baseUrl"
+    }
+  ],
+  "auth": {
+    "type": "apikey",
+    "apikey": [
+      {
+        "key": "key",
+        "value": "intelligems-access-token"
+      },
+      {
+        "key": "value",
+        "value": "{{apiKey}}"
+      },
+      {
+        "key": "in",
+        "value": "header"
+      }
+    ]
+  },
+  "info": {
+    "_postman_id": "ffe0d6cd-3e04-4c32-9474-9505a34ca80f",
+    "name": "Intelligems External Holiday Benchmark API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "Programmatic access to manage Intelligems A/B tests, personalizations, and experiences, to define custom events, and to pull experiment and sitewide analytics for a Shopify store. Authenticate with an API key in the `intelligems-access-token` header.\n\nContact Support:\n Name: Intelligems",
+      "type": "text/plain"
+    }
+  }
+}

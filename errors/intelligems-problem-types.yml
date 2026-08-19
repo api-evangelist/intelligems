@@ -1,26 +1,60 @@
-generated: '2026-07-19'
+generated: '2026-08-13'
 method: searched
 source: https://docs.intelligems.io/developer-resources/external-api/intelligems-external-api/errors
 format: custom-json
+rfc9457: false
 envelope:
   validation: >-
     {"errors":[], "properties":{"<fieldName>":{"errors":["<validation message>"]}}}
     — top-level errors[] holds request-level errors (empty for typical field
     validation); per-field messages live under properties.<fieldName>.errors.
-  auth: '{"error":"Unauthorized"}'  # may be "Unauthorized" or "Unauthorized!"
+  auth: '{"error":"Unauthorized"}'
+  auth_note: >-
+    The docs state the Unauthorized value is always the literal "Unauthorized", for a
+    missing header, an empty header, or any invalid key — the API deliberately does not
+    distinguish the three.
 problems:
   - status: 400
     title: Validation error
     meaning: Invalid query or body values. Field messages under properties.<field>.errors.
+    remediation: >-
+      Fix the named field. Filter operators that expect values (everything except isNull
+      and isNotNull) return 400 when the value is missing or empty rather than matching
+      nothing.
+    applies_to: all operations
   - status: 401
     title: Unauthorized
     meaning: Invalid or missing API key (intelligems-access-token header).
+    remediation: Send a valid organization API key in the intelligems-access-token header.
+    applies_to: all operations
+  - status: 403
+    title: Plan does not include this feature
+    meaning: >-
+      Returned by the custom-events endpoint when the organization's plan does not include
+      custom-events tracking — on both create and update.
+    remediation: Upgrade the plan or drop the custom-events integration.
+    applies_to: openapi/intelligems-custom-events-api-openapi.yml#createOrUpdateCustomEvent
+    source: https://docs.intelligems.io/developer-resources/external-api/create-custom-event
   - status: 404
     title: Not found
-    meaning: Resource not found.
+    meaning: Resource not found — an unknown experienceId.
+    remediation: List experiences first and use the returned UUID.
+    applies_to: operations taking {experienceId}
   - status: 429
     title: Rate limit exceeded
-    meaning: Token bucket exhausted. See x-ratelimit-* headers and rate-limits/intelligems-rate-limits.yml.
+    meaning: Token bucket exhausted.
+    remediation: >-
+      Back off until x-ratelimit-reset (Unix ms). Error responses do not carry rate-limit
+      headers, so read them from successful responses.
+    see: rate-limits/intelligems-rate-limits.yml
+    applies_to: all operations
   - status: 500
     title: Internal server error
     meaning: Server-side error.
+    remediation: Retry with backoff; there is no idempotency key, so do not blindly retry creates.
+    applies_to: all operations
+notes: >-
+  Intelligems' own published OpenAPI declares only the 200 response per operation; the
+  4xx/5xx catalogue above comes from the Errors and Create Custom Event documentation
+  pages and is what API Evangelist wired into the refined specs (see
+  overlays/intelligems-external-api-overlay.yaml).

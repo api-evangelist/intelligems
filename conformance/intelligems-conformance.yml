@@ -1,25 +1,72 @@
-generated: '2026-07-19'
+generated: '2026-08-13'
 method: derived
-source: openapi/intelligems-external-api-openapi.yml
+source: openapi/_original/intelligems-external-api-openapi.yml + probed /.well-known metadata
 standards:
+  - id: openapi-3.1
+    conforms: true
+    evidence: >-
+      Intelligems publishes OpenAPI 3.1.0 documents inside its own API-reference pages —
+      one per endpoint, with full parameters, request bodies and 200 schemas. Harvested to
+      openapi/_original/intelligems-external-api-openapi.yml.
   - id: oauth2
     conforms: true
-    evidence: Hosted MCP server (ai.intelligems.io/mcp) is OAuth2-authenticated.
+    evidence: >-
+      MCP server at ai.intelligems.io uses OAuth 2.0 authorization-code with PKCE S256
+      and refresh tokens.
+  - id: rfc8414-oauth-authorization-server-metadata
+    conforms: true
+    evidence: 'https://ai.intelligems.io/.well-known/oauth-authorization-server returns 200 with issuer, authorization_endpoint, token_endpoint, registration_endpoint.'
+  - id: rfc9728-oauth-protected-resource-metadata
+    conforms: true
+    evidence: 'https://ai.intelligems.io/.well-known/oauth-protected-resource returns 200 with resource, authorization_servers, scopes_supported: [member].'
+  - id: rfc7591-dynamic-client-registration
+    conforms: true
+    evidence: registration_endpoint https://ai.intelligems.io/oauth/register advertised in the AS metadata.
+  - id: rfc6750-bearer-token
+    conforms: true
+    evidence: 'MCP returns WWW-Authenticate: Bearer realm="mcp" with resource_metadata on an unauthenticated POST; bearer_methods_supported: [header].'
   - id: api-key-auth
     conforms: true
-    evidence: External API authenticates via intelligems-access-token header (apiKey).
+    evidence: External API authenticates via the intelligems-access-token header (apiKey securityScheme).
+  - id: mcp
+    conforms: true
+    evidence: Official Model Context Protocol server with 46 documented tools over HTTP and SSE.
   - id: rfc6585-rate-limit
     conforms: partial
-    evidence: 429 with x-ratelimit-limit / x-ratelimit-remaining / x-ratelimit-reset headers (custom, not RFC 9331 RateLimit fields).
+    evidence: >-
+      429 with x-ratelimit-limit / x-ratelimit-remaining / x-ratelimit-reset headers —
+      custom header names, not the IETF RateLimit fields.
   - id: rfc9457-problem-details
     conforms: false
     evidence: Errors use a custom JSON envelope, not application/problem+json.
-  - id: mcp
+  - id: rfc8594-sunset-header
+    conforms: false
+    evidence: >-
+      Deprecation is marked in the spec (deprecated: true) and in prose, but no
+      Sunset/Deprecation response headers are documented.
+  - id: rfc9116-security-txt
+    conforms: false
+    evidence: /.well-known/security.txt returns 404 on all five Intelligems hosts.
+  - id: a2a-agent-card
+    conforms: false
+    evidence: /.well-known/agent-card.json and /.well-known/agent.json return 404 on all five hosts.
+  - id: asyncapi
+    conforms: false
+    evidence: >-
+      A real webhook surface is documented (6 experience events, HMAC-SHA256 signing) but
+      no AsyncAPI document is published.
+  - id: llms-txt
     conforms: true
-    evidence: Official Model Context Protocol server with 30 tools over HTTP and SSE.
+    evidence: /llms.txt served at www, docs and headless hosts (200, text/markdown).
   - id: json
     conforms: true
     evidence: All External API requests/responses are application/json.
+  - id: webhook-hmac-signing
+    conforms: true
+    evidence: All webhook payloads are signed HMAC-SHA256 with a shared secret; 5 retries, 10s timeout.
+certifications: []
 notes: >-
-  No published third-party compliance certifications (SOC 2, ISO 27001, PCI DSS,
-  HIPAA, FedRAMP) were found, so no Compliance pointer is emitted.
+  No published third-party compliance certifications (SOC 2, ISO 27001, PCI DSS, HIPAA,
+  FedRAMP) and no trust center were found — trust./security. subdomains do not resolve and
+  /security, /trust, /compliance return 404 on the marketing site. No Compliance pointer is
+  emitted.

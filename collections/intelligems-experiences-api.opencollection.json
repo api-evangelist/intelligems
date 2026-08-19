@@ -1,0 +1,157 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Intelligems External Experiences API",
+    "version": "v25-10-beta"
+  },
+  "request": {
+    "auth": {
+      "type": "apikey",
+      "key": "intelligems-access-token",
+      "value": "{{intelligems-access-token}}",
+      "placement": "header"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Experiences",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List experiences",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.intelligems.io/v25-10-beta/experiences-list",
+            "params": [
+              {
+                "name": "category",
+                "value": "",
+                "type": "query",
+                "description": "Filter by experience category. Omit to return all categories."
+              },
+              {
+                "name": "module",
+                "value": "",
+                "type": "query",
+                "description": "Filter by modification type / module (content, checkout, postPurchase, pricing, merchandising, shipping). Category-agnostic. Omit to return all modules."
+              },
+              {
+                "name": "status",
+                "value": "",
+                "type": "query",
+                "description": "Filter by lifecycle status. Omit to return all statuses."
+              },
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query",
+                "description": "Maximum number of experiences per page."
+              },
+              {
+                "name": "page",
+                "value": "",
+                "type": "query",
+                "description": "1-based page number for paginated results."
+              }
+            ]
+          },
+          "docs": "Retrieve a paginated list of experiences (experiments and personalizations), optionally filtered by category, status and module."
+        },
+        {
+          "info": {
+            "name": "Fetch experience data",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.intelligems.io/v25-10-beta/experiences/:experienceId",
+            "params": [
+              {
+                "name": "experienceId",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "includeChangeLog",
+                "value": "",
+                "type": "query",
+                "description": "When true, include a top-level `changeLog` array on the experience containing per-deploy diffs of entities that were modified (experience, variations, offers, onsiteEdits, onsiteInjections, redirects, checkoutBlocks, audiences, pageTargeting). Each entry carries the deployer's email via `performedBy`. Capped at the 20 most recent deploys, newest first. Defaults to false."
+              }
+            ]
+          },
+          "docs": "Get complete details for a specific experience including variations, targeting rules and configuration."
+        },
+        {
+          "info": {
+            "name": "Update experience",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://api.intelligems.io/v25-10-beta/experiences/:experienceId",
+            "params": [
+              {
+                "name": "experienceId",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Update an existing experience's configuration, variations or targeting."
+        },
+        {
+          "info": {
+            "name": "Create experience",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.intelligems.io/v25-10-beta/experiences",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Create a new experience or experiment."
+        },
+        {
+          "info": {
+            "name": "Perform experience action",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.intelligems.io/v25-10-beta/experiences/:experienceId/actions/:action",
+            "params": [
+              {
+                "name": "experienceId",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "action",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Perform a lifecycle action on an experience: start, pause or end."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

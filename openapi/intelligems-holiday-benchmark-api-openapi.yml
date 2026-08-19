@@ -1,12 +1,23 @@
+# x-apievangelist-provenance:
+#   generated: '2026-08-13'
+#   method: searched
+#   source: openapi/_original/intelligems-external-api-openapi.yml
+#   note: >-
+#     Operations, parameters, request bodies and 200 schemas are Intelligems' own published
+#     OpenAPI, harvested verbatim from the embedded spec blocks on its API-reference pages.
+#     API Evangelist added only: operationIds, summaries/descriptions, the canonical tag, and
+#     the documented 4xx/5xx error responses from the published Errors page. See
+#     overlays/intelligems-external-api-overlay.yaml.
 openapi: 3.1.0
 info:
-  title: Intelligems External Analytics Holiday Benchmark API
+  title: Intelligems External Holiday Benchmark API
   version: v25-10-beta
-  description: Programmatic access to manage Intelligems A/B tests, personalizations, and experiences, and to pull experiment and sitewide analytics for a Shopify store. Authenticate with an API key in the `intelligems-access-token` header.
+  description: Programmatic access to manage Intelligems A/B tests, personalizations, and experiences, to define
+    custom events, and to pull experiment and sitewide analytics for a Shopify store. Authenticate with an API key
+    in the `intelligems-access-token` header.
   contact:
     name: Intelligems
     url: https://docs.intelligems.io/developer-resources/external-api
-    email: sales@intelligems.io
 servers:
 - url: https://api.intelligems.io
   description: Production
@@ -14,56 +25,354 @@ security:
 - accessToken: []
 tags:
 - name: Holiday Benchmark
-  description: Event/holiday benchmark analytics.
+  description: Seasonal event / holiday benchmark analytics.
 paths:
   /v25-10-beta/analytics/event/snapshot:
     post:
-      operationId: getHolidayBenchmarkSnapshot
-      summary: Get holiday benchmark snapshot
-      description: Retrieve holiday/event benchmark snapshot analytics.
       tags:
       - Holiday Benchmark
+      description: Benchmark event snapshot metrics for a seasonal event.
       requestBody:
-        $ref: '#/components/requestBodies/JsonBody'
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                event:
+                  type: string
+                  enum:
+                  - BFCM
+                  - laborDay
+                  - memorialDay
+                  - presidentsDay
+                  description: 'Seasonal event identifier. Supported values: "BFCM" (Black Friday / Cyber Monday),
+                    "laborDay", "memorialDay", "presidentsDay".'
+                metric:
+                  type: string
+                  enum:
+                  - revenue
+                  - orders
+                  - priceLevels
+                  description: 'Metric to return. Supported values: "revenue" (net revenue), "orders" (order count),
+                    "priceLevels" (average unit price).'
+                year:
+                  description: Which year of the event to fetch (e.g. 2025 for BFCM 2025). Defaults to the most
+                    recently completed occurrence of the event. The prior-year comparison cohort is always year
+                    - 1. For hourly granularity, leave this unset or pass a year matching `end`'s year — passing
+                    a mismatched year + end will yield nonsensical results.
+                  type: integer
+                  minimum: 2021
+                  maximum: 2026
+                start:
+                  type: string
+                  format: date-time
+                  pattern: ^(?:(?:\d\d[2468][048]|\d\d[13579][26]|\d\d0[48]|[02468][048]00|[13579][26]00)-02-29|\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\d|30)|(?:02)-(?:0[1-9]|1\d|2[0-8])))T(?:(?:[01]\d|2[0-3]):[0-5]\d(?::[0-5]\d(?:\.\d+)?)?(?:Z|([+-](?:[01]\d|2[0-3]):[0-5]\d)))$
+                  description: Required. Start of analysis period as an ISO 8601 datetime string. Used to size the
+                    window before the event (days-before-holiday); does not influence which event year is fetched.
+                    For hourly granularity, ignored. To match the Intelligems dashboard's Q4 view, pass Oct 1 of
+                    the event year (58 days before BFCM).
+                end:
+                  type: string
+                  format: date-time
+                  pattern: ^(?:(?:\d\d[2468][048]|\d\d[13579][26]|\d\d0[48]|[02468][048]00|[13579][26]00)-02-29|\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\d|30)|(?:02)-(?:0[1-9]|1\d|2[0-8])))T(?:(?:[01]\d|2[0-3]):[0-5]\d(?::[0-5]\d(?:\.\d+)?)?(?:Z|([+-](?:[01]\d|2[0-3]):[0-5]\d)))$
+                  description: Required. End of analysis period as an ISO 8601 datetime string. Used to size the
+                    window after the event (days-after-holiday); does not influence which event year is fetched.
+                    For hourly granularity this is interpreted as "the day to analyze" and is expected to fall within
+                    `year`. To match the Intelligems dashboard's Q4 view, pass Dec 31 of the event year (33 days
+                    after BFCM).
+              required:
+              - event
+              - metric
+              - start
+              - end
       responses:
         '200':
-          $ref: '#/components/responses/OK'
-        '400':
+          description: OK
+          headers:
+            access-control-allow-origin:
+              schema:
+                type: string
+              description: CORS allow-origin header.
+            access-control-allow-credentials:
+              schema:
+                type: string
+              description: CORS allow-credentials header.
+            content-type:
+              schema:
+                type: string
+              description: Response content type.
+            Timing-Allow-Origin:
+              schema:
+                type: string
+              description: Allowed origin for Timing headers.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  currency:
+                    type: string
+                    description: ISO 4217 currency code for monetary values (e.g. 'USD').
+                  snapshot:
+                    type: object
+                    properties:
+                      periodToDateValue:
+                        anyOf:
+                        - type: number
+                        - type: 'null'
+                        description: The brand's period-to-date actual value for the selected metric across the
+                          event window.
+                      vsLastYear:
+                        anyOf:
+                        - type: number
+                        - type: 'null'
+                        description: Percent change of the brand's period-to-date value vs the same period in the
+                          prior event year (e.g. 0.12 = +12%).
+                      avgDailyIndexPercent:
+                        anyOf:
+                        - type: number
+                        - type: 'null'
+                        description: The brand's average daily value as a percent of its own full-day baseline,
+                          across the event window. Maps to the dashboard's 'Avg Daily {Metric} (% of typical day)'
+                          tile.
+                      currentIndexPercent:
+                        anyOf:
+                        - type: number
+                        - type: 'null'
+                        description: The industry-wide average daily index across the event window (percent of full-day
+                          baseline, aggregated across the ~1,000-brand basket). Maps to the dashboard's 'Index (%
+                          of typical day)' tile.
+                    required:
+                    - periodToDateValue
+                    - vsLastYear
+                    - avgDailyIndexPercent
+                    - currentIndexPercent
+                    additionalProperties: false
+                    description: KPI snapshot covering the brand's period-to-date event metrics.
+                required:
+                - currency
+                - snapshot
+                additionalProperties: false
+        '400': &id001
           $ref: '#/components/responses/ValidationError'
-        '401':
+        '401': &id002
           $ref: '#/components/responses/Unauthorized'
-        '429':
+        '429': &id003
           $ref: '#/components/responses/RateLimited'
-        '500':
+        '500': &id004
           $ref: '#/components/responses/ServerError'
+      operationId: getHolidayBenchmarkSnapshot
+      summary: Fetch benchmark event snapshot
+      x-source-page: https://docs.intelligems.io/developer-resources/external-api/get-holiday-benchmark-data
   /v25-10-beta/analytics/event/timeseries:
     post:
-      operationId: getHolidayBenchmarkTimeseries
-      summary: Get holiday benchmark timeseries
-      description: Retrieve holiday/event benchmark time-series analytics.
       tags:
       - Holiday Benchmark
+      description: Benchmark event metric-over-time data.
       requestBody:
-        $ref: '#/components/requestBodies/JsonBody'
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                event:
+                  type: string
+                  enum:
+                  - BFCM
+                  - laborDay
+                  - memorialDay
+                  - presidentsDay
+                  description: 'Seasonal event identifier. Supported values: "BFCM" (Black Friday / Cyber Monday),
+                    "laborDay", "memorialDay", "presidentsDay".'
+                metric:
+                  type: string
+                  enum:
+                  - revenue
+                  - orders
+                  - priceLevels
+                  description: 'Metric to return. Supported values: "revenue" (net revenue), "orders" (order count),
+                    "priceLevels" (average unit price).'
+                xAxis:
+                  type: string
+                  enum:
+                  - actualDate
+                  - daysFromEvent
+                  description: How each datapoint's `dt` is labeled. "actualDate" returns an ISO 8601 datetime;
+                    "daysFromEvent" returns a signed integer string (e.g. "-3", "0", "2") relative to the event
+                    day.
+                granularity:
+                  type: string
+                  enum:
+                  - hourly
+                  - daily
+                  description: '"hourly" returns one datapoint per hour for the event day (uses the holiday_benchmarking_single_day
+                    dataset). "daily" returns one datapoint per day across a range spanning the event (uses holiday_benchmarking_multiple_days).'
+                mode:
+                  type: string
+                  enum:
+                  - index
+                  - brand
+                  - brandWithIndex
+                  description: '"index" returns industry-wide index values only (currentYearIndex, priorYearIndex).
+                    "brand" returns the caller''s brand actuals vs baseline (currentValue, baselineValue, priorYearValue).
+                    "brandWithIndex" returns brand actuals plus the brand''s own index (brandIndex) and industry
+                    index overlays.'
+                year:
+                  description: Which year of the event to fetch (e.g. 2025 for BFCM 2025). Defaults to the most
+                    recently completed occurrence of the event. The prior-year comparison cohort is always year
+                    - 1. For hourly granularity, leave this unset or pass a year matching `end`'s year — passing
+                    a mismatched year + end will yield nonsensical results.
+                  type: integer
+                  minimum: 2021
+                  maximum: 2026
+                start:
+                  type: string
+                  format: date-time
+                  pattern: ^(?:(?:\d\d[2468][048]|\d\d[13579][26]|\d\d0[48]|[02468][048]00|[13579][26]00)-02-29|\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\d|30)|(?:02)-(?:0[1-9]|1\d|2[0-8])))T(?:(?:[01]\d|2[0-3]):[0-5]\d(?::[0-5]\d(?:\.\d+)?)?(?:Z|([+-](?:[01]\d|2[0-3]):[0-5]\d)))$
+                  description: Required. Start of analysis period as an ISO 8601 datetime string. Used to size the
+                    window before the event (days-before-holiday); does not influence which event year is fetched.
+                    For hourly granularity, ignored. To match the Intelligems dashboard's Q4 view, pass Oct 1 of
+                    the event year (58 days before BFCM).
+                end:
+                  type: string
+                  format: date-time
+                  pattern: ^(?:(?:\d\d[2468][048]|\d\d[13579][26]|\d\d0[48]|[02468][048]00|[13579][26]00)-02-29|\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\d|30)|(?:02)-(?:0[1-9]|1\d|2[0-8])))T(?:(?:[01]\d|2[0-3]):[0-5]\d(?::[0-5]\d(?:\.\d+)?)?(?:Z|([+-](?:[01]\d|2[0-3]):[0-5]\d)))$
+                  description: Required. End of analysis period as an ISO 8601 datetime string. Used to size the
+                    window after the event (days-after-holiday); does not influence which event year is fetched.
+                    For hourly granularity this is interpreted as "the day to analyze" and is expected to fall within
+                    `year`. To match the Intelligems dashboard's Q4 view, pass Dec 31 of the event year (33 days
+                    after BFCM).
+              required:
+              - event
+              - metric
+              - xAxis
+              - granularity
+              - mode
+              - start
+              - end
       responses:
         '200':
-          $ref: '#/components/responses/OK'
-        '400':
-          $ref: '#/components/responses/ValidationError'
-        '401':
-          $ref: '#/components/responses/Unauthorized'
-        '429':
-          $ref: '#/components/responses/RateLimited'
-        '500':
-          $ref: '#/components/responses/ServerError'
+          description: OK
+          headers:
+            access-control-allow-origin:
+              schema:
+                type: string
+              description: CORS allow-origin header.
+            access-control-allow-credentials:
+              schema:
+                type: string
+              description: CORS allow-credentials header.
+            content-type:
+              schema:
+                type: string
+              description: Response content type.
+            Timing-Allow-Origin:
+              schema:
+                type: string
+              description: Allowed origin for Timing headers.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  currency:
+                    type: string
+                    description: ISO 4217 currency code for monetary values (e.g. 'USD').
+                  data:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        dt:
+                          type: string
+                          description: Datapoint label — an ISO 8601 datetime (when xAxis='actualDate') or a signed
+                            day offset as a string (when xAxis='daysFromEvent').
+                        dayOffset:
+                          description: Signed integer event-offset for this datapoint (0 = event day, negative =
+                            before, positive = after). Present on daily-granularity responses; omitted on hourly
+                            responses.
+                          type: integer
+                          minimum: -9007199254740991
+                          maximum: 9007199254740991
+                        currentValue:
+                          description: Brand actual value for the selected metric during the current event year.
+                            Populated when mode is 'brand' or 'brandWithIndex'.
+                          anyOf:
+                          - type: number
+                          - type: 'null'
+                        baselineValue:
+                          description: Brand typical-day baseline value for the selected metric. Populated when
+                            mode is 'brand' or 'brandWithIndex'.
+                          anyOf:
+                          - type: number
+                          - type: 'null'
+                        priorYearValue:
+                          description: Brand actual value for the selected metric during the prior event year. Populated
+                            when mode is 'brand' or 'brandWithIndex'.
+                          anyOf:
+                          - type: number
+                          - type: 'null'
+                        currentYearIndex:
+                          description: Industry-wide index value (percent of full-day baseline) for the current
+                            event year. Populated when mode is 'index' or 'brandWithIndex'.
+                          anyOf:
+                          - type: number
+                          - type: 'null'
+                        priorYearIndex:
+                          description: Industry-wide index value for the prior event year. Populated when mode is
+                            'index' or 'brandWithIndex'.
+                          anyOf:
+                          - type: number
+                          - type: 'null'
+                        brandIndex:
+                          description: The brand's own value expressed as a percent of its full-day baseline. Populated
+                            when mode is 'brandWithIndex'.
+                          anyOf:
+                          - type: number
+                          - type: 'null'
+                      required:
+                      - dt
+                      additionalProperties: false
+                    description: Array of datapoints indexed by `dt`. Each entry may populate a subset of value
+                      fields depending on the requested `mode`.
+                required:
+                - currency
+                - data
+                additionalProperties: false
+        '400': *id001
+        '401': *id002
+        '429': *id003
+        '500': *id004
+      operationId: getHolidayBenchmarkTimeseries
+      summary: Fetch benchmark event timeseries
+      x-source-page: https://docs.intelligems.io/developer-resources/external-api/get-holiday-benchmark-data
 components:
   responses:
+    OK:
+      description: Success.
+      content:
+        application/json:
+          schema:
+            type: object
+            additionalProperties: true
     ValidationError:
       description: Validation error (invalid query/body values). Per-field messages under properties.<field>.errors.
       content:
         application/json:
           schema:
             $ref: '#/components/schemas/ValidationError'
+    Unauthorized:
+      description: Unauthorized (invalid or missing API key).
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/AuthError'
+    NotFound:
+      description: Resource not found.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/AuthError'
     RateLimited:
       description: Rate limit exceeded. See x-ratelimit-limit / x-ratelimit-remaining / x-ratelimit-reset headers.
       headers:
@@ -79,25 +388,13 @@ components:
           schema:
             type: integer
           description: Unix timestamp (ms) at which the bucket next refills.
-    Unauthorized:
-      description: Unauthorized (invalid or missing API key).
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/AuthError'
-    OK:
-      description: Success.
-      content:
-        application/json:
-          schema:
-            type: object
-            additionalProperties: true
     ServerError:
       description: Internal server error.
   schemas:
     ValidationError:
       type: object
-      description: Validation error envelope. Top-level errors[] is for request-level errors; per-field messages live under properties.<field>.errors.
+      description: Validation error envelope. Top-level errors[] is for request-level errors; per-field messages
+        live under properties.<field>.errors.
       properties:
         errors:
           type: array
@@ -118,15 +415,6 @@ components:
         error:
           type: string
           description: Error message, e.g. "Unauthorized" or "Unauthorized!".
-  requestBodies:
-    JsonBody:
-      description: JSON request payload. Field-level schema is not published by Intelligems.
-      required: true
-      content:
-        application/json:
-          schema:
-            type: object
-            additionalProperties: true
   securitySchemes:
     accessToken:
       type: apiKey

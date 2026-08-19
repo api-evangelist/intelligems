@@ -1,0 +1,75 @@
+generated: '2026-08-13'
+method: searched
+source: https://docs.intelligems.io/integrations/webhook-integration
+spec_type: none
+spec_note: >-
+  Intelligems publishes no AsyncAPI document — /asyncapi.yaml and /asyncapi.json are not
+  served on any Intelligems host, and no event spec appears in the docs index. What it
+  does publish is a documented webhook catalog with example payloads, captured verbatim
+  below. No AsyncAPI pointer is emitted for this provider because none exists.
+surface: webhooks
+transport: https
+delivery:
+  method: POST
+  content_type: application/json
+  success_criteria: HTTP 200-299
+  timeout_seconds: 10
+  max_retries: 5
+security:
+  signing: HMAC-SHA256 over the raw payload body with a shared secret
+  signature_note: >-
+    Intelligems signs all webhook payloads with a secret key; the docs give a Node.js
+    verification example using crypto.createHmac('sha256', secret) and
+    crypto.timingSafeEqual. The header name carrying the signature is not documented.
+  custom_headers: >-
+    Authentication headers are configured in the consuming application if required; the
+    Intelligems side only sends its signature.
+configuration:
+  where: Intelligems dashboard, Settings -> Webhooks
+  steps:
+    - Enter the webhook endpoint URL.
+    - Select the events to receive.
+    - Add the webhook.
+    - Configure any authentication headers in the consuming application.
+    - Test the webhook connection.
+envelope:
+  fields:
+    - {name: action, type: string, description: The event name, e.g. createExperience, startExperience, endExperience.}
+    - {name: timestamp, type: integer, description: Epoch milliseconds at which the event fired.}
+    - {name: experience, type: object, description: The full experience document — id, name, type, category, status, testTypes, variations, experienceActions, currency, timestamps.}
+    - {name: organization, type: object, description: 'Organization identity: id, name, shopId (myshopify domain).'}
+events:
+  - name: createExperience
+    title: Create Experience
+    trigger: A new A/B test or experiment is created.
+    example_payload: true
+  - name: startExperience
+    title: Start Experience
+    trigger: An experiment goes live.
+    example_payload: true
+  - name: endExperience
+    title: End Experience
+    trigger: An experiment is stopped or completed.
+    example_payload: true
+  - name: pauseExperience
+    title: Pause Experience
+    trigger: An experiment is paused.
+    example_payload: false
+  - name: updateExperience
+    title: Update Experience
+    trigger: Experiment settings are modified.
+    example_payload: false
+  - name: deleteExperience
+    title: Delete Experience
+    trigger: An experiment is deleted.
+    example_payload: false
+event_count: 6
+related:
+  rest_equivalent: openapi/intelligems-experiences-api-openapi.yml#performExperienceAction
+  note: >-
+    The webhook events mirror the REST experience lifecycle — createExperience /
+    updateExperience map to the POST and PUT operations, and start/pause/end map to the
+    three `action` values of performExperienceAction.
+x-evidence:
+  - {url: 'https://docs.intelligems.io/integrations/webhook-integration.md', status: 200, fetched: '2026-08-13'}
+  - {url: 'https://docs.intelligems.io/asyncapi.yaml', status: 404, fetched: '2026-08-13'}

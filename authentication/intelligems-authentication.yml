@@ -1,4 +1,4 @@
-generated: '2026-07-19'
+generated: '2026-08-13'
 method: searched
 source: https://docs.intelligems.io/developer-resources/external-api/intelligems-external-api/authentication
 docs: https://docs.intelligems.io/developer-resources/external-api/intelligems-external-api/authentication
@@ -7,21 +7,52 @@ summary:
   api_key_in: [header]
   oauth2_flows: [authorizationCode]
 schemes:
-  - name: accessToken
+  - name: intelligems_access_token
     type: apiKey
     in: header
     parameter_name: intelligems-access-token
     surface: External API (https://api.intelligems.io)
+    scope_model: none
     notes: >-
-      Include your Intelligems-issued API key in the `intelligems-access-token`
-      request header. Missing or invalid keys return HTTP 401 with body {"error":"Unauthorized"}.
-    sources: [openapi/intelligems-external-api-openapi.yml]
-  - name: oauth2
+      Include your Intelligems-issued API key in the `intelligems-access-token` request
+      header. The key is organization-wide with no scopes and no test/live separation.
+      Missing, empty or invalid keys all return HTTP 401 with body {"error":"Unauthorized"}
+      — the API does not distinguish the three cases.
+    sources:
+      - openapi/_original/intelligems-external-api-openapi.yml
+      - https://docs.intelligems.io/developer-resources/external-api/intelligems-external-api/authentication
+    spec_evidence: >-
+      components.securitySchemes.intelligems_access_token in the OpenAPI Intelligems
+      publishes on its own API-reference pages; applied as a root-level security
+      requirement.
+  - name: mcp-oauth2
     type: oauth2
     flow: authorizationCode
+    pkce: S256
     surface: MCP server (https://ai.intelligems.io/mcp)
+    dynamic_client_registration: true
+    endpoints:
+      issuer: https://ai.intelligems.io
+      authorization: https://ai.intelligems.io/oauth/authorize
+      token: https://ai.intelligems.io/oauth/token
+      registration: https://ai.intelligems.io/oauth/register
+    grant_types: [authorization_code, refresh_token]
+    token_endpoint_auth_methods: [client_secret_post, client_secret_basic, none]
+    scopes: [member]
+    bearer_methods: [header]
     notes: >-
-      The hosted Intelligems MCP server is OAuth2-authenticated against an
-      Intelligems organization account; most tools accept an optional
-      `organization` parameter to scope data access.
-    sources: [mcp/intelligems-mcp.yml]
+      The hosted MCP server is OAuth2-authenticated against an Intelligems organization
+      account and publishes RFC 8414 authorization-server metadata and RFC 9728
+      protected-resource metadata anonymously. Most tools accept an optional
+      `organization` parameter to scope data access; there is no per-tool scope.
+    sources:
+      - https://ai.intelligems.io/.well-known/oauth-authorization-server
+      - https://ai.intelligems.io/.well-known/oauth-protected-resource
+      - mcp/intelligems-mcp.yml
+    see: scopes/intelligems-scopes.yml
+webhook_verification:
+  method: HMAC-SHA256 signature over the payload with a shared secret
+  see: asyncapi/intelligems-webhooks.yml
+x-evidence:
+  - {url: 'https://ai.intelligems.io/.well-known/oauth-authorization-server', status: 200, fetched: '2026-08-13'}
+  - {url: 'https://ai.intelligems.io/mcp', status: 401, fetched: '2026-08-13'}

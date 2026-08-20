@@ -43,6 +43,19 @@ modified: '2026-08-13'
 tags:
 - Company
 - A/B Testing
+- E-Commerce
+- Pricing
+- Personalization
+- Conversion Rate Optimization
+- Shopify
+- Analytics
+- Experimentation
+- MCP
+- Webhook
+- Profit Optimization
+tags_raw:
+- Company
+- A/B Testing
 - Ecommerce
 - Pricing
 - Personalization
@@ -84,6 +97,8 @@ apis:
   humanURL: https://docs.intelligems.io/developer-resources/external-api
   baseURL: https://api.intelligems.io
   tags:
+  - Experience
+  tags_raw:
   - Experiences
   properties:
   - type: OpenAPI
@@ -162,6 +177,9 @@ apis:
   humanURL: https://docs.intelligems.io/developer-resources/mcp-server
   baseURL: https://ai.intelligems.io/mcp
   tags:
+  - MCP
+  - Artificial Intelligence
+  tags_raw:
   - MCP
   - AI
   properties:

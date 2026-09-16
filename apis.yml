@@ -79,113 +79,12 @@ tags_raw:
 - Webhooks
 - Profit Optimization
 apis:
-- aid: intelligems:intelligems-analytics-api
-  name: Intelligems Analytics API
-  description: Experience-level and sitewide analytics.
-  humanURL: https://docs.intelligems.io/developer-resources/external-api
-  baseURL: https://api.intelligems.io
-  tags:
-  - Analytics
-  properties:
-  - type: OpenAPI
-    url: openapi/intelligems-analytics-api-openapi.yml
-  - type: Authentication
-    url: authentication/intelligems-authentication.yml
-  - type: Conventions
-    url: conventions/intelligems-conventions.yml
-  - type: RateLimits
-    url: rate-limits/intelligems-rate-limits.yml
-  - type: ErrorCatalog
-    url: errors/intelligems-problem-types.yml
-  - type: Lifecycle
-    url: lifecycle/intelligems-lifecycle.yml
-  - type: Conformance
-    url: conformance/intelligems-conformance.yml
-  - type: DataModel
-    url: data-model/intelligems-data-model.yml
-- aid: intelligems:intelligems-experiences-api
-  name: Intelligems Experiences API
-  description: Create, read, update, and control A/B tests and personalizations.
-  humanURL: https://docs.intelligems.io/developer-resources/external-api
-  baseURL: https://api.intelligems.io
-  tags:
-  - Experience
-  tags_raw:
-  - Experiences
-  properties:
-  - type: OpenAPI
-    url: openapi/intelligems-experiences-api-openapi.yml
-  - type: Authentication
-    url: authentication/intelligems-authentication.yml
-  - type: Conventions
-    url: conventions/intelligems-conventions.yml
-  - type: RateLimits
-    url: rate-limits/intelligems-rate-limits.yml
-  - type: ErrorCatalog
-    url: errors/intelligems-problem-types.yml
-  - type: Lifecycle
-    url: lifecycle/intelligems-lifecycle.yml
-  - type: Conformance
-    url: conformance/intelligems-conformance.yml
-  - type: DataModel
-    url: data-model/intelligems-data-model.yml
-- aid: intelligems:intelligems-holiday-benchmark-api
-  name: Intelligems Holiday Benchmark API
-  description: Event/holiday benchmark analytics.
-  humanURL: https://docs.intelligems.io/developer-resources/external-api/get-holiday-benchmark-data
-  baseURL: https://api.intelligems.io
-  tags:
-  - Holiday Benchmark
-  properties:
-  - type: OpenAPI
-    url: openapi/intelligems-holiday-benchmark-api-openapi.yml
-  - type: Authentication
-    url: authentication/intelligems-authentication.yml
-  - type: Conventions
-    url: conventions/intelligems-conventions.yml
-  - type: RateLimits
-    url: rate-limits/intelligems-rate-limits.yml
-  - type: ErrorCatalog
-    url: errors/intelligems-problem-types.yml
-  - type: Lifecycle
-    url: lifecycle/intelligems-lifecycle.yml
-  - type: Conformance
-    url: conformance/intelligems-conformance.yml
-  - type: DataModel
-    url: data-model/intelligems-data-model.yml
-- aid: intelligems:intelligems-custom-events-api
-  name: Intelligems Custom Events API
-  description: >-
-    Define the client-side behaviors Intelligems tracks on a storefront — click events,
-    scroll depth, page views, product and collection page views, element-viewed and custom
-    JavaScript events — so they can be attached to an experience as a success metric or
-    used as an analytics filter.
-  humanURL: https://docs.intelligems.io/developer-resources/external-api/create-custom-event
-  baseURL: https://api.intelligems.io
-  tags:
-  - Custom Events
-  properties:
-  - type: OpenAPI
-    url: openapi/intelligems-custom-events-api-openapi.yml
-  - type: Authentication
-    url: authentication/intelligems-authentication.yml
-  - type: Conventions
-    url: conventions/intelligems-conventions.yml
-  - type: RateLimits
-    url: rate-limits/intelligems-rate-limits.yml
-  - type: ErrorCatalog
-    url: errors/intelligems-problem-types.yml
-  - type: Lifecycle
-    url: lifecycle/intelligems-lifecycle.yml
-  - type: DataModel
-    url: data-model/intelligems-data-model.yml
 - aid: intelligems:intelligems-mcp-server
   name: Intelligems MCP Server
   description: >-
-    Official hosted Model Context Protocol server exposing 46 tools over HTTP and SSE —
-    experiment discovery and lifecycle, price-test prepare/commit, experiment and sitewide
-    analytics, seasonal benchmarking, Shopify catalog and ShopifyQL reporting, and chart
-    rendering — to Claude, ChatGPT and Gemini.
+    Official hosted Model Context Protocol server exposing 46 tools over HTTP and SSE — experiment discovery
+    and lifecycle, price-test prepare/commit, experiment and sitewide analytics, seasonal benchmarking,
+    Shopify catalog and ShopifyQL reporting, and chart rendering — to Claude, ChatGPT and Gemini.
   humanURL: https://docs.intelligems.io/developer-resources/mcp-server
   baseURL: https://ai.intelligems.io/mcp
   tags:
@@ -203,6 +102,291 @@ apis:
     url: authentication/intelligems-authentication.yml
   - type: OAuthScopes
     url: scopes/intelligems-scopes.yml
+- aid: intelligems:intelligems-create-custom-event-api
+  name: Intelligems Create Custom Event API
+  description: >-
+    The following custom event types are supported by the Intelligems Custom Events API:
+
+
+    - `clickEvent` — Fires when a visitor clicks an element matching one or more CSS selectors
+
+    - `scrollDepth` — Fires when a visitor scrolls past a configured percentage of the page (separate
+    thresholds for mobile and desktop)
+
+    - `pageView` — Fires when a visitor views a page matching `applyToUrls`
+
+    - `productPageView` — Fires when a visitor views one of a specific set of product pages
+
+    - `collectionPageView` — Fires when a visitor views one of a specific set of collection pages
+
+    - `elementViewed` — Fires when an element matching one or more CSS selectors enters the viewport
+
+    - `javascriptEvent` — Fires from a custom JavaScript snippet
+
+
+    Each type has its own `settings` shape — see the request schema for the full set of fields per type.
+  humanURL: https://docs.intelligems.io/developer-resources/external-api
+  baseURL: https://api.intelligems.io
+  tags:
+  - Create Custom Event
+  properties:
+  - type: OpenAPI
+    url: openapi/intelligems-create-custom-event-api-openapi.yml
+  - type: Authentication
+    url: authentication/intelligems-authentication.yml
+  - type: Conventions
+    url: conventions/intelligems-conventions.yml
+  - type: RateLimits
+    url: rate-limits/intelligems-rate-limits.yml
+  - type: ErrorCatalog
+    url: errors/intelligems-problem-types.yml
+  - type: Lifecycle
+    url: lifecycle/intelligems-lifecycle.yml
+  - type: Conformance
+    url: conformance/intelligems-conformance.yml
+  - type: DataModel
+    url: data-model/intelligems-data-model.yml
+- aid: intelligems:intelligems-create-experience-api
+  name: Intelligems Create Experience API
+  description: >-
+    The following experience types are supported by the Intelligems Experiments API:
+
+
+    - `content/advanced` — Advanced content test (custom CSS/JS injection)
+
+    - `content/onsiteEdits` — Onsite edits (visual editor changes)
+
+    - `content/url` — URL redirects
+
+    - `content/theme` — Theme redirects
+
+    - `content/template` — Template redirects
+
+    - `personalization` — Personalization rules
+
+    - `personalization/offer` — Offer test (structured discount campaigns configured via the `offer` field
+    on each variation)
+
+
+    The following test types are not currently supported via this API:
+
+
+    - Checkout Blocks
+
+    - Pricing
+
+    - Shipping
+
+    - Campaigns
+
+
+    All fields (experience metadata, variations, audience, page targeting, and key metrics) are nested
+    inside a single `experience` object in the request body.
+  humanURL: https://docs.intelligems.io/developer-resources/external-api
+  baseURL: https://api.intelligems.io
+  tags:
+  - Create Experience
+  properties:
+  - type: OpenAPI
+    url: openapi/intelligems-create-experience-api-openapi.yml
+  - type: Authentication
+    url: authentication/intelligems-authentication.yml
+  - type: Conventions
+    url: conventions/intelligems-conventions.yml
+  - type: RateLimits
+    url: rate-limits/intelligems-rate-limits.yml
+  - type: ErrorCatalog
+    url: errors/intelligems-problem-types.yml
+  - type: Lifecycle
+    url: lifecycle/intelligems-lifecycle.yml
+  - type: Conformance
+    url: conformance/intelligems-conformance.yml
+  - type: DataModel
+    url: data-model/intelligems-data-model.yml
+- aid: intelligems:intelligems-fetch-experience-data-api
+  name: Intelligems Fetch Experience Data API
+  description: >-
+    The Fetch Experience Data API from Intelligems — 3 operation(s) for fetch experience data.
+  humanURL: https://docs.intelligems.io/developer-resources/external-api
+  baseURL: https://api.intelligems.io
+  tags:
+  - Fetch Experience Data
+  properties:
+  - type: OpenAPI
+    url: openapi/intelligems-fetch-experience-data-api-openapi.yml
+  - type: Authentication
+    url: authentication/intelligems-authentication.yml
+  - type: Conventions
+    url: conventions/intelligems-conventions.yml
+  - type: RateLimits
+    url: rate-limits/intelligems-rate-limits.yml
+  - type: ErrorCatalog
+    url: errors/intelligems-problem-types.yml
+  - type: Lifecycle
+    url: lifecycle/intelligems-lifecycle.yml
+  - type: Conformance
+    url: conformance/intelligems-conformance.yml
+  - type: DataModel
+    url: data-model/intelligems-data-model.yml
+- aid: intelligems:intelligems-fetch-experience-list-api
+  name: Intelligems Fetch Experience List API
+  description: >-
+    The Fetch Experience List API from Intelligems — 1 operation(s) for fetch experience list.
+  humanURL: https://docs.intelligems.io/developer-resources/external-api
+  baseURL: https://api.intelligems.io
+  tags:
+  - Fetch Experience List
+  properties:
+  - type: OpenAPI
+    url: openapi/intelligems-fetch-experience-list-api-openapi.yml
+  - type: Authentication
+    url: authentication/intelligems-authentication.yml
+  - type: Conventions
+    url: conventions/intelligems-conventions.yml
+  - type: RateLimits
+    url: rate-limits/intelligems-rate-limits.yml
+  - type: ErrorCatalog
+    url: errors/intelligems-problem-types.yml
+  - type: Lifecycle
+    url: lifecycle/intelligems-lifecycle.yml
+  - type: Conformance
+    url: conformance/intelligems-conformance.yml
+  - type: DataModel
+    url: data-model/intelligems-data-model.yml
+- aid: intelligems:intelligems-fetch-sitewide-analytics-api
+  name: Intelligems Fetch Sitewide Analytics API
+  description: >-
+    The Fetch Sitewide Analytics API from Intelligems — 4 operation(s) for fetch sitewide analytics.
+  humanURL: https://docs.intelligems.io/developer-resources/external-api
+  baseURL: https://api.intelligems.io
+  tags:
+  - Fetch Sitewide Analytics
+  properties:
+  - type: OpenAPI
+    url: openapi/intelligems-fetch-sitewide-analytics-api-openapi.yml
+  - type: Authentication
+    url: authentication/intelligems-authentication.yml
+  - type: Conventions
+    url: conventions/intelligems-conventions.yml
+  - type: RateLimits
+    url: rate-limits/intelligems-rate-limits.yml
+  - type: ErrorCatalog
+    url: errors/intelligems-problem-types.yml
+  - type: Lifecycle
+    url: lifecycle/intelligems-lifecycle.yml
+  - type: Conformance
+    url: conformance/intelligems-conformance.yml
+  - type: DataModel
+    url: data-model/intelligems-data-model.yml
+- aid: intelligems:intelligems-get-experience-export-api
+  name: Intelligems Get Experience Export API
+  description: >-
+    The Get Experience Export API from Intelligems — 1 operation(s) for get experience export.
+  humanURL: https://docs.intelligems.io/developer-resources/external-api
+  baseURL: https://api.intelligems.io
+  tags:
+  - Get Experience Export
+  properties:
+  - type: OpenAPI
+    url: openapi/intelligems-get-experience-export-api-openapi.yml
+  - type: Authentication
+    url: authentication/intelligems-authentication.yml
+  - type: Conventions
+    url: conventions/intelligems-conventions.yml
+  - type: RateLimits
+    url: rate-limits/intelligems-rate-limits.yml
+  - type: ErrorCatalog
+    url: errors/intelligems-problem-types.yml
+  - type: Lifecycle
+    url: lifecycle/intelligems-lifecycle.yml
+  - type: Conformance
+    url: conformance/intelligems-conformance.yml
+  - type: DataModel
+    url: data-model/intelligems-data-model.yml
+- aid: intelligems:intelligems-get-holiday-benchmark-data-api
+  name: Intelligems Get Holiday Benchmark Data API
+  description: >-
+    The Get Holiday Benchmark Data API from Intelligems — 2 operation(s) for get holiday benchmark data.
+  humanURL: https://docs.intelligems.io/developer-resources/external-api
+  baseURL: https://api.intelligems.io
+  tags:
+  - Get Holiday Benchmark Data
+  properties:
+  - type: OpenAPI
+    url: openapi/intelligems-get-holiday-benchmark-data-api-openapi.yml
+  - type: Authentication
+    url: authentication/intelligems-authentication.yml
+  - type: Conventions
+    url: conventions/intelligems-conventions.yml
+  - type: RateLimits
+    url: rate-limits/intelligems-rate-limits.yml
+  - type: ErrorCatalog
+    url: errors/intelligems-problem-types.yml
+  - type: Lifecycle
+    url: lifecycle/intelligems-lifecycle.yml
+  - type: Conformance
+    url: conformance/intelligems-conformance.yml
+  - type: DataModel
+    url: data-model/intelligems-data-model.yml
+- aid: intelligems:intelligems-perform-experience-action-api
+  name: Intelligems Perform Experience Action API
+  description: Lifecycle actions for managing experience state transitions (start, pause, end).
+  humanURL: https://docs.intelligems.io/developer-resources/external-api
+  baseURL: https://api.intelligems.io
+  tags:
+  - Perform Experience Action
+  properties:
+  - type: OpenAPI
+    url: openapi/intelligems-perform-experience-action-api-openapi.yml
+  - type: Authentication
+    url: authentication/intelligems-authentication.yml
+  - type: Conventions
+    url: conventions/intelligems-conventions.yml
+  - type: RateLimits
+    url: rate-limits/intelligems-rate-limits.yml
+  - type: ErrorCatalog
+    url: errors/intelligems-problem-types.yml
+  - type: Lifecycle
+    url: lifecycle/intelligems-lifecycle.yml
+  - type: Conformance
+    url: conformance/intelligems-conformance.yml
+  - type: DataModel
+    url: data-model/intelligems-data-model.yml
+- aid: intelligems:intelligems-update-experience-api
+  name: Intelligems Update Experience API
+  description: >-
+    Updates an existing experience. This is a full PUT replacement — the entire experience configuration
+    is replaced with the provided data.
+
+
+    All required fields must be included in every request. Any optional fields omitted will be reset to
+    their defaults.
+
+
+    All nested entities (variations, key metrics, page targeting, audience) must include their `id` field
+    from the original GET response. All fields are nested inside a single `experience` object in the request
+    body.
+  humanURL: https://docs.intelligems.io/developer-resources/external-api
+  baseURL: https://api.intelligems.io
+  tags:
+  - Update Experience
+  properties:
+  - type: OpenAPI
+    url: openapi/intelligems-update-experience-api-openapi.yml
+  - type: Authentication
+    url: authentication/intelligems-authentication.yml
+  - type: Conventions
+    url: conventions/intelligems-conventions.yml
+  - type: RateLimits
+    url: rate-limits/intelligems-rate-limits.yml
+  - type: ErrorCatalog
+    url: errors/intelligems-problem-types.yml
+  - type: Lifecycle
+    url: lifecycle/intelligems-lifecycle.yml
+  - type: Conformance
+    url: conformance/intelligems-conformance.yml
+  - type: DataModel
+    url: data-model/intelligems-data-model.yml
 maintainers:
 - FN: Kin Lane
   email: kin@apievangelist.com

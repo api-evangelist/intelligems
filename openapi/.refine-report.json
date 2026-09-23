@@ -1,18 +1,36 @@
 {
   "provider": "intelligems",
   "sources": [
-    "intelligems-analytics-api-openapi.yml",
-    "intelligems-experiences-api-openapi.yml",
-    "intelligems-holiday-benchmark-api-openapi.yml"
+    "_original/intelligems-external-api-openapi.yml"
   ],
   "outputs": [
-    "intelligems-analytics-api-openapi.yml",
-    "intelligems-experiences-api-openapi.yml",
-    "intelligems-holiday-benchmark-api-openapi.yml"
+    "intelligems-create-custom-event-api-openapi.yml",
+    "intelligems-create-experience-api-openapi.yml",
+    "intelligems-fetch-experience-data-api-openapi.yml",
+    "intelligems-fetch-experience-list-api-openapi.yml",
+    "intelligems-fetch-sitewide-analytics-api-openapi.yml",
+    "intelligems-get-experience-export-api-openapi.yml",
+    "intelligems-get-holiday-benchmark-data-api-openapi.yml",
+    "intelligems-perform-experience-action-api-openapi.yml",
+    "intelligems-update-experience-api-openapi.yml"
   ],
   "archived": [],
   "errors": [],
   "warnings": [],
-  "notes": [],
-  "skipped": []
+  "notes": [
+    "sourced from openapi/_original/ (1 archived document(s)); previously refined output at the top level was skipped rather than re-split",
+    "intelligems-external-api-openapi.yml: upgraded openapi 3.1.0 -> OpenAPI 3.2.0",
+    "apis.yml register: already-registered"
+  ],
+  "skipped": [
+    "intelligems-create-custom-event-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "intelligems-create-experience-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "intelligems-fetch-experience-data-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "intelligems-fetch-experience-list-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "intelligems-fetch-sitewide-analytics-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "intelligems-get-experience-export-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "intelligems-get-holiday-benchmark-data-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "intelligems-perform-experience-action-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "intelligems-update-experience-api-openapi.yml: previously refined output, superseded by openapi/_original/"
+  ]
 }

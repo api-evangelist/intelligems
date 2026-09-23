@@ -1,0 +1,1244 @@
+openapi: 3.2.0
+info:
+  title: Intelligems External Fetch Experience List API
+  version: v25-10-beta
+  description: Programmatic access to manage Intelligems A/B tests, personalizations, and experiences, to define custom events, and to pull experiment and sitewide analytics for a Shopify store. Authenticate with an API key in the `intelligems-access-token` header.
+  contact:
+    name: Intelligems
+    url: https://docs.intelligems.io/developer-resources/external-api
+servers:
+- url: https://api.intelligems.io
+  description: Production
+security:
+- intelligems_access_token: []
+tags:
+- name: Fetch Experience List
+paths:
+  /v25-10-beta/experiences-list:
+    get:
+      tags:
+      - Fetch Experience List
+      description: 'Retrieve a paginated list of experiences.
+
+
+        The response includes `experiencesList` plus the pagination fields `page`, `limit`, `total`, and `totalPages`.
+
+
+        ### Query Parameters
+
+
+        All query parameters are optional.
+
+
+        - `limit` — integer, defaults to `20`
+
+        - `page` — integer (minimum `1`), defaults to `1`
+
+        - `status` — one of `started`, `paused`, `ended`, `pending`
+
+        - `category` — one of `experiment`, `personalization`
+
+        - `module` — filter by modification type, one of `content`, `checkout`, `postPurchase`, `pricing`, `merchandising`, `shipping`. Category-agnostic; omit to return all modules.
+
+
+        `offset` is not supported for this endpoint. Pagination is page-based (`page` + `limit`).
+
+
+        Each list item includes `history` — raw user-action records with broad action types (`saveExperience`, `duplicateExperience`, `archiveCampaign`, etc.) and full user objects.
+
+
+        List items also include `experienceActions` for lifecycle-only events (`start`, `pause`, `end`, `delete`, `reset`), but on this endpoint each entry carries only `id`, `experienceId`, `action`, and `actionTs` — **the `performedBy` email is not resolved here**. To get the performing user''s email, call `GET /experiences/{experienceId}`, whose `experienceActions` entries include `performedBy`. For config-deploy diffs, see `?includeChangeLog=true` on `GET /experiences/{experienceId}`.
+
+
+        ### Field differences vs `GET /experiences/{experienceId}`
+
+
+        List items **omit**: `experienceCustomMetrics`, `experienceIntegrations`, `experienceKeyMetrics`, `shippingTestMethodDefinitions`, and `shippingCarrierProvider`.
+
+
+        List items **additionally include**: `hasSchedule` and `history`, neither of which appears on the single-experience response. `hasSchedule` is a boolean flag only — the external API never returns the schedules themselves, and `includeSchedules` is not an accepted query parameter here (it is ignored if sent).
+
+
+        `variations` is present on both, but list items carry a reduced variation shape.'
+      parameters:
+      - in: query
+        name: category
+        schema:
+          description: Filter by experience category. Omit to return all categories.
+          type: string
+          enum:
+          - experiment
+          - personalization
+        description: Filter by experience category. Omit to return all categories.
+      - in: query
+        name: module
+        schema:
+          description: Filter by modification type / module (content, checkout, postPurchase, pricing, merchandising, shipping). Category-agnostic. Omit to return all modules.
+          type: string
+          enum:
+          - content
+          - checkout
+          - postPurchase
+          - pricing
+          - merchandising
+          - shipping
+        description: Filter by modification type / module (content, checkout, postPurchase, pricing, merchandising, shipping). Category-agnostic. Omit to return all modules.
+      - in: query
+        name: status
+        schema:
+          description: Filter by lifecycle status. Omit to return all statuses.
+          type: string
+          enum:
+          - pending
+          - started
+          - ended
+          - paused
+        description: Filter by lifecycle status. Omit to return all statuses.
+      - in: query
+        name: limit
+        schema:
+          description: Maximum number of experiences per page.
+          type: integer
+          minimum: 1
+          maximum: 9007199254740991
+        description: Maximum number of experiences per page.
+      - in: query
+        name: page
+        schema:
+          description: 1-based page number for paginated results.
+          type: integer
+          minimum: 1
+          maximum: 9007199254740991
+        description: 1-based page number for paginated results.
+      responses:
+        '200':
+          description: OK
+          headers:
+            access-control-allow-origin:
+              schema:
+                type: string
+              description: CORS allow-origin header.
+            access-control-allow-credentials:
+              schema:
+                type: string
+              description: CORS allow-credentials header.
+            content-type:
+              schema:
+                type: string
+              description: Response content type.
+            Timing-Allow-Origin:
+              schema:
+                type: string
+              description: Allowed origin for Timing headers.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  experiencesList:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        archivedAtTs:
+                          description: Server-generated. Read-only. Unix timestamp in milliseconds. Null if not archived.
+                          anyOf:
+                          - type: number
+                          - type: 'null'
+                        audience:
+                          description: Visitor segmentation rules. Null means all visitors are eligible.
+                          anyOf:
+                          - type: object
+                            properties:
+                              id:
+                                type: string
+                                format: uuid
+                                pattern: ^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$
+                                description: Server-generated. Read-only.
+                              experienceId:
+                                type: string
+                                format: uuid
+                                pattern: ^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$
+                                description: References the parent experience.
+                              enabled:
+                                type: boolean
+                                description: When false, audience rules are ignored and all visitors are eligible.
+                              excludeCurrency:
+                                type: object
+                                properties:
+                                  exclude:
+                                    type: boolean
+                                    description: Whether currency/geo-based exclusion is active.
+                                  currency:
+                                    anyOf:
+                                    - type: string
+                                    - type: 'null'
+                                    description: ISO 4217 currency code to include. Null disables currency-based exclusion.
+                                  country:
+                                    description: ISO country code to include visitors from.
+                                    type: string
+                                  region:
+                                    description: Region or state code to include visitors from.
+                                    type: string
+                                  city:
+                                    description: City name to include visitors from.
+                                    type: string
+                                required:
+                                - exclude
+                                - currency
+                                additionalProperties: false
+                                description: Currency and geo-based visitor exclusion configuration.
+                              wholesale:
+                                type: boolean
+                                description: Controls whether wholesale (B2B) customers are included in or excluded from the experience.
+                              audienceType:
+                                description: 'Complexity level of the targeting rules: common (prebuilt), custom (simple), or advanced (full expression trees).'
+                                type: string
+                                enum:
+                                - common
+                                - custom
+                                - advanced
+                              elseAction:
+                                anyOf:
+                                - type: string
+                                  enum:
+                                  - experienceInclude
+                                  - experienceExclude
+                                  - experienceUnassigned
+                                  - assignVariation
+                                  - randomVariation
+                                  - leaveUnassigned
+                                - type: 'null'
+                                description: 'Fallback for visitors matching no filter: ''randomVariation'' assigns randomly across variations (most common), ''assignVariation'' forces a specific variation (set elseVariationId), ''experienceExclude'' removes them from the experience entirely, ''leaveUnassigned'' skips assignment.'
+                              elseVariationId:
+                                description: Variation to force-assign when elseAction is 'assignVariation'. Typically set to the control variation to default non-targeted visitors to baseline.
+                                anyOf:
+                                - type: string
+                                  format: uuid
+                                  pattern: ^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$
+                                - type: 'null'
+                              elseExcludeFromAnalytics:
+                                default: false
+                                description: When true, visitors who match no filter are tracked but excluded from analytics calculations.
+                                type: boolean
+                              filters:
+                                default: []
+                                description: Ordered filter rules evaluated from lowest priority value first (0-indexed). First matching filter determines visitor treatment.
+                                type: array
+                                items:
+                                  type: object
+                                  properties:
+                                    id:
+                                      type: string
+                                      format: uuid
+                                      pattern: ^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$
+                                      description: Server-generated. Read-only.
+                                    priority:
+                                      type: integer
+                                      minimum: -9007199254740991
+                                      maximum: 9007199254740991
+                                      description: Evaluation order. 0-indexed. Filters with lower values are evaluated first.
+                                    action:
+                                      anyOf:
+                                      - type: string
+                                        enum:
+                                        - experienceInclude
+                                        - experienceExclude
+                                        - experienceUnassigned
+                                        - assignVariation
+                                        - randomVariation
+                                        - leaveUnassigned
+                                      - type: 'null'
+                                      description: 'What happens when a visitor matches this filter: ''assignVariation'' forces a specific variation (set variationId), ''experienceExclude'' removes from the experience, ''randomVariation'' assigns randomly.'
+                                    filterType:
+                                      type: string
+                                      enum:
+                                      - utm
+                                      - url
+                                      - urlPath
+                                      - device
+                                      - visitor
+                                      - jsExpression
+                                      - trafficSource
+                                      - country
+                                      - referrer
+                                      - cookie
+                                      - klaviyo
+                                      - landingPage
+                                      description: Category of targeting rule (e.g., UTM parameters, device type, visitor type).
+                                    expression:
+                                      anyOf:
+                                      - type: array
+                                        items:
+                                          type: object
+                                          properties:
+                                            query:
+                                              type: object
+                                              properties:
+                                                key:
+                                                  type: string
+                                                  description: Visitor attribute or parameter name to match (e.g., 'utm_source', 'device_type').
+                                                value:
+                                                  type: string
+                                                  description: 'Expected value to compare against the visitor''s actual value for this key. Constrained by `type`: when type is ''device'' this must be exactly ''any'', ''mobile'', or ''desktop''.'
+                                                filter:
+                                                  description: Comparison operator (e.g., equals, contains, startsWith).
+                                                  anyOf:
+                                                  - type: string
+                                                    enum:
+                                                    - equals
+                                                    - contains
+                                                    - startsWith
+                                                    - endsWith
+                                                    - doesNotEqual
+                                                    - doesNotContain
+                                                    - doesNotStartWith
+                                                    - doesNotEndWith
+                                                    - isNull
+                                                    - isNotNull
+                                                    - regex
+                                                  - type: 'null'
+                                                type:
+                                                  default: utm
+                                                  description: Category of the parameter being matched. Determines which keys are valid. Use 'device' for device targeting (pair with key 'device', filter 'equals', and value 'any' | 'mobile' | 'desktop'); 'utm'/'url' for query params; 'urlPath' for the path; and 'country', 'visitor', 'trafficSource', 'referrer', 'cookie', 'landingPage', 'klaviyo', or 'jsExpression' for the rest.
+                                                  type: string
+                                                  enum:
+                                                  - utm
+                                                  - url
+                                                  - urlPath
+                                                  - device
+                                                  - visitor
+                                                  - jsExpression
+                                                  - trafficSource
+                                                  - country
+                                                  - referrer
+                                                  - cookie
+                                                  - klaviyo
+                                                  - landingPage
+                                              required:
+                                              - key
+                                              - value
+                                              - type
+                                              additionalProperties: false
+                                            operator:
+                                              type: string
+                                              enum:
+                                              - and
+                                              - or
+                                              - start_paren
+                                              - end_paren
+                                          additionalProperties: false
+                                      - type: 'null'
+                                      description: Boolean expression tree. Each node has either a 'query' (leaf condition) or 'operator' (logical combinator), not both.
+                                    expressionType:
+                                      description: Whether this uses prebuilt common rules or custom expression logic.
+                                      anyOf:
+                                      - type: string
+                                        enum:
+                                        - common
+                                        - custom
+                                      - type: 'null'
+                                    variationId:
+                                      description: Variation to assign when action is 'assignVariation'. References a variation in the parent experience.
+                                      anyOf:
+                                      - type: string
+                                        format: uuid
+                                        pattern: ^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$
+                                      - type: 'null'
+                                    excludeFromAnalytics:
+                                      default: false
+                                      description: When true, visitors matching this filter are excluded from analytics even if included in the experience.
+                                      type: boolean
+                                  required:
+                                  - id
+                                  - priority
+                                  - action
+                                  - filterType
+                                  - excludeFromAnalytics
+                                  additionalProperties: false
+                              evaluationFrequency:
+                                description: How often (in seconds) to re-evaluate audience rules for a returning visitor. Controls targeting freshness.
+                                anyOf:
+                                - type: number
+                                - type: 'null'
+                            required:
+                            - id
+                            - experienceId
+                            - enabled
+                            - excludeCurrency
+                            - wholesale
+                            - elseAction
+                            - elseExcludeFromAnalytics
+                            - filters
+                            additionalProperties: false
+                          - type: 'null'
+                        category:
+                          type: string
+                          enum:
+                          - experiment
+                          - personalization
+                          description: Distinguishes A/B experiments (statistical testing) from personalization rules (deterministic targeting).
+                        createdAtTs:
+                          type: number
+                          description: Server-generated. Read-only. Unix timestamp in milliseconds.
+                        currency:
+                          description: Currency settings for price display and analytics calculations. Null inherits store default.
+                          anyOf:
+                          - type: object
+                            properties:
+                              code:
+                                default: USD
+                                description: ISO 4217 currency code used for analytics and price calculations.
+                                type: string
+                              country:
+                                description: ISO country code for locale-specific formatting.
+                                type: string
+                              options:
+                                description: Additional locale-specific formatting options.
+                              symbol:
+                                default: $
+                                description: Display symbol prepended to amounts (e.g., '$', '€').
+                                type: string
+                              suffix:
+                                description: Text appended after amounts for postfix currencies (e.g., 'kr' in '100 kr').
+                                type: string
+                            required:
+                            - code
+                            - symbol
+                            additionalProperties: false
+                          - type: 'null'
+                        description:
+                          description: Internal note explaining what this experience tests.
+                          anyOf:
+                          - type: string
+                          - type: 'null'
+                        devicePreview:
+                          description: Device and path configuration for the preview iframe.
+                          anyOf:
+                          - type: object
+                            properties:
+                              device:
+                                default: desktop
+                                description: Viewport to simulate when rendering the preview.
+                                type: string
+                                enum:
+                                - any
+                                - mobile
+                                - desktop
+                              path:
+                                default: /
+                                description: Storefront URL path to load in the preview (e.g., '/products/example').
+                                type: string
+                            required:
+                            - device
+                            - path
+                            additionalProperties: false
+                            description: Device and path configuration for previewing the experience.
+                          - type: 'null'
+                        endedAtTs:
+                          anyOf:
+                          - type: number
+                          - type: 'null'
+                          description: Server-generated. Read-only. Unix timestamp in milliseconds. Null if still active.
+                        experienceActions:
+                          type: array
+                          items:
+                            type: object
+                            properties:
+                              id:
+                                type: string
+                                format: uuid
+                                pattern: ^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$
+                              experienceId:
+                                type: string
+                                format: uuid
+                                pattern: ^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$
+                              action:
+                                type: string
+                                enum:
+                                - start
+                                - pause
+                                - end
+                                - delete
+                                - reset
+                              actionTs:
+                                type: number
+                              performedBy:
+                                description: Email of the user who triggered this lifecycle event. Resolved from History records by matching action type and timestamp within a 5-minute window. Null if no matching History record is found, or if the record has no associated user. Currently only populated by GET /experiences/{experienceId}; list endpoints return null.
+                                anyOf:
+                                - type: string
+                                - type: 'null'
+                            required:
+                            - id
+                            - experienceId
+                            - action
+                            - actionTs
+                            additionalProperties: false
+                          description: Server-generated. Read-only. Lifecycle state transitions (start, pause, end, delete, reset) recorded for this experience. On GET /experiences/{experienceId}, each entry includes a `performedBy` field with the triggering user's email, resolved from History records (may be null if unresolvable). Distinct from the list endpoint's raw `history` field, which contains broader user-action records.
+                        experiencePageTargeting:
+                          default: []
+                          description: Rules controlling where this experience activates. Primarily URL/path rules, but the same expression format also supports 'device', 'country', 'visitor', 'trafficSource', 'referrer', and 'cookie'. Empty means all pages. To target the whole experience at a device (e.g. desktop only), prefer an `audience` filter over a page-targeting rule.
+                          type: array
+                          items:
+                            type: object
+                            properties:
+                              id:
+                                type: string
+                                format: uuid
+                                pattern: ^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$
+                              filter:
+                                anyOf:
+                                - type: string
+                                  enum:
+                                  - equals
+                                  - contains
+                                  - startsWith
+                                  - endsWith
+                                  - doesNotEqual
+                                  - doesNotContain
+                                  - doesNotStartWith
+                                  - doesNotEndWith
+                                  - isNull
+                                  - isNotNull
+                                  - regex
+                                - type: 'null'
+                              filterType:
+                                default: url
+                                type: string
+                                enum:
+                                - utm
+                                - url
+                                - device
+                                - visitor
+                                - jsExpression
+                                - trafficSource
+                                - country
+                                - referrer
+                                - cookie
+                              value:
+                                type: string
+                              order:
+                                type: number
+                              expression:
+                                anyOf:
+                                - type: array
+                                  items:
+                                    type: object
+                                    properties:
+                                      query:
+                                        type: object
+                                        properties:
+                                          key:
+                                            type: string
+                                            description: Visitor attribute or parameter name to match (e.g., 'utm_source', 'device_type').
+                                          value:
+                                            type: string
+                                            description: 'Expected value to compare against the visitor''s actual value for this key. Constrained by `type`: when type is ''device'' this must be exactly ''any'', ''mobile'', or ''desktop''.'
+                                          filter:
+                                            description: Comparison operator (e.g., equals, contains, startsWith).
+                                            anyOf:
+                                            - type: string
+                                              enum:
+                                              - equals
+                                              - contains
+                                              - startsWith
+                                              - endsWith
+                                              - doesNotEqual
+                                              - doesNotContain
+                                              - doesNotStartWith
+                                              - doesNotEndWith
+                                              - isNull
+                                              - isNotNull
+                                              - regex
+                                            - type: 'null'
+                                          type:
+                                            default: utm
+                                            description: Category of the parameter being matched. Determines which keys are valid. Use 'device' for device targeting (pair with key 'device', filter 'equals', and value 'any' | 'mobile' | 'desktop'); 'utm'/'url' for query params; 'urlPath' for the path; and 'country', 'visitor', 'trafficSource', 'referrer', 'cookie', 'landingPage', 'klaviyo', or 'jsExpression' for the rest.
+                                            type: string
+                                            enum:
+                                            - utm
+                                            - url
+                                            - urlPath
+                                            - device
+                                            - visitor
+                                            - jsExpression
+                                            - trafficSource
+                                            - country
+                                            - referrer
+                                            - cookie
+                                            - klaviyo
+                                            - landingPage
+                                        required:
+                                        - key
+                                        - value
+                                        - type
+                                        additionalProperties: false
+                                      operator:
+                                        type: string
+                                        enum:
+                                        - and
+                                        - or
+                                        - start_paren
+                                        - end_paren
+                                    additionalProperties: false
+                                - type: 'null'
+                              experienceId:
+                                type: string
+                                format: uuid
+                                pattern: ^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$
+                            required:
+                            - id
+                            - filterType
+                            - value
+                            - order
+                            additionalProperties: false
+                        experienceProductTargeting:
+                          default: []
+                          description: Product attribute rules controlling which products this experience applies to. Empty means all products.
+                          type: array
+                          items:
+                            type: object
+                            properties:
+                              id:
+                                type: string
+                                format: uuid
+                                pattern: ^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$
+                                description: Server-generated. Read-only.
+                              experienceId:
+                                type: string
+                                format: uuid
+                                pattern: ^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$
+                                description: References the parent experience.
+                              target:
+                                type: string
+                                enum:
+                                - productPage
+                                - productCard
+                                description: Storefront context where targeting rules are evaluated (product detail pages vs collection/search listings).
+                              expression:
+                                description: Boolean expression tree of product attribute conditions. Each node has either a 'query' (leaf) or 'operator' (combinator).
+                                anyOf:
+                                - type: array
+                                  items:
+                                    type: object
+                                    properties:
+                                      query:
+                                        type: object
+                                        properties:
+                                          key:
+                                            type: string
+                                            enum:
+                                            - productId
+                                            - collection
+                                            - tag
+                                            - price
+                                            - inventory
+                                            description: Product attribute to filter on. Determines which product property is evaluated.
+                                          value:
+                                            anyOf:
+                                            - type: string
+                                            - type: number
+                                            description: Expected value. String for text attributes (productId, collection, tag); number for numeric attributes (price, inventory).
+                                          filter:
+                                            type: string
+                                            enum:
+                                            - includes
+                                            - doesNotInclude
+                                            - greaterThan
+                                            - lessThan
+                                            description: Comparison operator for evaluating the product attribute against the value.
+                                          type:
+                                            type: string
+                                            enum:
+                                            - productId
+                                            - collection
+                                            - tag
+                                            - price
+                                            - inventory
+                                            description: Mirrors the key field. Determines attribute category for validation.
+                                        required:
+                                        - key
+                                        - value
+                                        - filter
+                                        - type
+                                        additionalProperties: false
+                                      operator:
+                                        type: string
+                                        enum:
+                                        - and
+                                        - or
+                                        - start_paren
+                                        - end_paren
+                                    additionalProperties: false
+                                - type: 'null'
+                            required:
+                            - id
+                            - experienceId
+                            - target
+                            additionalProperties: false
+                        id:
+                          type: string
+                          format: uuid
+                          pattern: ^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$
+                          description: Server-generated. Read-only.
+                        isDeleted:
+                          description: Whether this experience has been soft-deleted and hidden from default listings.
+                          type: boolean
+                        isExternal:
+                          description: True if this experience was created and is managed via the external API rather than the dashboard.
+                          anyOf:
+                          - default: false
+                            type: boolean
+                          - type: 'null'
+                        isPreview:
+                          default: true
+                          description: True while in draft mode. Must be set to false before the experience can be started.
+                          type: boolean
+                        lastUpdateTs:
+                          type: number
+                          description: Server-generated. Read-only. Unix timestamp in milliseconds of the most recent modification.
+                        linkBaseUrl:
+                          anyOf:
+                          - type: string
+                          - type: 'null'
+                          description: Base URL for generating access links. Only populated when requiresLink is true.
+                        name:
+                          type: string
+                          description: Display name shown in dashboards and reports.
+                        organizationId:
+                          type: string
+                          format: uuid
+                          pattern: ^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$
+                          description: Server-generated. Read-only. The Shopify store that owns this experience.
+                        pausedAtTs:
+                          anyOf:
+                          - type: number
+                          - type: 'null'
+                          description: Server-generated. Read-only. Unix timestamp in milliseconds. Null if not currently paused.
+                        productVariantCount:
+                          default: 0
+                          description: Server-generated. Read-only. Total product variants currently included in this experience.
+                          type: number
+                        requiresLink:
+                          default: false
+                          description: When true, visitors must use a special link to enter the experience instead of being auto-assigned.
+                          type: boolean
+                        sourceAction:
+                          anyOf:
+                          - type: string
+                            enum:
+                            - duplicate
+                            - rollout
+                          - type: 'null'
+                          description: How this experience was derived from sourceExperienceId. Only present when sourceExperienceId is set.
+                        sourceExperienceId:
+                          anyOf:
+                          - type: string
+                            format: uuid
+                            pattern: ^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$
+                          - type: 'null'
+                          description: Present when this experience was duplicated or rolled out from another. References the original.
+                        startedAtTs:
+                          anyOf:
+                          - type: number
+                          - type: 'null'
+                          description: Server-generated. Read-only. Unix timestamp in milliseconds. Null if never started.
+                        status:
+                          type: string
+                          enum:
+                          - pending
+                          - started
+                          - ended
+                          - paused
+                          description: 'Server-managed lifecycle state. Transitions via start/pause/end actions: pending -> started -> paused/ended.'
+                        testTypes:
+                          type: object
+                          properties:
+                            hasTestPricing:
+                              type: boolean
+                              description: Server-generated. Read-only. True when price testing is active.
+                            hasTestShipping:
+                              type: boolean
+                              description: Server-generated. Read-only. True when shipping rate testing is active.
+                            hasTestCampaign:
+                              type: boolean
+                              description: Server-generated. Read-only. True when campaign/offer testing is active.
+                            hasTestContent:
+                              type: boolean
+                              description: Server-generated. Read-only. True when any content variation type is enabled.
+                            hasTestContentUrl:
+                              type: boolean
+                              description: Server-generated. Read-only. True when URL redirect variations are in use.
+                            hasTestContentAdvanced:
+                              type: boolean
+                              description: Server-generated. Read-only. True when custom JS/CSS variations are in use.
+                            hasTestContentOnsite:
+                              type: boolean
+                              description: Server-generated. Read-only. True when visual onsite edit variations are in use.
+                            hasTestContentTemplate:
+                              type: boolean
+                              description: Server-generated. Read-only. True when Shopify template variations are in use.
+                            hasTestContentTheme:
+                              type: boolean
+                              description: Server-generated. Read-only. True when Shopify theme variations are in use.
+                            hasTestOnsiteInjections:
+                              type: boolean
+                              description: Server-generated. Read-only. True when CSS/JS injection variations are in use.
+                            hasTestCheckoutBlocks:
+                              type: boolean
+                              description: Server-generated. Read-only. True when checkout block variations are in use.
+                            hasTestPostPurchase:
+                              type: boolean
+                              description: Server-generated. Read-only. True when post-purchase upsell variations are in use.
+                            hasTestOnsiteUpsell:
+                              type: boolean
+                              description: Server-generated. Read-only. True when onsite upsell components are in use.
+                          required:
+                          - hasTestPricing
+                          - hasTestShipping
+                          - hasTestCampaign
+                          - hasTestContent
+                          - hasTestContentUrl
+                          - hasTestContentAdvanced
+                          - hasTestContentOnsite
+                          - hasTestContentTemplate
+                          - hasTestContentTheme
+                          - hasTestOnsiteInjections
+                          - hasTestCheckoutBlocks
+                          - hasTestPostPurchase
+                          - hasTestOnsiteUpsell
+                          additionalProperties: false
+                          description: Server-generated. Read-only. Flags derived from 'type' indicating which variation capabilities are active.
+                        type:
+                          type: string
+                          enum:
+                          - content/advanced
+                          - content/onsiteEdits
+                          - content/url
+                          - content/theme
+                          - content/template
+                          - personalization
+                          - personalization/offer
+                          - pricing
+                          - checkoutBlock
+                          - shipping
+                          - sitewide
+                          - postPurchase
+                          - onsiteUpsell
+                          description: 'Determines which variation fields are relevant: content/onsiteEdits for DOM edits, content/advanced for CSS/JS injection, content/url for redirect split tests, content/theme for theme tests, content/template for template tests.'
+                        hasSchedule:
+                          type: boolean
+                        history:
+                          type: array
+                          items:
+                            type: object
+                            properties:
+                              id:
+                                type: string
+                                format: uuid
+                                pattern: ^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$
+                              userId:
+                                anyOf:
+                                - type: string
+                                  format: uuid
+                                  pattern: ^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$
+                                - type: 'null'
+                              user:
+                                anyOf:
+                                - type: object
+                                  properties:
+                                    id:
+                                      type: string
+                                      format: uuid
+                                      pattern: ^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$
+                                    firstName:
+                                      anyOf:
+                                      - type: string
+                                      - type: 'null'
+                                    lastName:
+                                      anyOf:
+                                      - type: string
+                                      - type: 'null'
+                                    email:
+                                      type: string
+                                      format: email
+                                      pattern: ^(?!\.)(?!.*\.\.)([A-Za-z0-9_'+\-\.]*)[A-Za-z0-9_+-]@([A-Za-z0-9][A-Za-z0-9\-]*\.)+[A-Za-z]{2,}$
+                                    organizationId:
+                                      type: string
+                                      format: uuid
+                                      pattern: ^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$
+                                    isBlocked:
+                                      type: boolean
+                                    passwordResetRequired:
+                                      default: false
+                                      type: boolean
+                                    showInfoPopup:
+                                      type: boolean
+                                    userAlerts:
+                                      anyOf:
+                                      - type: object
+                                        properties:
+                                          showAnalyticsReleaseDialog:
+                                            default: false
+                                            type: boolean
+                                          showPersonalizationsDialog:
+                                            default: false
+                                            type: boolean
+                                          showPersonalizationMigrateBanner:
+                                            default: false
+                                            type: boolean
+                                          showWrappedDialog:
+                                            type: boolean
+                                        additionalProperties: false
+                                      - type: 'null'
+                                    showWelcome:
+                                      default: true
+                                      type: boolean
+                                    preferredName:
+                                      anyOf:
+                                      - type: string
+                                      - type: 'null'
+                                    preferredEmail:
+                                      anyOf:
+                                      - type: string
+                                      - type: 'null'
+                                    installer:
+                                      default: false
+                                      type: boolean
+                                    companyRole:
+                                      anyOf:
+                                      - type: string
+                                      - type: 'null'
+                                    previousExperience:
+                                      anyOf:
+                                      - type: string
+                                      - type: 'null'
+                                  required:
+                                  - id
+                                  - email
+                                  - organizationId
+                                  - isBlocked
+                                  - passwordResetRequired
+                                  - showInfoPopup
+                                  - showWelcome
+                                  - installer
+                                  additionalProperties: false
+                                - type: 'null'
+                              experienceId:
+                                anyOf:
+                                - type: string
+                                  format: uuid
+                                  pattern: ^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$
+                                - type: 'null'
+                              action:
+                                type: string
+                                enum:
+                                - startExperience
+                                - pauseExperience
+                                - endExperience
+                                - saveExperience
+                                - deleteExperience
+                                - enableCampaign
+                                - disableCampaign
+                                - saveCampaign
+                                - archiveCampaign
+                                - confirmIntegration
+                                - duplicateExperience
+                                - rolloutExperience
+                                - archiveExperience
+                                - unArchiveExperience
+                                - resetExperience
+                              source:
+                                anyOf:
+                                - type: string
+                                  enum:
+                                  - internal
+                                  - external
+                                  - mcp
+                                  - shared_link
+                                - type: 'null'
+                              lastUpdateTs:
+                                type: number
+                              createdAtTs:
+                                type: number
+                            required:
+                            - id
+                            - action
+                            - lastUpdateTs
+                            - createdAtTs
+                            additionalProperties: false
+                        previewPath:
+                          type: string
+                        variations:
+                          type: array
+                          items:
+                            type: object
+                            properties:
+                              id:
+                                type: string
+                                format: uuid
+                                pattern: ^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$
+                                description: Server-generated. Read-only.
+                              experienceId:
+                                type: string
+                                format: uuid
+                                pattern: ^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$
+                                description: References the parent experience.
+                              name:
+                                type: string
+                                description: Display name (e.g., 'Control', 'Variant A'). Unique within the experience.
+                              percentage:
+                                type: number
+                                description: Traffic allocation weight. All percentages across sibling variations must sum to 100.
+                              isControl:
+                                default: false
+                                description: The baseline variation all others are measured against. Exactly one per experience.
+                                type: boolean
+                              order:
+                                type: integer
+                                minimum: -9007199254740991
+                                maximum: 9007199254740991
+                                description: Display order in the analytics dashboard. 0-indexed.
+                              functionSyncError:
+                                default: false
+                                description: Server-generated. Read-only. Indicates a sync failure with Shopify Functions for this variation's discount.
+                                type: boolean
+                              testExperienceId:
+                                description: Links to another experience for advanced multi-experience configurations.
+                                anyOf:
+                                - type: string
+                                - type: 'null'
+                              offerId:
+                                description: Server-generated. Read-only. References the associated offer. Populated when offer is set.
+                                anyOf:
+                                - type: string
+                                  format: uuid
+                                  pattern: ^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$
+                                - type: 'null'
+                              redirects:
+                                description: URL redirect rules for content/url experiences.
+                                default: []
+                                type: array
+                                items:
+                                  type: object
+                                  properties:
+                                    id:
+                                      type: string
+                                      format: uuid
+                                      pattern: ^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$
+                                      description: Server-generated. Read-only.
+                                    group:
+                                      type: number
+                                      description: Numeric group for organizing related redirects. Redirects sharing an originUrl should share a group number.
+                                    variationId:
+                                      type: string
+                                      format: uuid
+                                      pattern: ^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$
+                                      description: References the parent variation.
+                                    originUrl:
+                                      type: string
+                                      description: URL pattern matched against visitor page URLs. Matching behavior depends on the 'filter' field.
+                                    destinationUrl:
+                                      description: Target URL visitors are sent to. Used when redirectType is 'fullReplacement'.
+                                      anyOf:
+                                      - type: string
+                                      - type: 'null'
+                                    queryParams:
+                                      default: []
+                                      description: Key-value pairs appended to the destination URL as query parameters.
+                                      type: array
+                                      items:
+                                        type: object
+                                        properties:
+                                          key:
+                                            type: string
+                                            description: Query parameter name appended to the destination URL.
+                                          value:
+                                            type: string
+                                            description: Query parameter value.
+                                        required:
+                                        - key
+                                        - value
+                                        additionalProperties: false
+                                    skip:
+                                      type: boolean
+                                      description: When true, this redirect is temporarily disabled.
+                                    isThemeTest:
+                                      type: boolean
+                                      description: True when this redirect tests alternate Shopify themes. Used with content/theme experiences.
+                                    isTemplateTest:
+                                      type: boolean
+                                      description: True when this redirect tests alternate Shopify templates. Used with content/template experiences.
+                                    templateType:
+                                      description: Shopify template type being tested (e.g., product, collection).
+                                      anyOf:
+                                      - type: string
+                                        enum:
+                                        - '404'
+                                        - ''
+                                        - article
+                                        - blog
+                                        - cart
+                                        - collection
+                                        - index
+                                        - list-collections
+                                        - page
+                                        - password
+                                        - product
+                                        - search
+                                      - type: 'null'
+                                    templateSuffixes:
+                                      default: []
+                                      description: Alternate Shopify template suffixes being tested (e.g., 'alternate', 'new-layout').
+                                      anyOf:
+                                      - type: array
+                                        items:
+                                          type: string
+                                      - type: 'null'
+                                    redirectOnce:
+                                      default: false
+                                      description: When true, the redirect fires only once per visitor session to avoid redirect loops.
+                                      type: boolean
+                                    filter:
+                                      default: matchesExactly
+                                      description: Matching strategy for originUrl (e.g., exact match, contains, endsWith, regex).
+                                      type: string
+                                      enum:
+                                      - matchesExactly
+                                      - contains
+                                      - endsWith
+                                      - matchesRegex
+                                      - none
+                                    find:
+                                      description: Pattern to locate within the URL for partial replacement. Only used when redirectType is 'partialReplacement'.
+                                      anyOf:
+                                      - type: string
+                                      - type: 'null'
+                                    redirectType:
+                                      default: fullReplacement
+                                      description: fullReplacement navigates to destinationUrl; partialReplacement swaps only the 'find' match within the current URL.
+                                      type: string
+                                      enum:
+                                      - fullReplacement
+                                      - partialReplacement
+                                  required:
+                                  - id
+                                  - group
+                                  - variationId
+                                  - originUrl
+                                  - queryParams
+                                  - skip
+                                  - isThemeTest
+                                  - isTemplateTest
+                                  - templateSuffixes
+                                  - redirectOnce
+                                  - filter
+                                  - redirectType
+                                  additionalProperties: false
+                              checkoutBlockTypes:
+                                type: array
+                                items:
+                                  type: string
+                                  enum:
+                                  - trustBadge
+                                  - upsell
+                                  - shippingProgressBar
+                                  - timer
+                                  - postPurchaseUpsell
+                              offerDiscountApplicationType:
+                                anyOf:
+                                - type: string
+                                  enum:
+                                  - tieredDiscount
+                                  - cartDiscount
+                                  - freeGift
+                                  - freeShipping
+                                  - ''
+                                - type: 'null'
+                              offerDiscountApplicationMethod:
+                                anyOf:
+                                - type: string
+                                  enum:
+                                  - perItem
+                                  - perOrder
+                                - type: 'null'
+                            required:
+                            - id
+                            - experienceId
+                            - name
+                            - percentage
+                            - isControl
+                            - order
+                            - functionSyncError
+                            additionalProperties: false
+                        experienceAnalysis:
+                          type: object
+                          properties:
+                            analyticsViewType:
+                              type: string
+                              enum:
+                              - test_orders_only
+                              - sitewide_orders
+                              - none
+                              description: Scope of orders included in analytics results. Determines whether only tested products or all store orders are counted.
+                          required:
+                          - analyticsViewType
+                          additionalProperties: false
+                      required:
+                      - category
+                      - createdAtTs
+                      - endedAtTs
+                      - experienceActions
+                      - experiencePageTargeting
+                      - experienceProductTargeting
+                      - id
+                      - isPreview
+                      - lastUpdateTs
+                      - linkBaseUrl
+                      - name
+                      - organizationId
+                      - pausedAtTs
+                      - productVariantCount
+                      - requiresLink
+                      - startedAtTs
+                      - status
+                      - testTypes
+                      - type
+                      - hasSchedule
+                      - history
+                      - previewPath
+                      - variations
+                      - experienceAnalysis
+                      additionalProperties: false
+                      description: Experience summary item returned by GET /experiences-list. Includes `history` for each item. Does not include `experienceCustomMetrics`, `experienceIntegrations`, `experienceKeyMetrics`, or `shippingTestMethodDefinitions`; those fields are only returned by GET /experiences/{experienceId}.
+                    description: Paginated array of experience summary items.
+                  page:
+                    type: number
+                    description: 1-based page number returned for this result set.
+                  limit:
+                    type: number
+                    description: Maximum number of experiences requested per page.
+                  total:
+                    type: number
+                    description: Total number of matching experiences across all pages.
+                  totalPages:
+                    type: number
+                    description: Total number of pages available for the current limit.
+                required:
+                - experiencesList
+                - page
+                - limit
+                - total
+                - totalPages
+                additionalProperties: false
+      summary: Get v25 10 beta experiences list
+      x-summary-source: derived
+      operationId: getV2510BetaExperiencesList
+      x-operation-id-source: derived
+components:
+  securitySchemes:
+    intelligems_access_token:
+      type: apiKey
+      in: header
+      name: intelligems-access-token
+      description: Intelligems external API access token.

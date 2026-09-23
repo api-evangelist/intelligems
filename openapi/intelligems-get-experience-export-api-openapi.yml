@@ -1,0 +1,403 @@
+openapi: 3.2.0
+info:
+  title: Intelligems External Get Experience Export API
+  version: v25-10-beta
+  description: Programmatic access to manage Intelligems A/B tests, personalizations, and experiences, to define custom events, and to pull experiment and sitewide analytics for a Shopify store. Authenticate with an API key in the `intelligems-access-token` header.
+  contact:
+    name: Intelligems
+    url: https://docs.intelligems.io/developer-resources/external-api
+servers:
+- url: https://api.intelligems.io
+  description: Production
+security:
+- intelligems_access_token: []
+tags:
+- name: Get Experience Export
+paths:
+  /v25-10-beta/analytics/experience/{experienceId}/export:
+    post:
+      tags:
+      - Get Experience Export
+      description: Export order-level or line-item-level data for an experience (A/B test) as a CSV file.
+      parameters:
+      - in: path
+        name: experienceId
+        schema:
+          type: string
+          format: uuid
+          pattern: ^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$
+        required: true
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                exportType:
+                  type: string
+                  enum:
+                  - orders
+                  - order_line_items
+                  - order_reconciliation
+                  description: Type of export data to retrieve. 'orders' returns order-level data, 'order_line_items' returns line-item-level data.
+                startTs:
+                  description: Optional analysis start timestamp as a 10-digit Unix epoch string in seconds. Defaults to the experience start date.
+                  type: string
+                endTs:
+                  description: Optional analysis end timestamp as a 10-digit Unix epoch string in seconds. Defaults to now or the experience end date.
+                  type: string
+                filters:
+                  description: 'Optional analytics filters object. Supports device, visitor, traffic source, country, product, and targeting filters.
+
+
+                    Analytics filters object for narrowing experience/experiment result data.'
+                  type: object
+                  properties:
+                    deviceType:
+                      description: 'Filter by device type. Options: ''any'' (disables filter), ''mobile'', ''desktop''. Omit or null to include all devices.'
+                      anyOf:
+                      - type: string
+                        enum:
+                        - any
+                        - mobile
+                        - desktop
+                      - type: 'null'
+                    visitorType:
+                      description: 'Filter by visitor type. Options: ''any'' (disables filter), ''new'', ''returning''. Omit or null to include all visitors.'
+                      anyOf:
+                      - type: string
+                        enum:
+                        - any
+                        - new
+                        - returning
+                      - type: 'null'
+                    customerType:
+                      description: 'Filter experiment analytics by customer type. Options: ''new'', ''returning''. Omit or null to include all customers.'
+                      anyOf:
+                      - type: string
+                        enum:
+                        - new
+                        - returning
+                      - type: 'null'
+                    sourceSitesOrChannels:
+                      description: 'Filter by traffic source channels. These 25 values are the complete accepted set — the channels the analytics service buckets sessions and orders into — and any other value is rejected with a 400: ''Instagram'', ''Facebook'', ''Google'', ''Twitter'', ''TikTok'', ''Youtube'', ''Klaviyo'', ''Attentive'', ''Postscript'', ''Paid Shopping'', ''Paid Search'', ''Paid Social'', ''Paid Video'', ''Display'', ''Paid Other'', ''Organic Shopping'', ''Organic Social'', ''Organic Video'', ''Organic Search'', ''Other'', ''Referral'', ''Affiliate'', ''SMS'', ''Email'', ''Direct''. Omit or pass an empty array for all channels — there is no ''any'' sentinel.'
+                      type: array
+                      items:
+                        type: string
+                        enum:
+                        - Instagram
+                        - Facebook
+                        - Google
+                        - Twitter
+                        - TikTok
+                        - Youtube
+                        - Klaviyo
+                        - Attentive
+                        - Postscript
+                        - Paid Shopping
+                        - Paid Search
+                        - Paid Social
+                        - Paid Video
+                        - Display
+                        - Paid Other
+                        - Organic Shopping
+                        - Organic Social
+                        - Organic Video
+                        - Organic Search
+                        - Other
+                        - Referral
+                        - Affiliate
+                        - SMS
+                        - Email
+                        - Direct
+                    urlParam:
+                      description: 'Filter by URL query parameter. Object with: queryParam (string|null — the parameter name), queryParamValue (string|null — the value to match), queryParamFilterType (match operator|null: ''equals'', ''contains'', ''startsWith'', ''endsWith'', ''doesNotEqual'', ''doesNotContain'', ''doesNotStartWith'', ''doesNotEndWith'', ''isNull'', ''isNotNull''). REQUIRED COMBINATIONS (enforced with a 400): when queryParamFilterType is set, queryParam must be a non-empty string; every operator except ''isNull''/''isNotNull'' also requires a non-empty queryParamValue; ''isNull''/''isNotNull'' take no value, so leave queryParamValue null. Omit all three fields to apply no query-parameter filter.'
+                      type: object
+                      properties:
+                        queryParam:
+                          anyOf:
+                          - type: string
+                          - type: 'null'
+                        queryParamValue:
+                          anyOf:
+                          - type: string
+                          - type: 'null'
+                        queryParamFilterType:
+                          anyOf:
+                          - type: string
+                            enum:
+                            - equals
+                            - contains
+                            - startsWith
+                            - endsWith
+                            - doesNotEqual
+                            - doesNotContain
+                            - doesNotStartWith
+                            - doesNotEndWith
+                            - isNull
+                            - isNotNull
+                          - type: 'null'
+                      required:
+                      - queryParam
+                      - queryParamValue
+                      - queryParamFilterType
+                    landingPage:
+                      description: 'DEPRECATED — use landingPageFilters instead, which supports multiple values and an and/or operator. This single-path filter is retained for backwards compatibility and still works, but new integrations should use landingPageFilters. Filter by landing page URL path. Object with: landingPageUrlPath (string|null — the path to match), landingPageUrlPathFilterType (match operator|null: ''equals'', ''contains'', ''startsWith'', ''endsWith'', ''doesNotEqual'', ''doesNotContain'', ''doesNotStartWith'', ''doesNotEndWith'', ''isNull'', ''isNotNull''). REQUIRED COMBINATIONS (enforced with a 400): every operator except ''isNull''/''isNotNull'' requires a non-empty landingPageUrlPath; ''isNull''/''isNotNull'' take no path, so leave landingPageUrlPath null; and a landingPageUrlPath with no landingPageUrlPathFilterType is rejected. Omit both fields to apply no landing-page filter.'
+                      deprecated: true
+                      anyOf:
+                      - type: object
+                        properties:
+                          landingPageUrlPath:
+                            anyOf:
+                            - type: string
+                            - type: 'null'
+                          landingPageUrlPathFilterType:
+                            anyOf:
+                            - type: string
+                              enum:
+                              - equals
+                              - contains
+                              - startsWith
+                              - endsWith
+                              - doesNotEqual
+                              - doesNotContain
+                              - doesNotStartWith
+                              - doesNotEndWith
+                              - isNull
+                              - isNotNull
+                            - type: 'null'
+                        required:
+                        - landingPageUrlPath
+                        - landingPageUrlPathFilterType
+                      - type: 'null'
+                    landingPageFilters:
+                      description: 'Filter by landing page URL path with multi-value support. Recommended landing page filter (supersedes the deprecated landingPage field). Array of filter items, each with: filterType (match operator: ''equals'', ''contains'', ''startsWith'', ''endsWith'', ''doesNotEqual'', ''doesNotContain'', ''doesNotStartWith'', ''doesNotEndWith'', ''isNull'', ''isNotNull'') and values (array of strings to match against). REQUIRED COMBINATIONS (enforced with a 400): every operator except ''isNull''/''isNotNull'' requires at least one non-empty entry in values — an omitted, empty, or blank-only values array is rejected rather than silently matching nothing. ''isNull''/''isNotNull'' take no values; omit the field (an empty array is tolerated, real values are rejected). Multiple values within a single item are OR''d. How items in the array are combined is controlled by landingPageFiltersOperator.'
+                      type: array
+                      items:
+                        type: object
+                        properties:
+                          values:
+                            type: array
+                            items:
+                              type: string
+                          filterType:
+                            type: string
+                            enum:
+                            - equals
+                            - contains
+                            - startsWith
+                            - endsWith
+                            - doesNotEqual
+                            - doesNotContain
+                            - doesNotStartWith
+                            - doesNotEndWith
+                            - isNull
+                            - isNotNull
+                        required:
+                        - filterType
+                    landingPageFiltersOperator:
+                      description: How multiple items in landingPageFilters are combined. 'or' (default) — session matches if any filter item matches. 'and' — session must match every filter item.
+                      type: string
+                      enum:
+                      - or
+                      - and
+                    userBehavior:
+                      description: 'Filter by visitor browsing behavior. Object with optional boolean flags: viewedCheckout, addedToCart, viewedProductPage, viewedCollectionPage. Set a flag to true to include only visitors who performed that action. Omit or null for flags you don''t want to filter on. Multiple true flags are combined with AND logic.'
+                      type: object
+                      properties:
+                        viewedCheckout:
+                          anyOf:
+                          - type: boolean
+                          - type: 'null'
+                        addedToCart:
+                          anyOf:
+                          - type: boolean
+                          - type: 'null'
+                        viewedProductPage:
+                          anyOf:
+                          - type: boolean
+                          - type: 'null'
+                        viewedCollectionPage:
+                          anyOf:
+                          - type: boolean
+                          - type: 'null'
+                    countryCodes:
+                      description: Filter by ISO 3166-1 alpha-2 country codes (e.g. ['US', 'GB', 'CA']). Omit or pass empty array for all countries.
+                      type: array
+                      items:
+                        type: string
+                    countryCodesFilterType:
+                      description: 'How countryCodes should be matched: ''include'' (only visitors in the listed countries) or ''exclude'' (visitors in any country except the listed ones). Defaults to ''include'' when omitted. Requires countryCodes to be a non-empty array.'
+                      type: string
+                      enum:
+                      - include
+                      - exclude
+                    maxZScore:
+                      description: Maximum Z-score threshold for outlier filtering on order revenue. Visitors with orders whose Z-score exceeds this value are excluded. Accepts number or numeric string. Null or omit to disable outlier filtering.
+                      anyOf:
+                      - anyOf:
+                        - type: number
+                        - type: string
+                      - type: 'null'
+                    triggeredCustomEvents:
+                      description: Filter by custom event identifiers that visitors must have triggered. Requires customEventsFilterType to be set to control matching logic. Has no effect without customEventsFilterType. Pull this field from the GET https://api.intelligems.io/v25-10-beta/experiences/{experienceId} endpoint > experienceCustomMetrics > customEvent > identifier field.
+                      type: array
+                      items:
+                        type: string
+                    customEventsFilterType:
+                      description: 'How triggeredCustomEvents should be matched: ''any'' (visitor triggered at least one), ''all'' (visitor triggered every listed event), ''none'' (visitor triggered none of the listed events). Requires triggeredCustomEvents to be a non-empty array.'
+                      type: string
+                      enum:
+                      - any
+                      - all
+                      - none
+                    reachedCheckoutStage:
+                      description: 'Filter to visitors who reached at least the given checkout stage. Options: ''started'', ''contact_info_submitted'', ''address_info_submitted''. Omit or null to not filter by checkout stage.'
+                      anyOf:
+                      - type: string
+                        enum:
+                        - started
+                        - contact_info_submitted
+                        - address_info_submitted
+                      - type: 'null'
+                    minNetRevenue:
+                      description: Minimum order net revenue to include (inclusive). Accepts number or numeric string. Omit or null to not apply a minimum.
+                      anyOf:
+                      - anyOf:
+                        - type: number
+                        - type: string
+                      - type: 'null'
+                    maxNetRevenue:
+                      description: Maximum order net revenue to include (inclusive). Accepts number or numeric string. Omit or null to not apply a maximum.
+                      anyOf:
+                      - anyOf:
+                        - type: number
+                        - type: string
+                      - type: 'null'
+                    minShippingRevenue:
+                      description: Minimum shipping revenue to include (inclusive). Accepts number or numeric string. Omit or null to not apply a minimum.
+                      anyOf:
+                      - anyOf:
+                        - type: number
+                        - type: string
+                      - type: 'null'
+                    maxShippingRevenue:
+                      description: Maximum shipping revenue to include (inclusive). Accepts number or numeric string. Omit or null to not apply a maximum.
+                      anyOf:
+                      - anyOf:
+                        - type: number
+                        - type: string
+                      - type: 'null'
+                    shippingMethods:
+                      description: Filter by shipping method names. Only orders using one of these methods are included.
+                      type: array
+                      items:
+                        type: string
+                    onlyProductIds:
+                      description: Filter to only include specific Shopify product IDs (numeric strings).
+                      anyOf:
+                      - type: array
+                        items:
+                          type: string
+                      - type: 'null'
+                    landingPageTypes:
+                      description: 'Filter sessions by landing page types. An array of values from: ''PDP'', ''Collection'', ''Content'', ''Blog'', ''Homepage'', ''Search'', ''Cart'', ''Other''. Omit or null to include all landing page types.'
+                      type: array
+                      items:
+                        type: string
+                        enum:
+                        - PDP
+                        - Collection
+                        - Content
+                        - Blog
+                        - Homepage
+                        - Search
+                        - Cart
+                        - Other
+                    experimentProductsOnly:
+                      description: When true, only include products that are part of the experiment. Only applies when analyzing an experience/experiment.
+                      anyOf:
+                      - type: boolean
+                      - type: 'null'
+                    onlyProductHandles:
+                      description: Filter to only include specific Shopify product handles.
+                      anyOf:
+                      - type: array
+                        items:
+                          type: string
+                      - type: 'null'
+              required:
+              - exportType
+      responses:
+        '200':
+          description: OK
+          headers:
+            access-control-allow-origin:
+              schema:
+                type: string
+              description: CORS allow-origin header.
+            access-control-allow-credentials:
+              schema:
+                type: string
+              description: CORS allow-credentials header.
+            content-type:
+              schema:
+                type: string
+              description: Response content type.
+            Timing-Allow-Origin:
+              schema:
+                type: string
+              description: Allowed origin for Timing headers.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  exportType:
+                    type: string
+                    enum:
+                    - orders
+                    - order_line_items
+                    - order_reconciliation
+                    description: The type of export that was generated.
+                  experienceId:
+                    type: string
+                    description: The UUID of the experience.
+                  experienceName:
+                    type: string
+                    description: The display name of the experience.
+                  url:
+                    anyOf:
+                    - type: string
+                    - type: 'null'
+                    description: Presigned S3 URL to download the CSV file. Valid for 15 minutes. Null if the export timed out or failed.
+                  expiresIn:
+                    type: number
+                    description: Number of seconds until the presigned URL expires. 0 if url is null.
+                  format:
+                    type: string
+                    const: csv
+                    description: The file format of the export (always 'csv').
+                  message:
+                    type: string
+                    description: Human-readable status message.
+                required:
+                - exportType
+                - experienceId
+                - experienceName
+                - url
+                - expiresIn
+                - format
+                - message
+                additionalProperties: false
+      summary: Create v25 10 beta analytics experience by experience id export
+      x-summary-source: derived
+      operationId: postV2510BetaAnalyticsExperienceByExperienceIdExport
+      x-operation-id-source: derived
+components:
+  securitySchemes:
+    intelligems_access_token:
+      type: apiKey
+      in: header
+      name: intelligems-access-token
+      description: Intelligems external API access token.

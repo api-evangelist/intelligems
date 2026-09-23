@@ -1,0 +1,2083 @@
+openapi: 3.2.0
+info:
+  title: Intelligems External Fetch Sitewide Analytics API
+  version: v25-10-beta
+  description: Programmatic access to manage Intelligems A/B tests, personalizations, and experiences, to define custom events, and to pull experiment and sitewide analytics for a Shopify store. Authenticate with an API key in the `intelligems-access-token` header.
+  contact:
+    name: Intelligems
+    url: https://docs.intelligems.io/developer-resources/external-api
+servers:
+- url: https://api.intelligems.io
+  description: Production
+security:
+- intelligems_access_token: []
+tags:
+- name: Fetch Sitewide Analytics
+paths:
+  /v25-10-beta/analytics/sitewide/conversion-funnel:
+    post:
+      tags:
+      - Fetch Sitewide Analytics
+      description: '## Get Sitewide Conversion Funnel
+
+
+        Retrieve the sitewide conversion funnel as a Sankey graph: visitors flow from entry point → landing page → second page → cart → checkout → conversion.'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                start:
+                  description: Start of analysis period as an ISO 8601 datetime string (e.g. '2025-01-01T00:00:00.000-05:00'). Defaults to the start of the day 30 days ago, in the store's timezone. Note the default differs per sitewide endpoint, so pass an explicit start if you need a specific window.
+                  type: string
+                  format: date-time
+                  pattern: ^(?:(?:\d\d[2468][048]|\d\d[13579][26]|\d\d0[48]|[02468][048]00|[13579][26]00)-02-29|\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\d|30)|(?:02)-(?:0[1-9]|1\d|2[0-8])))T(?:(?:[01]\d|2[0-3]):[0-5]\d(?::[0-5]\d(?:\.\d+)?)?(?:Z|([+-](?:[01]\d|2[0-3]):[0-5]\d)))$
+                end:
+                  description: End of analysis period as an ISO 8601 datetime string. Defaults to now.
+                  type: string
+                  format: date-time
+                  pattern: ^(?:(?:\d\d[2468][048]|\d\d[13579][26]|\d\d0[48]|[02468][048]00|[13579][26]00)-02-29|\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\d|30)|(?:02)-(?:0[1-9]|1\d|2[0-8])))T(?:(?:[01]\d|2[0-3]):[0-5]\d(?::[0-5]\d(?:\.\d+)?)?(?:Z|([+-](?:[01]\d|2[0-3]):[0-5]\d)))$
+                filters:
+                  description: Optional analytics filters object. See the Filters Reference for available filter fields (country, device, visitor type, sourceSitesOrChannels, landingPageTypes, etc.). These narrow the underlying dataset and are distinct from `entryPoint`, which pivots step 1.
+                  type: object
+                  properties:
+                    deviceType:
+                      description: 'Filter by device type. Options: ''any'' (disables filter), ''mobile'', ''desktop''. Omit or null to include all devices.'
+                      anyOf:
+                      - type: string
+                        enum:
+                        - any
+                        - mobile
+                        - desktop
+                      - type: 'null'
+                    visitorType:
+                      description: 'Filter by visitor type. Options: ''any'' (disables filter), ''new'', ''returning''. Omit or null to include all visitors.'
+                      anyOf:
+                      - type: string
+                        enum:
+                        - any
+                        - new
+                        - returning
+                      - type: 'null'
+                    customerType:
+                      description: 'Filter by customer type. Options: ''new'', ''returning''. Omit or null to include all customers.'
+                      anyOf:
+                      - type: string
+                        enum:
+                        - new
+                        - returning
+                      - type: 'null'
+                    sourceSitesOrChannels:
+                      description: 'Filter by traffic source channels. These 25 values are the complete accepted set — the channels the analytics service buckets sessions and orders into — and any other value is rejected with a 400: ''Instagram'', ''Facebook'', ''Google'', ''Twitter'', ''TikTok'', ''Youtube'', ''Klaviyo'', ''Attentive'', ''Postscript'', ''Paid Shopping'', ''Paid Search'', ''Paid Social'', ''Paid Video'', ''Display'', ''Paid Other'', ''Organic Shopping'', ''Organic Social'', ''Organic Video'', ''Organic Search'', ''Other'', ''Referral'', ''Affiliate'', ''SMS'', ''Email'', ''Direct''. Omit or pass an empty array for all channels — there is no ''any'' sentinel.'
+                      type: array
+                      items:
+                        type: string
+                        enum:
+                        - Instagram
+                        - Facebook
+                        - Google
+                        - Twitter
+                        - TikTok
+                        - Youtube
+                        - Klaviyo
+                        - Attentive
+                        - Postscript
+                        - Paid Shopping
+                        - Paid Search
+                        - Paid Social
+                        - Paid Video
+                        - Display
+                        - Paid Other
+                        - Organic Shopping
+                        - Organic Social
+                        - Organic Video
+                        - Organic Search
+                        - Other
+                        - Referral
+                        - Affiliate
+                        - SMS
+                        - Email
+                        - Direct
+                    landingPage:
+                      description: 'DEPRECATED — use landingPageFilters instead, which supports multiple values and an and/or operator. This single-path filter is retained for backwards compatibility and still works, but new integrations should use landingPageFilters. Filter by landing page URL path. Object with: landingPageUrlPath (string|null — the path to match), landingPageUrlPathFilterType (match operator|null: ''equals'', ''contains'', ''startsWith'', ''endsWith'', ''doesNotEqual'', ''doesNotContain'', ''doesNotStartWith'', ''doesNotEndWith'', ''isNull'', ''isNotNull''). REQUIRED COMBINATIONS (enforced with a 400): every operator except ''isNull''/''isNotNull'' requires a non-empty landingPageUrlPath; ''isNull''/''isNotNull'' take no path, so leave landingPageUrlPath null; and a landingPageUrlPath with no landingPageUrlPathFilterType is rejected. Omit both fields to apply no landing-page filter.'
+                      deprecated: true
+                      anyOf:
+                      - type: object
+                        properties:
+                          landingPageUrlPath:
+                            anyOf:
+                            - type: string
+                            - type: 'null'
+                          landingPageUrlPathFilterType:
+                            anyOf:
+                            - type: string
+                              enum:
+                              - equals
+                              - contains
+                              - startsWith
+                              - endsWith
+                              - doesNotEqual
+                              - doesNotContain
+                              - doesNotStartWith
+                              - doesNotEndWith
+                              - isNull
+                              - isNotNull
+                            - type: 'null'
+                        required:
+                        - landingPageUrlPath
+                        - landingPageUrlPathFilterType
+                      - type: 'null'
+                    landingPageFilters:
+                      description: 'Filter by landing page URL path with multi-value support. Recommended landing page filter (supersedes the deprecated landingPage field). Array of filter items, each with: filterType (match operator: ''equals'', ''contains'', ''startsWith'', ''endsWith'', ''doesNotEqual'', ''doesNotContain'', ''doesNotStartWith'', ''doesNotEndWith'', ''isNull'', ''isNotNull'') and values (array of strings to match against). REQUIRED COMBINATIONS (enforced with a 400): every operator except ''isNull''/''isNotNull'' requires at least one non-empty entry in values — an omitted, empty, or blank-only values array is rejected rather than silently matching nothing. ''isNull''/''isNotNull'' take no values; omit the field (an empty array is tolerated, real values are rejected). Multiple values within a single item are OR''d. How items in the array are combined is controlled by landingPageFiltersOperator.'
+                      type: array
+                      items:
+                        type: object
+                        properties:
+                          values:
+                            type: array
+                            items:
+                              type: string
+                          filterType:
+                            type: string
+                            enum:
+                            - equals
+                            - contains
+                            - startsWith
+                            - endsWith
+                            - doesNotEqual
+                            - doesNotContain
+                            - doesNotStartWith
+                            - doesNotEndWith
+                            - isNull
+                            - isNotNull
+                        required:
+                        - filterType
+                    landingPageFiltersOperator:
+                      description: How multiple items in landingPageFilters are combined. 'or' (default) — session matches if any filter item matches. 'and' — session must match every filter item.
+                      type: string
+                      enum:
+                      - or
+                      - and
+                    countryCodes:
+                      description: Filter by ISO 3166-1 alpha-2 country codes (e.g. ['US', 'GB', 'CA']). Omit or pass empty array for all countries.
+                      type: array
+                      items:
+                        type: string
+                    countryCodesFilterType:
+                      description: 'How countryCodes should be matched: ''include'' (only visitors in the listed countries) or ''exclude'' (visitors in any country except the listed ones). Defaults to ''include'' when omitted. Requires countryCodes to be a non-empty array.'
+                      type: string
+                      enum:
+                      - include
+                      - exclude
+                    currencyCodes:
+                      description: Filter by ISO 4217 order currency codes (e.g. ['USD', 'GBP', 'CAD']). Matches the currency an order was placed in. Omit or pass empty array for all currencies.
+                      type: array
+                      items:
+                        type: string
+                    currencyCodesFilterType:
+                      description: 'How currencyCodes should be matched: ''include'' (only orders in the listed currencies) or ''exclude'' (orders in any currency except the listed ones). Defaults to ''include'' when omitted. Requires currencyCodes to be a non-empty array.'
+                      type: string
+                      enum:
+                      - include
+                      - exclude
+                    maxZScore:
+                      description: Maximum Z-score threshold for outlier filtering on order revenue. Visitors with orders whose Z-score exceeds this value are excluded. Accepts number or numeric string. Null or omit to disable outlier filtering.
+                      anyOf:
+                      - anyOf:
+                        - type: number
+                        - type: string
+                      - type: 'null'
+                    onlyProductIds:
+                      description: Filter to orders containing at least one of these Shopify product IDs (numeric strings, e.g. ['1234567890', '9876543210']). Omit or pass an empty array for all products.
+                      type: array
+                      items:
+                        type: string
+                    landingPageTypes:
+                      description: 'Filter sessions by landing page types. An array of values from: ''PDP'', ''Collection'', ''Content'', ''Blog'', ''Homepage'', ''Search'', ''Cart'', ''Other''. Omit or null to include all landing page types.'
+                      type: array
+                      items:
+                        type: string
+                        enum:
+                        - PDP
+                        - Collection
+                        - Content
+                        - Blog
+                        - Homepage
+                        - Search
+                        - Cart
+                        - Other
+                entryPoint:
+                  default: device_type
+                  description: 'Optional dimension that pivots the funnel''s step-1 entry-point nodes. This does NOT filter the dataset — it only changes which buckets are rendered at step 1 (Mobile vs. Desktop, New vs. Returning, channel breakdown, source-site breakdown). To narrow the dataset to a single segment, use the `filters` object instead. Supported values: ''device_type'' (Mobile vs Desktop), ''visitor_type'' (New vs Returning), ''source_channel'' (Paid Social, Paid Search, Direct, ...), ''source_site'' (referrer host buckets). Any other value (typo, unsupported dimension, wrong type) silently falls back to ''device_type''. Mirrors the Customer Journey chart''s audience selector in the Intelligems dashboard. NOTE: this parameter was named `audience` in earlier v25-10-beta builds (renamed to disambiguate it from the `audience` segmentation param on the snapshot/timeseries endpoints). A legacy `audience` key sent to this endpoint is now ignored — update integrations to `entryPoint`.'
+                  type: string
+                  enum:
+                  - device_type
+                  - visitor_type
+                  - source_channel
+                  - source_site
+                conversionFunnel:
+                  description: 'Optional funnel-specific filters. Stage flags (addedToCart, startedCheckout, converted, bounced, abandonedCart, abandonedCheckout, exitedBeforeAtc, viewedCollectionPage, viewedProductPage) narrow the funnel input to sessions that hit that behavioral stage. landingPageType / secondPageType pin the funnel to a single landing-page or second-page journey (Supported page types: PDP, Collection, Content, Blog, Homepage, Search, Cart, Other). Equivalent to the clickable node filters in the Intelligems dashboard.'
+                  type: object
+                  properties:
+                    abandonedCart:
+                      type: boolean
+                    abandonedCheckout:
+                      type: boolean
+                    addedToCart:
+                      type: boolean
+                    bounced:
+                      type: boolean
+                    converted:
+                      type: boolean
+                    exitedBeforeAtc:
+                      type: boolean
+                    startedCheckout:
+                      type: boolean
+                    viewedCollectionPage:
+                      type: boolean
+                    viewedProductPage:
+                      type: boolean
+                    landingPageType:
+                      type: string
+                      enum:
+                      - PDP
+                      - Collection
+                      - Content
+                      - Blog
+                      - Homepage
+                      - Search
+                      - Cart
+                      - Other
+                    secondPageType:
+                      type: string
+                      enum:
+                      - PDP
+                      - Collection
+                      - Content
+                      - Blog
+                      - Homepage
+                      - Search
+                      - Cart
+                      - Other
+      responses:
+        '200':
+          description: OK
+          headers:
+            access-control-allow-origin:
+              schema:
+                type: string
+              description: CORS allow-origin header.
+            access-control-allow-credentials:
+              schema:
+                type: string
+              description: CORS allow-credentials header.
+            content-type:
+              schema:
+                type: string
+              description: Response content type.
+            Timing-Allow-Origin:
+              schema:
+                type: string
+              description: Allowed origin for Timing headers.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: object
+                    properties:
+                      nodes:
+                        type: array
+                        items:
+                          type: object
+                          properties:
+                            name:
+                              type: string
+                              description: 'Node label, e.g. ''Mobile'', ''Landing: PDP'', ''Bounced'', ''Added to Cart''.'
+                            step:
+                              type: number
+                              description: 1-indexed step position in the funnel.
+                            value:
+                              type: number
+                              description: Number of visitors at this node.
+                            pct:
+                              type: number
+                              description: Share of step-1 visitors that reached this node, as a fraction in [0, 1] (not a percent).
+                          required:
+                          - name
+                          - step
+                          - value
+                          - pct
+                          additionalProperties: false
+                        description: Sankey nodes — one per labeled state at each step in the funnel. Ordered by (step ascending, value descending).
+                      links:
+                        type: array
+                        items:
+                          type: object
+                          properties:
+                            source:
+                              type: string
+                              description: Name of the source node for this transition.
+                            target:
+                              type: string
+                              description: Name of the target node for this transition.
+                            step:
+                              type: number
+                              description: Step of the source node.
+                            value:
+                              type: number
+                              description: Number of visitors traversing this link.
+                          required:
+                          - source
+                          - target
+                          - step
+                          - value
+                          additionalProperties: false
+                        description: Sankey links — one per transition between adjacent step nodes. Ordered by (step ascending, value descending).
+                    required:
+                    - nodes
+                    - links
+                    additionalProperties: false
+                    description: Sankey graph representation of the conversion funnel. Contains `nodes` (one per labeled state at each step) and `links` (transitions between adjacent steps). Server-side bucketing keeps only the top 5 entries per step plus catch-all 'Other' / 'Bounced' rollups.
+                required:
+                - data
+                additionalProperties: false
+      summary: Create v25 10 beta analytics sitewide conversion funnel
+      x-summary-source: derived
+      operationId: postV2510BetaAnalyticsSitewideConversionFunnel
+      x-operation-id-source: derived
+  /v25-10-beta/analytics/sitewide/order-distribution:
+    post:
+      tags:
+      - Fetch Sitewide Analytics
+      description: 'Retrieve order value distribution data and unit mix breakdowns for a time window.
+
+
+        The response returns `orderValueDistribution.kernel_density_estimate` and `orderValueDistribution.cumulative_distribution_function`, plus `orderBreakdown`.'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                start:
+                  description: Start of analysis period as an ISO 8601 datetime string (e.g. '2025-01-01T00:00:00.000-05:00'). Defaults to the start of the week containing the date 12 weeks ago, in the store's timezone (weeks start Monday), so the default start is week-aligned rather than exactly 84 days back. Note the default differs per sitewide endpoint, so pass an explicit start if you need a specific window.
+                  type: string
+                  format: date-time
+                  pattern: ^(?:(?:\d\d[2468][048]|\d\d[13579][26]|\d\d0[48]|[02468][048]00|[13579][26]00)-02-29|\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\d|30)|(?:02)-(?:0[1-9]|1\d|2[0-8])))T(?:(?:[01]\d|2[0-3]):[0-5]\d(?::[0-5]\d(?:\.\d+)?)?(?:Z|([+-](?:[01]\d|2[0-3]):[0-5]\d)))$
+                end:
+                  description: End of analysis period as an ISO 8601 datetime string. Defaults to now.
+                  type: string
+                  format: date-time
+                  pattern: ^(?:(?:\d\d[2468][048]|\d\d[13579][26]|\d\d0[48]|[02468][048]00|[13579][26]00)-02-29|\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\d|30)|(?:02)-(?:0[1-9]|1\d|2[0-8])))T(?:(?:[01]\d|2[0-3]):[0-5]\d(?::[0-5]\d(?:\.\d+)?)?(?:Z|([+-](?:[01]\d|2[0-3]):[0-5]\d)))$
+                filters:
+                  description: Optional analytics filters object. See the Filters Reference for available filter fields.
+                  type: object
+                  properties:
+                    deviceType:
+                      description: 'Filter by device type. Options: ''any'' (disables filter), ''mobile'', ''desktop''. Omit or null to include all devices.'
+                      anyOf:
+                      - type: string
+                        enum:
+                        - any
+                        - mobile
+                        - desktop
+                      - type: 'null'
+                    visitorType:
+                      description: 'Filter by visitor type. Options: ''any'' (disables filter), ''new'', ''returning''. Omit or null to include all visitors.'
+                      anyOf:
+                      - type: string
+                        enum:
+                        - any
+                        - new
+                        - returning
+                      - type: 'null'
+                    customerType:
+                      description: 'Filter by customer type. Options: ''new'', ''returning''. Omit or null to include all customers.'
+                      anyOf:
+                      - type: string
+                        enum:
+                        - new
+                        - returning
+                      - type: 'null'
+                    sourceSitesOrChannels:
+                      description: 'Filter by traffic source channels. These 25 values are the complete accepted set — the channels the analytics service buckets sessions and orders into — and any other value is rejected with a 400: ''Instagram'', ''Facebook'', ''Google'', ''Twitter'', ''TikTok'', ''Youtube'', ''Klaviyo'', ''Attentive'', ''Postscript'', ''Paid Shopping'', ''Paid Search'', ''Paid Social'', ''Paid Video'', ''Display'', ''Paid Other'', ''Organic Shopping'', ''Organic Social'', ''Organic Video'', ''Organic Search'', ''Other'', ''Referral'', ''Affiliate'', ''SMS'', ''Email'', ''Direct''. Omit or pass an empty array for all channels — there is no ''any'' sentinel.'
+                      type: array
+                      items:
+                        type: string
+                        enum:
+                        - Instagram
+                        - Facebook
+                        - Google
+                        - Twitter
+                        - TikTok
+                        - Youtube
+                        - Klaviyo
+                        - Attentive
+                        - Postscript
+                        - Paid Shopping
+                        - Paid Search
+                        - Paid Social
+                        - Paid Video
+                        - Display
+                        - Paid Other
+                        - Organic Shopping
+                        - Organic Social
+                        - Organic Video
+                        - Organic Search
+                        - Other
+                        - Referral
+                        - Affiliate
+                        - SMS
+                        - Email
+                        - Direct
+                    landingPage:
+                      description: 'DEPRECATED — use landingPageFilters instead, which supports multiple values and an and/or operator. This single-path filter is retained for backwards compatibility and still works, but new integrations should use landingPageFilters. Filter by landing page URL path. Object with: landingPageUrlPath (string|null — the path to match), landingPageUrlPathFilterType (match operator|null: ''equals'', ''contains'', ''startsWith'', ''endsWith'', ''doesNotEqual'', ''doesNotContain'', ''doesNotStartWith'', ''doesNotEndWith'', ''isNull'', ''isNotNull''). REQUIRED COMBINATIONS (enforced with a 400): every operator except ''isNull''/''isNotNull'' requires a non-empty landingPageUrlPath; ''isNull''/''isNotNull'' take no path, so leave landingPageUrlPath null; and a landingPageUrlPath with no landingPageUrlPathFilterType is rejected. Omit both fields to apply no landing-page filter.'
+                      deprecated: true
+                      anyOf:
+                      - type: object
+                        properties:
+                          landingPageUrlPath:
+                            anyOf:
+                            - type: string
+                            - type: 'null'
+                          landingPageUrlPathFilterType:
+                            anyOf:
+                            - type: string
+                              enum:
+                              - equals
+                              - contains
+                              - startsWith
+                              - endsWith
+                              - doesNotEqual
+                              - doesNotContain
+                              - doesNotStartWith
+                              - doesNotEndWith
+                              - isNull
+                              - isNotNull
+                            - type: 'null'
+                        required:
+                        - landingPageUrlPath
+                        - landingPageUrlPathFilterType
+                      - type: 'null'
+                    landingPageFilters:
+                      description: 'Filter by landing page URL path with multi-value support. Recommended landing page filter (supersedes the deprecated landingPage field). Array of filter items, each with: filterType (match operator: ''equals'', ''contains'', ''startsWith'', ''endsWith'', ''doesNotEqual'', ''doesNotContain'', ''doesNotStartWith'', ''doesNotEndWith'', ''isNull'', ''isNotNull'') and values (array of strings to match against). REQUIRED COMBINATIONS (enforced with a 400): every operator except ''isNull''/''isNotNull'' requires at least one non-empty entry in values — an omitted, empty, or blank-only values array is rejected rather than silently matching nothing. ''isNull''/''isNotNull'' take no values; omit the field (an empty array is tolerated, real values are rejected). Multiple values within a single item are OR''d. How items in the array are combined is controlled by landingPageFiltersOperator.'
+                      type: array
+                      items:
+                        type: object
+                        properties:
+                          values:
+                            type: array
+                            items:
+                              type: string
+                          filterType:
+                            type: string
+                            enum:
+                            - equals
+                            - contains
+                            - startsWith
+                            - endsWith
+                            - doesNotEqual
+                            - doesNotContain
+                            - doesNotStartWith
+                            - doesNotEndWith
+                            - isNull
+                            - isNotNull
+                        required:
+                        - filterType
+                    landingPageFiltersOperator:
+                      description: How multiple items in landingPageFilters are combined. 'or' (default) — session matches if any filter item matches. 'and' — session must match every filter item.
+                      type: string
+                      enum:
+                      - or
+                      - and
+                    countryCodes:
+                      description: Filter by ISO 3166-1 alpha-2 country codes (e.g. ['US', 'GB', 'CA']). Omit or pass empty array for all countries.
+                      type: array
+                      items:
+                        type: string
+                    countryCodesFilterType:
+                      description: 'How countryCodes should be matched: ''include'' (only visitors in the listed countries) or ''exclude'' (visitors in any country except the listed ones). Defaults to ''include'' when omitted. Requires countryCodes to be a non-empty array.'
+                      type: string
+                      enum:
+                      - include
+                      - exclude
+                    currencyCodes:
+                      description: Filter by ISO 4217 order currency codes (e.g. ['USD', 'GBP', 'CAD']). Matches the currency an order was placed in. Omit or pass empty array for all currencies.
+                      type: array
+                      items:
+                        type: string
+                    currencyCodesFilterType:
+                      description: 'How currencyCodes should be matched: ''include'' (only orders in the listed currencies) or ''exclude'' (orders in any currency except the listed ones). Defaults to ''include'' when omitted. Requires currencyCodes to be a non-empty array.'
+                      type: string
+                      enum:
+                      - include
+                      - exclude
+                    maxZScore:
+                      description: Maximum Z-score threshold for outlier filtering on order revenue. Visitors with orders whose Z-score exceeds this value are excluded. Accepts number or numeric string. Null or omit to disable outlier filtering.
+                      anyOf:
+                      - anyOf:
+                        - type: number
+                        - type: string
+                      - type: 'null'
+                    onlyProductIds:
+                      description: Filter to orders containing at least one of these Shopify product IDs (numeric strings, e.g. ['1234567890', '9876543210']). Omit or pass an empty array for all products.
+                      type: array
+                      items:
+                        type: string
+                    landingPageTypes:
+                      description: 'Filter sessions by landing page types. An array of values from: ''PDP'', ''Collection'', ''Content'', ''Blog'', ''Homepage'', ''Search'', ''Cart'', ''Other''. Omit or null to include all landing page types.'
+                      type: array
+                      items:
+                        type: string
+                        enum:
+                        - PDP
+                        - Collection
+                        - Content
+                        - Blog
+                        - Homepage
+                        - Search
+                        - Cart
+                        - Other
+                    allOrders:
+                      description: Whether to include all orders or only matched orders.
+                      type: boolean
+      responses:
+        '200':
+          description: OK
+          headers:
+            access-control-allow-origin:
+              schema:
+                type: string
+              description: CORS allow-origin header.
+            access-control-allow-credentials:
+              schema:
+                type: string
+              description: CORS allow-credentials header.
+            content-type:
+              schema:
+                type: string
+              description: Response content type.
+            Timing-Allow-Origin:
+              schema:
+                type: string
+              description: Allowed origin for Timing headers.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  currency:
+                    type: string
+                    description: ISO 4217 currency code for monetary values (e.g. 'USD').
+                  orderValueDistribution:
+                    type: object
+                    properties:
+                      kernel_density_estimate:
+                        type: array
+                        items:
+                          type: object
+                          properties:
+                            x:
+                              type: number
+                            current_period:
+                              anyOf:
+                              - type: number
+                              - type: 'null'
+                            previous_period:
+                              anyOf:
+                              - type: number
+                              - type: 'null'
+                          required:
+                          - x
+                          - current_period
+                          - previous_period
+                          additionalProperties: false
+                        description: Kernel density estimation curve points for order value distribution. Each point has an `x` (order value), `current_period`, and `previous_period` field. A period with no orders is `null` at every point (no distribution to compare) rather than 0.
+                      cumulative_distribution_function:
+                        type: array
+                        items:
+                          type: object
+                          properties:
+                            x:
+                              type: number
+                            current_period:
+                              anyOf:
+                              - type: number
+                              - type: 'null'
+                            previous_period:
+                              anyOf:
+                              - type: number
+                              - type: 'null'
+                          required:
+                          - x
+                          - current_period
+                          - previous_period
+                          additionalProperties: false
+                        description: Cumulative distribution function curve points for order value distribution. Each point has an `x` (order value), `current_period`, and `previous_period` field. A period with no orders is `null` at every point (no distribution to compare) rather than 0.
+                    required:
+                    - kernel_density_estimate
+                    - cumulative_distribution_function
+                    additionalProperties: false
+                    description: Order value distribution object containing `kernel_density_estimate` and `cumulative_distribution_function` arrays. Each point has an `x` (order value), `current_period`, and `previous_period` field. `current_period`/`previous_period` are `null` for every point of a period that had no orders in its window.
+                  orderBreakdown:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        unit_quantity:
+                          type: number
+                        n_orders:
+                          type: object
+                          properties:
+                            value:
+                              anyOf:
+                              - type: number
+                              - type: 'null'
+                          required:
+                          - value
+                          additionalProperties: false
+                        net_revenue:
+                          type: object
+                          properties:
+                            value:
+                              anyOf:
+                              - type: number
+                              - type: 'null'
+                          required:
+                          - value
+                          additionalProperties: false
+                        gross_profit:
+                          type: object
+                          properties:
+                            value:
+                              anyOf:
+                              - type: number
+                              - type: 'null'
+                          required:
+                          - value
+                          additionalProperties: false
+                        pct_orders_by_unit_quantity:
+                          type: object
+                          properties:
+                            value:
+                              anyOf:
+                              - type: number
+                              - type: 'null'
+                          required:
+                          - value
+                          additionalProperties: false
+                        pct_revenue_by_unit_quantity:
+                          type: object
+                          properties:
+                            value:
+                              anyOf:
+                              - type: number
+                              - type: 'null'
+                          required:
+                          - value
+                          additionalProperties: false
+                        pct_profit_by_unit_quantity:
+                          type: object
+                          properties:
+                            value:
+                              anyOf:
+                              - type: number
+                              - type: 'null'
+                          required:
+                          - value
+                          additionalProperties: false
+                      required:
+                      - unit_quantity
+                      - n_orders
+                      - net_revenue
+                      - gross_profit
+                      - pct_orders_by_unit_quantity
+                      - pct_revenue_by_unit_quantity
+                      - pct_profit_by_unit_quantity
+                      additionalProperties: false
+                    description: Breakdown of orders, revenue, and profit by number of units per order. Each entry has unit_quantity and metric values (n_orders, net_revenue, gross_profit as value objects, plus percentage equivalents).
+                required:
+                - currency
+                - orderValueDistribution
+                - orderBreakdown
+                additionalProperties: false
+      summary: Create v25 10 beta analytics sitewide order distribution
+      x-summary-source: derived
+      operationId: postV2510BetaAnalyticsSitewideOrderDistribution
+      x-operation-id-source: derived
+  /v25-10-beta/analytics/sitewide/snapshot:
+    post:
+      tags:
+      - Fetch Sitewide Analytics
+      description: Retrieve sitewide snapshot metrics for a time window.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                start:
+                  description: Start of analysis period as an ISO 8601 datetime string (e.g. '2025-01-01T00:00:00.000-05:00'). Defaults to the start of the week containing the date one week ago, in the store's timezone (weeks start Monday) — so the default window spans 7 to 13 days depending on the current weekday, not exactly 7. Note the default differs per sitewide endpoint, so pass an explicit start if you need a specific window.
+                  type: string
+                  format: date-time
+                  pattern: ^(?:(?:\d\d[2468][048]|\d\d[13579][26]|\d\d0[48]|[02468][048]00|[13579][26]00)-02-29|\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\d|30)|(?:02)-(?:0[1-9]|1\d|2[0-8])))T(?:(?:[01]\d|2[0-3]):[0-5]\d(?::[0-5]\d(?:\.\d+)?)?(?:Z|([+-](?:[01]\d|2[0-3]):[0-5]\d)))$
+                end:
+                  description: End of analysis period as an ISO 8601 datetime string. Defaults to now.
+                  type: string
+                  format: date-time
+                  pattern: ^(?:(?:\d\d[2468][048]|\d\d[13579][26]|\d\d0[48]|[02468][048]00|[13579][26]00)-02-29|\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\d|30)|(?:02)-(?:0[1-9]|1\d|2[0-8])))T(?:(?:[01]\d|2[0-3]):[0-5]\d(?::[0-5]\d(?:\.\d+)?)?(?:Z|([+-](?:[01]\d|2[0-3]):[0-5]\d)))$
+                filters:
+                  description: Optional analytics filters object. See the Filters Reference for available filter fields.
+                  type: object
+                  properties:
+                    deviceType:
+                      description: 'Filter by device type. Options: ''any'' (disables filter), ''mobile'', ''desktop''. Omit or null to include all devices.'
+                      anyOf:
+                      - type: string
+                        enum:
+                        - any
+                        - mobile
+                        - desktop
+                      - type: 'null'
+                    visitorType:
+                      description: 'Filter by visitor type. Options: ''any'' (disables filter), ''new'', ''returning''. Omit or null to include all visitors.'
+                      anyOf:
+                      - type: string
+                        enum:
+                        - any
+                        - new
+                        - returning
+                      - type: 'null'
+                    customerType:
+                      description: 'Filter by customer type. Options: ''new'', ''returning''. Omit or null to include all customers.'
+                      anyOf:
+                      - type: string
+                        enum:
+                        - new
+                        - returning
+                      - type: 'null'
+                    sourceSitesOrChannels:
+                      description: 'Filter by traffic source channels. These 25 values are the complete accepted set — the channels the analytics service buckets sessions and orders into — and any other value is rejected with a 400: ''Instagram'', ''Facebook'', ''Google'', ''Twitter'', ''TikTok'', ''Youtube'', ''Klaviyo'', ''Attentive'', ''Postscript'', ''Paid Shopping'', ''Paid Search'', ''Paid Social'', ''Paid Video'', ''Display'', ''Paid Other'', ''Organic Shopping'', ''Organic Social'', ''Organic Video'', ''Organic Search'', ''Other'', ''Referral'', ''Affiliate'', ''SMS'', ''Email'', ''Direct''. Omit or pass an empty array for all channels — there is no ''any'' sentinel.'
+                      type: array
+                      items:
+                        type: string
+                        enum:
+                        - Instagram
+                        - Facebook
+                        - Google
+                        - Twitter
+                        - TikTok
+                        - Youtube
+                        - Klaviyo
+                        - Attentive
+                        - Postscript
+                        - Paid Shopping
+                        - Paid Search
+                        - Paid Social
+                        - Paid Video
+                        - Display
+                        - Paid Other
+                        - Organic Shopping
+                        - Organic Social
+                        - Organic Video
+                        - Organic Search
+                        - Other
+                        - Referral
+                        - Affiliate
+                        - SMS
+                        - Email
+                        - Direct
+                    landingPage:
+                      description: 'DEPRECATED — use landingPageFilters instead, which supports multiple values and an and/or operator. This single-path filter is retained for backwards compatibility and still works, but new integrations should use landingPageFilters. Filter by landing page URL path. Object with: landingPageUrlPath (string|null — the path to match), landingPageUrlPathFilterType (match operator|null: ''equals'', ''contains'', ''startsWith'', ''endsWith'', ''doesNotEqual'', ''doesNotContain'', ''doesNotStartWith'', ''doesNotEndWith'', ''isNull'', ''isNotNull''). REQUIRED COMBINATIONS (enforced with a 400): every operator except ''isNull''/''isNotNull'' requires a non-empty landingPageUrlPath; ''isNull''/''isNotNull'' take no path, so leave landingPageUrlPath null; and a landingPageUrlPath with no landingPageUrlPathFilterType is rejected. Omit both fields to apply no landing-page filter.'
+                      deprecated: true
+                      anyOf:
+                      - type: object
+                        properties:
+                          landingPageUrlPath:
+                            anyOf:
+                            - type: string
+                            - type: 'null'
+                          landingPageUrlPathFilterType:
+                            anyOf:
+                            - type: string
+                              enum:
+                              - equals
+                              - contains
+                              - startsWith
+                              - endsWith
+                              - doesNotEqual
+                              - doesNotContain
+                              - doesNotStartWith
+                              - doesNotEndWith
+                              - isNull
+                              - isNotNull
+                            - type: 'null'
+                        required:
+                        - landingPageUrlPath
+                        - landingPageUrlPathFilterType
+                      - type: 'null'
+                    landingPageFilters:
+                      description: 'Filter by landing page URL path with multi-value support. Recommended landing page filter (supersedes the deprecated landingPage field). Array of filter items, each with: filterType (match operator: ''equals'', ''contains'', ''startsWith'', ''endsWith'', ''doesNotEqual'', ''doesNotContain'', ''doesNotStartWith'', ''doesNotEndWith'', ''isNull'', ''isNotNull'') and values (array of strings to match against). REQUIRED COMBINATIONS (enforced with a 400): every operator except ''isNull''/''isNotNull'' requires at least one non-empty entry in values — an omitted, empty, or blank-only values array is rejected rather than silently matching nothing. ''isNull''/''isNotNull'' take no values; omit the field (an empty array is tolerated, real values are rejected). Multiple values within a single item are OR''d. How items in the array are combined is controlled by landingPageFiltersOperator.'
+                      type: array
+                      items:
+                        type: object
+                        properties:
+                          values:
+                            type: array
+                            items:
+                              type: string
+                          filterType:
+                            type: string
+                            enum:
+                            - equals
+                            - contains
+                            - startsWith
+                            - endsWith
+                            - doesNotEqual
+                            - doesNotContain
+                            - doesNotStartWith
+                            - doesNotEndWith
+                            - isNull
+                            - isNotNull
+                        required:
+                        - filterType
+                    landingPageFiltersOperator:
+                      description: How multiple items in landingPageFilters are combined. 'or' (default) — session matches if any filter item matches. 'and' — session must match every filter item.
+                      type: string
+                      enum:
+                      - or
+                      - and
+                    countryCodes:
+                      description: Filter by ISO 3166-1 alpha-2 country codes (e.g. ['US', 'GB', 'CA']). Omit or pass empty array for all countries.
+                      type: array
+                      items:
+                        type: string
+                    countryCodesFilterType:
+                      description: 'How countryCodes should be matched: ''include'' (only visitors in the listed countries) or ''exclude'' (visitors in any country except the listed ones). Defaults to ''include'' when omitted. Requires countryCodes to be a non-empty array.'
+                      type: string
+                      enum:
+                      - include
+                      - exclude
+                    currencyCodes:
+                      description: Filter by ISO 4217 order currency codes (e.g. ['USD', 'GBP', 'CAD']). Matches the currency an order was placed in. Omit or pass empty array for all currencies.
+                      type: array
+                      items:
+                        type: string
+                    currencyCodesFilterType:
+                      description: 'How currencyCodes should be matched: ''include'' (only orders in the listed currencies) or ''exclude'' (orders in any currency except the listed ones). Defaults to ''include'' when omitted. Requires currencyCodes to be a non-empty array.'
+                      type: string
+                      enum:
+                      - include
+                      - exclude
+                    maxZScore:
+                      description: Maximum Z-score threshold for outlier filtering on order revenue. Visitors with orders whose Z-score exceeds this value are excluded. Accepts number or numeric string. Null or omit to disable outlier filtering.
+                      anyOf:
+                      - anyOf:
+                        - type: number
+                        - type: string
+                      - type: 'null'
+                    onlyProductIds:
+                      description: Filter to orders containing at least one of these Shopify product IDs (numeric strings, e.g. ['1234567890', '9876543210']). Omit or pass an empty array for all products.
+                      type: array
+                      items:
+                        type: string
+                    landingPageTypes:
+                      description: 'Filter sessions by landing page types. An array of values from: ''PDP'', ''Collection'', ''Content'', ''Blog'', ''Homepage'', ''Search'', ''Cart'', ''Other''. Omit or null to include all landing page types.'
+                      type: array
+                      items:
+                        type: string
+                        enum:
+                        - PDP
+                        - Collection
+                        - Content
+                        - Blog
+                        - Homepage
+                        - Search
+                        - Cart
+                        - Other
+                    allOrders:
+                      description: Whether to include all orders or only matched orders.
+                      type: boolean
+                feature:
+                  description: 'Optional feature selector object. Omit it or use `{ "name": "performance" }` for sitewide KPI snapshots, `{ "name": "audience", "audience": "device_type" }` for audience segment snapshots, `{ "name": "order" }` for order-focused metrics, or `{ "name": "conversion" }` for conversion funnel metrics.'
+                  oneOf:
+                  - type: object
+                    properties:
+                      name:
+                        type: string
+                        const: performance
+                    required:
+                    - name
+                  - type: object
+                    properties:
+                      name:
+                        type: string
+                        const: audience
+                      audience:
+                        type: string
+                        enum:
+                        - device_type
+                        - visitor_type
+                        - source_channel
+                        - source_site
+                        - country_code
+                        - landing_page_full_path
+                        description: 'Optional audience breakdown dimension. When provided, returns per-segment snapshot instead of site-level KPIs. Supported values: device_type, visitor_type, source_channel, source_site, country_code, landing_page_full_path.'
+                    required:
+                    - name
+                    - audience
+                  - type: object
+                    properties:
+                      name:
+                        type: string
+                        const: order
+                    required:
+                    - name
+                  - type: object
+                    properties:
+                      name:
+                        type: string
+                        const: conversion
+                    required:
+                    - name
+                  type: object
+      responses:
+        '200':
+          description: OK
+          headers:
+            access-control-allow-origin:
+              schema:
+                type: string
+              description: CORS allow-origin header.
+            access-control-allow-credentials:
+              schema:
+                type: string
+              description: CORS allow-credentials header.
+            content-type:
+              schema:
+                type: string
+              description: Response content type.
+            Timing-Allow-Origin:
+              schema:
+                type: string
+              description: Allowed origin for Timing headers.
+          content:
+            application/json:
+              schema:
+                type: object
+                propertyNames:
+                  type: string
+                additionalProperties:
+                  type: object
+                  properties:
+                    currency:
+                      description: ISO 4217 currency code for monetary values (e.g. 'USD').
+                      type: string
+                    cogs_configured:
+                      description: Whether cost of goods sold (COGS) is configured for this segment. When false, profit metrics (gross_profit, gross_profit_per_visitor, gross_margin_pct) are null because they cannot be computed.
+                      type: boolean
+                    cogs_coverage_pct:
+                      description: Fraction of revenue (0-1) backed by line items that have COGS data. 0 means profit metrics are unavailable and returned as null; a value between 0 and 1 means profit reflects partial COGS coverage; 1 means full coverage.
+                      type: number
+                    n_sessions:
+                      description: Total number of sessions during the period.
+                      type: object
+                      properties:
+                        pct_change:
+                          anyOf:
+                          - type: number
+                          - type: 'null'
+                        value:
+                          anyOf:
+                          - type: number
+                          - type: 'null'
+                        pct_impact_to_total_change:
+                          description: For audience snapshots, each segment's percent contribution to the metric's total percent change over the comparison period.
+                          anyOf:
+                          - type: number
+                          - type: 'null'
+                        impact_from_visitor_mix_shift:
+                          description: For audience ratio metrics on the __total row, the percent change impact attributed to shifts in visitor mix between segments.
+                          anyOf:
+                          - type: number
+                          - type: 'null'
+                      additionalProperties: false
+                    n_visitors:
+                      description: Total number of unique visitors during the period.
+                      type: object
+                      properties:
+                        pct_change:
+                          anyOf:
+                          - type: number
+                          - type: 'null'
+                        value:
+                          anyOf:
+                          - type: number
+                          - type: 'null'
+                        pct_impact_to_total_change:
+                          description: For audience snapshots, each segment's percent contribution to the metric's total percent change over the comparison period.
+                          anyOf:
+                          - type: number
+                          - type: 'null'
+                        impact_from_visitor_mix_shift:
+                          description: For audience ratio metrics on the __total row, the percent change impact attributed to shifts in visitor mix between segments.
+                          anyOf:
+                          - type: number
+                          - type: 'null'
+                      additionalProperties: false
+                    n_orders:
+                      description: Total number of orders during the period.
+                      type: object
+                      properties:
+                        pct_change:
+                          anyOf:
+                          - type: number
+                          - type: 'null'
+                        value:
+                          anyOf:
+                          - type: number
+                          - type: 'null'
+                        pct_impact_to_total_change:
+                          description: For audience snapshots, each segment's percent contribution to the metric's total percent change over the comparison period.
+                          anyOf:
+                          - type: number
+                          - type: 'null'
+                        impact_from_visitor_mix_shift:
+                          description: For audience ratio metrics on the __total row, the percent change impact attributed to shifts in visitor mix between segments.
+                          anyOf:
+                          - type: number
+                          - type: 'null'
+                      additionalProperties: false
+                    gross_revenue:
+                      description: Total gross revenue before discounts and returns.
+                      type: object
+                      properties:
+                        pct_change:
+                          anyOf:
+                          - type: number
+                          - type: 'null'
+                        value:
+                          anyOf:
+                          - type: number
+                          - type: 'null'
+                        pct_impact_to_total_change:
+                          description: For audience snapshots, each segment's percent contribution to the metric's total percent change over the comparison period.
+                          anyOf:
+                          - type: number
+                          - type: 'null'
+                        impact_from_visitor_mix_shift:
+                          description: For audience ratio metrics on the __total row, the percent change impact attributed to shifts in visitor mix between segments.
+                          anyOf:
+                          - type: number
+                          - type: 'null'
+                      additionalProperties: false
+                    net_revenue:
+                      description: Total net revenue during the period.
+                      type: object
+                      properties:
+                        pct_change:
+                          anyOf:
+                          - type: number
+                          - type: 'null'
+                        value:
+                          anyOf:
+                          - type: number
+                          - type: 'null'
+                        pct_impact_to_total_change:
+                          description: For audience snapshots, each segment's percent contribution to the metric's total percent change over the comparison period.
+                          anyOf:
+                          - type: number
+                          - type: 'null'
+                        impact_from_visitor_mix_shift:
+                          description: For audience ratio metrics on the __total row, the percent change impact attributed to shifts in visitor mix between segments.
+                          anyOf:
+                          - type: number
+                          - type: 'null'
+                      additionalProperties: false
+                    order_cogs:
+                      description: Total cost of goods sold for all orders.
+                      type: object
+                      properties:
+                        pct_change:
+                          anyOf:
+                          - type: number
+                          - type: 'null'
+                        value:
+                          anyOf:
+                          - type: number
+                          - type: 'null'
+                        pct_impact_to_total_change:
+                          description: For audience snapshots, each segment's percent contribution to the metric's total percent change over the comparison period.
+                          anyOf:
+                          - type: number
+                          - type: 'null'
+                        impact_from_visitor_mix_shift:
+                          description: For audience ratio metrics on the __total row, the percent change impact attributed to shifts in visitor mix between segments.
+                          anyOf:
+                          - type: number
+                          - type: 'null'
+                      additionalProperties: false
+                    lost_net_revenue:
+                      description: Net revenue lost from returns and cancellations during the period.
+                      type: object
+                      properties:
+                        pct_change:
+                          anyOf:
+                          - type: number
+                          - type: 'null'
+                        value:
+                          anyOf:
+                          - type: number
+                          - type: 'null'
+                        pct_impact_to_total_change:
+                          description: For audience snapshots, each segment's percent contribution to the metric's total percent change over the comparison period.
+                          anyOf:
+                          - type: number
+                          - type: 'null'
+                        impact_from_visitor_mix_shift:
+                          description: For audience ratio metrics on the __total row, the percent change impact attributed to shifts in visitor mix between segments.
+                          anyOf:
+                          - type: number
+                          - type: 'null'
+                      additionalProperties: false
+                    discounts:
+                      description: Total discount amount applied across all orders.
+                      type: object
+                      properties:
+                        pct_change:
+                          anyOf:
+                          - type: number
+                          - type: 'null'
+                        value:
+                          anyOf:
+                          - type: number
+                          - type: 'null'
+                        pct_impact_to_total_change:
+                          description: For audience snapshots, each segment's percent contribution to the metric's total percent change over the comparison period.
+                          anyOf:
+                          - type: number
+                          - type: 'null'
+                        impact_from_visitor_mix_shift:
+                          description: For audience ratio metrics on the __total row, the percent change impact attributed to shifts in visitor mix between segments.
+                          anyOf:
+                          - type: number
+                          - type: 'null'
+                      additionalProperties: false
+                    average_discount:
+                      description: Average discount rate during the period.
+                      type: object
+                      properties:
+                        pct_change:
+                          anyOf:
+                          - type: number
+                          - type: 'null'
+                        value:
+                          anyOf:
+                          - type: number
+                          - type: 'null'
+                        pct_impact_to_total_change:
+                          description: For audience snapshots, each segment's percent contribution to the metric's total percent change over the comparison period.
+                          anyOf:
+                          - type: number
+                          - type: 'null'
+                        impact_from_visitor_mix_shift:
+                          description: For audience ratio metrics on the __total row, the percent change impact attributed to shifts in visitor mix between segments.
+                          anyOf:
+                          - type: number
+                          - type: 'null'
+                      additionalProperties: false
+                    conversion_rate:
+                      description: Overall site conversion rate during the period.
+                      type: object
+                      properties:
+                        pct_change:
+                          anyOf:
+                          - type: number
+                          - type: 'null'
+                        value:
+                          anyOf:
+                          - type: number
+                          - type: 'null'
+                        pct_impact_to_total_change:
+                          description: For audience snapshots, each segment's percent contribution to the metric's total percent change over the comparison period.
+                          anyOf:
+                          - type: number
+                          - type: 'null'
+                        impact_from_visitor_mix_shift:
+                          description: For audience ratio metrics on the __total row, the percent change impact attributed to shifts in visitor mix between segments.
+                          anyOf:
+                          - type: number
+                          - type: 'null'
+                      additionalProperties: false
+                    aov:
+                      description: Average order value during the period.
+                      type: object
+                      properties:
+                        pct_change:
+                          anyOf:
+                          - type: number
+                          - type: 'null'
+                        value:
+                          anyOf:
+                          - type: number
+                          - type: 'null'
+                        pct_impact_to_total_change:
+                          description: For audience snapshots, each segment's percent contribution to the metric's total percent change over the comparison period.
+                          anyOf:
+                          - type: number
+                          - type: 'null'
+                        impact_from_visitor_mix_shift:
+                          description: For audience ratio metrics on the __total row, the percent change impact attributed to shifts in visitor mix between segments.
+                          anyOf:
+                          - type: number
+                          - type: 'null'
+                      additionalProperties: false
+                    net_revenue_per_visitor:
+                      description: Average net revenue per visitor during the period.
+                      type: object
+                      properties:
+                        pct_change:
+                          anyOf:
+                          - type: number
+                          - type: 'null'
+                        value:
+                          anyOf:
+                          - type: number
+                          - type: 'null'
+                        pct_impact_to_total_change:
+                          description: For audience snapshots, each segment's percent contribution to the metric's total percent change over the comparison period.
+                          anyOf:
+                          - type: number
+                          - type: 'null'
+                        impact_from_visitor_mix_shift:
+                          description: For audience ratio metrics on the __total row, the percent change impact attributed to shifts in visitor mix between segments.
+                          anyOf:
+                          - type: number
+                          - type: 'null'
+                      additionalProperties: false
+                    discount_per_unit:
+                      description: Average discount amount per unit sold.
+                      type: object
+                      properties:
+                        pct_change:
+                          anyOf:
+                          - type: number
+                          - type: 'null'
+                        value:
+                          anyOf:
+                          - type: number
+                          - type: 'null'
+                        pct_impact_to_total_change:
+                          description: For audience snapshots, each segment's percent contribution to the metric's total percent change over the comparison period.
+                          anyOf:
+                          - type: number
+                          - type: 'null'
+                        impact_from_visitor_mix_shift:
+                          description: For audience ratio metrics on the __total row, the percent change impact attributed to shifts in visitor mix between segments.
+                          anyOf:
+                          - type: number
+                          - type: 'null'
+                      additionalProperties: false
+                    shipping_cost:
+                      description: Total shipping cost across all orders.
+                      type: object
+                      properties:
+                        pct_change:
+                          anyOf:
+                          - type: number
+                          - type: 'null'
+                        value:
+                          anyOf:
+                          - type: number
+                          - type: 'null'
+                        pct_impact_to_total_change:
+                          description: For audience snapshots, each segment's percent contribution to the metric's total percent change over the comparison period.
+                          anyOf:
+                          - type: number
+                          - type: 'null'
+                        impact_from_visitor_mix_shift:
+                          description: For audience ratio metrics on the __total row, the percent change impact attributed to shifts in visitor mix between segments.
+                          anyOf:
+                          - type: number
+                          - type: 'null'
+                      additionalProperties: false
+                    transaction_fees:
+                      description: Total transaction/payment processing fees.
+                      type: object
+                      properties:
+                        pct_change:
+                          anyOf:
+                          - type: number
+                          - type: 'null'
+                        value:
+                          anyOf:
+                          - type: number
+                          - type: 'null'
+                        pct_impact_to_total_change:
+                          description: For audience snapshots, each segment's percent contribution to the metric's total percent change over the comparison period.
+                          anyOf:
+                          - type: number
+                          - type: 'null'
+                        impact_from_visitor_mix_shift:
+                          description: For audience ratio metrics on the __total row, the percent change impact attributed to shifts in visitor mix between segments.
+                          anyOf:
+                          - type: number
+                          - type: 'null'
+                      additionalProperties: false
+                    tax:
+                      description: Total tax collected across all orders.
+                      type: object
+                      properties:
+                        pct_change:
+                          anyOf:
+                          - type: number
+                          - type: 'null'
+                        value:
+                          anyOf:
+                          - type: number
+                          - type: 'null'
+                        pct_impact_to_total_change:
+                          description: For audience snapshots, each segment's percent contribution to the metric's total percent change over the comparison period.
+                          anyOf:
+                          - type: number
+                          - type: 'null'
+                        impact_from_visitor_mix_shift:
+                          description: For audience ratio metrics on the __total row, the percent change impact attributed to shifts in visitor mix between segments.
+                          anyOf:
+                          - type: number
+                          - type: 'null'
+                      additionalProperties: false
+                    gross_profit:
+                      description: Total gross profit during the period. Requires COGS to be configured; null when COGS are not configured (cogs_configured is false). Reflects partial COGS coverage when cogs_coverage_pct is between 0 and 1.
+                      anyOf:
+                      - type: object
+                        properties:
+                          pct_change:
+                            anyOf:
+                            - type: number
+                            - type: 'null'
+                          value:
+                            anyOf:
+                            - type: number
+                            - type: 'null'
+                          pct_impact_to_total_change:
+                            description: For audience snapshots, each segment's percent contribution to the metric's total percent change over the comparison period.
+                            anyOf:
+                            - type: number
+                            - type: 'null'
+                          impact_from_visitor_mix_shift:
+                            description: For audience ratio metrics on the __total row, the percent change impact attributed to shifts in visitor mix between segments.
+                            anyOf:
+                            - type: number
+                            - type: 'null'
+                        additionalProperties: false
+                      - type: 'null'
+                    gross_margin_pct:
+                      description: Gross margin as a percentage of net revenue. Null when COGS are not configured (cogs_configured is false).
+                      anyOf:
+                      - type: object
+                        properties:
+                          pct_change:
+                            anyOf:
+                            - type: number
+                            - type: 'null'
+                          value:
+                            anyOf:
+                            - type: number
+                            - type: 'null'
+                          pct_impact_to_total_change:
+                            description: For audience snapshots, each segment's percent contribution to the metric's total percent change over the comparison period.
+                            anyOf:
+                            - type: number
+                            - type: 'null'
+                          impact_from_visitor_mix_shift:
+                            description: For audience ratio metrics on the __total row, the percent change impact attributed to shifts in visitor mix between segments.
+                            anyOf:
+                            - type: number
+                            - type: 'null'
+                        additionalProperties: false
+                      - type: 'null'
+                    gross_profit_per_visitor:
+                      description: Average gross profit per visitor during the period. Requires COGS to be configured; null when COGS are not configured (cogs_configured is false). Reflects partial COGS coverage when cogs_coverage_pct is between 0 and 1.
+                      anyOf:
+                      - type: object
+                        properties:
+                          pct_change:
+                            anyOf:
+                            - type: number
+                            - type: 'null'
+                          value:
+                            anyOf:
+                            - type: number
+                            - type: 'null'
+                          pct_impact_to_total_change:
+                            description: For audience snapshots, each segment's percent contribution to the metric's total percent change over the comparison period.
+                            anyOf:
+                            - type: number
+                            - type: 'null'
+                          impact_from_visitor_mix_shift:
+                            description: For audience ratio metrics on the __total row, the percent change impact attributed to shifts in visitor mix between segments.
+                            anyOf:
+                            - type: number
+                            - type: 'null'
+                        additionalProperties: false
+                      - type: 'null'
+                    oli_net_product_revenue_with_cogs:
+                      description: Net product revenue for line items that have cost of goods data.
+                      anyOf:
+                      - type: object
+                        properties:
+                          pct_change:
+                            anyOf:
+                            - type: number
+                            - type: 'null'
+                          value:
+                            anyOf:
+                            - type: number
+                            - type: 'null'
+                          pct_impact_to_total_change:
+                            description: For audience snapshots, each segment's percent contribution to the metric's total percent change over the comparison period.
+                            anyOf:
+                            - type: number
+                            - type: 'null'
+                          impact_from_visitor_mix_shift:
+                            description: For audience ratio metrics on the __total row, the percent change impact attributed to shifts in visitor mix between segments.
+                            anyOf:
+                            - type: number
+                            - type: 'null'
+                        additionalProperties: false
+                      - type: 'null'
+                    oli_net_product_revenue:
+                      description: Net product revenue at the order line item level.
+                      type: object
+                      properties:
+                        pct_change:
+                          anyOf:
+                          - type: number
+                          - type: 'null'
+                        value:
+                          anyOf:
+                          - type: number
+                          - type: 'null'
+                        pct_impact_to_total_change:
+                          description: For audience snapshots, each segment's percent contribution to the metric's total percent change over the comparison period.
+                          anyOf:
+                          - type: number
+                          - type: 'null'
+                        impact_from_visitor_mix_shift:
+                          description: For audience ratio metrics on the __total row, the percent change impact attributed to shifts in visitor mix between segments.
+                          anyOf:
+                          - type: number
+                          - type: 'null'
+                      additionalProperties: false
+                    median_order_value:
+                      description: Median order value during the period.
+                      type: object
+                      properties:
+                        pct_change:
+                          anyOf:
+                          - type: number
+                          - type: 'null'
+                        value:
+                          anyOf:
+                          - type: number
+                          - type: 'null'
+                        pct_impact_to_total_change:
+                          description: For audience snapshots, each segment's percent contribution to the metric's total percent change over the comparison period.
+                          anyOf:
+                          - type: number
+                          - type: 'null'
+                        impact_from_visitor_mix_shift:
+                          description: For audience ratio metrics on the __total row, the percent change impact attributed to shifts in visitor mix between segments.
+                          anyOf:
+                          - type: number
+                          - type: 'null'
+                      additionalProperties: false
+                    average_units_per_order:
+                      description: Average number of units per order.
+                      type: object
+                      properties:
+                        pct_change:
+                          anyOf:
+                          - type: number
+                          - type: 'null'
+                        value:
+                          anyOf:
+                          - type: number
+                          - type: 'null'
+                        pct_impact_to_total_change:
+                          description: For audience snapshots, each segment's percent contribution to the metric's total percent change over the comparison period.
+                          anyOf:
+                          - type: number
+                          - type: 'null'
+                        impact_from_visitor_mix_shift:
+                          description: For audience ratio metrics on the __total row, the percent change impact attributed to shifts in visitor mix between segments.
+                          anyOf:
+                          - type: number
+                          - type: 'null'
+                      additionalProperties: false
+                    pct_orders_with_free_shipping:
+                      description: Percentage of orders with free shipping during the period.
+                      type: object
+                      properties:
+                        pct_change:
+                          anyOf:
+                          - type: number
+                          - type: 'null'
+                        value:
+                          anyOf:
+                          - type: number
+                          - type: 'null'
+                        pct_impact_to_total_change:
+                          description: For audience snapshots, each segment's percent contribution to the metric's total percent change over the comparison period.
+                          anyOf:
+                          - type: number
+                          - type: 'null'
+                        impact_from_visitor_mix_shift:
+                          description: For audience ratio metrics on the __total row, the percent change impact attributed to shifts in visitor mix between segments.
+                          anyOf:
+                          - type: number
+                          - type: 'null'
+                      additionalProperties: false
+                    net_shipping_revenue_per_order:
+                      description: Average net shipping revenue collected per order.
+                      type: object
+                      properties:
+                        pct_change:
+                          anyOf:
+                          - type: number
+                          - type: 'null'
+                        value:
+                          anyOf:
+                          - type: number
+                          - type: 'null'
+                        pct_impact_to_total_change:
+                          description: For audience snapshots, each segment's percent contribution to the metric's total percent change over the comparison period.
+                          anyOf:
+                          - type: number
+                          - type: 'null'
+                        impact_from_visitor_mix_shift:
+                          description: For audience ratio metrics on the __total row, the percent change impact attributed to shifts in visitor mix between segments.
+                          anyOf:
+                          - type: number
+                          - type: 'null'
+                      additionalProperties: false
+                    pct_revenue_with_cogs:
+                      description: Percentage of revenue from products that have cost of goods (COGS) data. When 0, profit metrics (gross_profit, gross_profit_per_visitor, gross_margin_pct) are unavailable and returned as null. See cogs_configured / cogs_coverage_pct.
+                      type: object
+                      properties:
+                        pct_change:
+                          anyOf:
+                          - type: number
+                          - type: 'null'
+                        value:
+                          anyOf:
+                          - type: number
+                          - type: 'null'
+                        pct_impact_to_total_change:
+                          description: For audience snapshots, each segment's percent contribution to the metric's total percent change over the comparison period.
+                          anyOf:
+                          - type: number
+                          - type: 'null'
+                        impact_from_visitor_mix_shift:
+                          description: For audience ratio metrics on the __total row, the percent change impact attributed to shifts in visitor mix between segments.
+                          anyOf:
+                          - type: number
+                          - type: 'null'
+                      additionalProperties: false
+                    viewed_collection_page_rate:
+                      description: Percentage of sessions that viewed a collection page.
+                      type: object
+                      properties:
+                        pct_change:
+                          anyOf:
+                          - type: number
+                          - type: 'null'
+                        value:
+                          anyOf:
+                          - type: number
+                          - type: 'null'
+                        pct_impact_to_total_change:
+                          description: For audience snapshots, each segment's percent contribution to the metric's total percent change over the comparison period.
+                          anyOf:
+                          - type: number
+                          - type: 'null'
+                        impact_from_visitor_mix_shift:
+                          description: For audience ratio metrics on the __total row, the percent change impact attributed to shifts in visitor mix between segments.
+                          anyOf:
+                          - type: number
+                          - type: 'null'
+                      additionalProperties: false
+                    viewed_product_page_rate:
+                      description: Percentage of sessions that viewed a product detail page.
+                      type: object
+                      properties:
+                        pct_change:
+                          anyOf:
+                          - type: number
+                          - type: 'null'
+                        value:
+                          anyOf:
+                          - type: number
+                          - type: 'null'
+                        pct_impact_to_total_change:
+                          description: For audience snapshots, each segment's percent contribution to the metric's total percent change over the comparison period.
+                          anyOf:
+                          - type: number
+                          - type: 'null'
+                        impact_from_visitor_mix_shift:
+                          description: For audience ratio metrics on the __total row, the percent change impact attributed to shifts in visitor mix between segments.
+                          anyOf:
+                          - type: number
+                          - type: 'null'
+                      additionalProperties: false
+                    add_to_cart_rate:
+                      description: Percentage of sessions that added at least one product to cart.
+                      type: object
+                      properties:
+                        pct_change:
+                          anyOf:
+                          - type: number
+                          - type: 'null'
+                        value:
+                          anyOf:
+                          - type: number
+                          - type: 'null'
+                        pct_impact_to_total_change:
+                          description: For audience snapshots, each segment's percent contribution to the metric's total percent change over the comparison period.
+                          anyOf:
+                          - type: number
+                          - type: 'null'
+                        impact_from_visitor_mix_shift:
+                          description: For audience ratio metrics on the __total row, the percent change impact attributed to shifts in visitor mix between segments.
+                          anyOf:
+                          - type: number
+                          - type: 'null'
+                      additionalProperties: false
+                    checkout_begin_rate:
+                      description: Percentage of sessions that started the checkout flow.
+                      type: object
+                      properties:
+                        pct_change:
+                          anyOf:
+                          - type: number
+                          - type: 'null'
+                        value:
+                          anyOf:
+                          - type: number
+                          - type: 'null'
+                        pct_impact_to_total_change:
+                          description: For audience snapshots, each segment's percent contribution to the metric's total percent change over the comparison period.
+                          anyOf:
+                          - type: number
+                          - type: 'null'
+                        impact_from_visitor_mix_shift:
+                          description: For audience ratio metrics on the __total row, the percent change impact attributed to shifts in visitor mix between segments.
+                          anyOf:
+                          - type: number
+                          - type: 'null'
+                      additionalProperties: false
+                    bounce_rate:
+                      description: Percentage of sessions that ended without navigating to a second page.
+                      type: object
+                      properties:
+                        pct_change:
+                          anyOf:
+                          - type: number
+                          - type: 'null'
+                        value:
+                          anyOf:
+                          - type: number
+                          - type: 'null'
+                        pct_impact_to_total_change:
+                          description: For audience snapshots, each segment's percent contribution to the metric's total percent change over the comparison period.
+                          anyOf:
+                          - type: number
+                          - type: 'null'
+                        impact_from_visitor_mix_shift:
+                          description: For audience ratio metrics on the __total row, the percent change impact attributed to shifts in visitor mix between segments.
+                          anyOf:
+                          - type: number
+                          - type: 'null'
+                      additionalProperties: false
+                    abandoned_cart_rate:
+                      description: Percentage of sessions that added to cart but did not convert.
+                      type: object
+                      properties:
+                        pct_change:
+                          anyOf:
+                          - type: number
+                          - type: 'null'
+                        value:
+                          anyOf:
+                          - type: number
+                          - type: 'null'
+                        pct_impact_to_total_change:
+                          description: For audience snapshots, each segment's percent contribution to the metric's total percent change over the comparison period.
+                          anyOf:
+                          - type: number
+                          - type: 'null'
+                        impact_from_visitor_mix_shift:
+                          description: For audience ratio metrics on the __total row, the percent change impact attributed to shifts in visitor mix between segments.
+                          anyOf:
+                          - type: number
+                          - type: 'null'
+                      additionalProperties: false
+                    abandoned_checkout_rate:
+                      description: Percentage of sessions that started checkout but did not convert.
+                      type: object
+                      properties:
+                        pct_change:
+                          anyOf:
+                          - type: number
+                          - type: 'null'
+                        value:
+                          anyOf:
+                          - type: number
+                          - type: 'null'
+                        pct_impact_to_total_change:
+                          description: For audience snapshots, each segment's percent contribution to the metric's total percent change over the comparison period.
+                          anyOf:
+                          - type: number
+                          - type: 'null'
+                        impact_from_visitor_mix_shift:
+                          description: For audience ratio metrics on the __total row, the percent change impact attributed to shifts in visitor mix between segments.
+                          anyOf:
+                          - type: number
+                          - type: 'null'
+                      additionalProperties: false
+                  additionalProperties: false
+      summary: Create v25 10 beta analytics sitewide snapshot
+      x-summary-source: derived
+      operationId: postV2510BetaAnalyticsSitewideSnapshot
+      x-operation-id-source: derived
+  /v25-10-beta/analytics/sitewide/timeseries:
+    post:
+      tags:
+      - Fetch Sitewide Analytics
+      description: Returns sitewide KPI time-series data with configurable granularity, a choice of metric set, and optional audience segmentation.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                start:
+                  description: Start of analysis period as an ISO 8601 datetime string (e.g. '2025-01-01T00:00:00.000-05:00'). Defaults to the start of the week containing the date 12 weeks ago, in the store's timezone (weeks start Monday), so the default start is week-aligned rather than exactly 84 days back. Note the default differs per sitewide endpoint, so pass an explicit start if you need a specific window.
+                  type: string
+                  format: date-time
+                  pattern: ^(?:(?:\d\d[2468][048]|\d\d[13579][26]|\d\d0[48]|[02468][048]00|[13579][26]00)-02-29|\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\d|30)|(?:02)-(?:0[1-9]|1\d|2[0-8])))T(?:(?:[01]\d|2[0-3]):[0-5]\d(?::[0-5]\d(?:\.\d+)?)?(?:Z|([+-](?:[01]\d|2[0-3]):[0-5]\d)))$
+                end:
+                  description: End of analysis period as an ISO 8601 datetime string. Defaults to now.
+                  type: string
+                  format: date-time
+                  pattern: ^(?:(?:\d\d[2468][048]|\d\d[13579][26]|\d\d0[48]|[02468][048]00|[13579][26]00)-02-29|\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\d|30)|(?:02)-(?:0[1-9]|1\d|2[0-8])))T(?:(?:[01]\d|2[0-3]):[0-5]\d(?::[0-5]\d(?:\.\d+)?)?(?:Z|([+-](?:[01]\d|2[0-3]):[0-5]\d)))$
+                feature:
+                  description: 'Optional metric-set selector. Object form, e.g. { "name": "performance" }. Values: ''performance'' (headline KPI trend), ''order'' (order composition and per-unit economics), ''conversion'' (funnel step rates), or { name: ''audience'', audience: ''<dimension>'' } for a per-segment breakdown. Omit to receive every metric this endpoint produces. NOTE: the fields behind each set are specific to this endpoint and differ from the sitewide snapshot endpoint''s set of the same name, because the two run different underlying datasets.'
+                  oneOf:
+                  - type: object
+                    properties:
+                      name:
+                        type: string
+                        const: performance
+                    required:
+                    - name
+                  - type: object
+                    properties:
+                      name:
+                        type: string
+                        const: audience
+                      audience:
+                        type: string
+                        enum:
+                        - device_type
+                        - visitor_type
+                        - source_channel
+                        - source_site
+                        - country_code
+                        - landing_page_full_path
+                        description: 'Optional audience breakdown dimension. When provided, returns per-segment snapshot instead of site-level KPIs. Supported values: device_type, visitor_type, source_channel, source_site, country_code, landing_page_full_path.'
+                    required:
+                    - name
+                    - audience
+                  - type: object
+                    properties:
+                      name:
+                        type: string
+                        const: order
+                    required:
+                    - name
+                  - type: object
+                    properties:
+                      name:
+                        type: string
+                        const: conversion
+                    required:
+                    - name
+                  type: object
+                granularity:
+                  default: week
+                  description: 'Time bucket granularity. Supported values: day, week, month. Defaults to week.'
+                  type: string
+                  enum:
+                  - day
+                  - week
+                  - month
+                filters:
+                  description: Optional analytics filters object. See the Filters Reference for available filter fields.
+                  type: object
+                  properties:
+                    deviceType:
+                      description: 'Filter by device type. Options: ''any'' (disables filter), ''mobile'', ''desktop''. Omit or null to include all devices.'
+                      anyOf:
+                      - type: string
+                        enum:
+                        - any
+                        - mobile
+                        - desktop
+                      - type: 'null'
+                    visitorType:
+                      description: 'Filter by visitor type. Options: ''any'' (disables filter), ''new'', ''returning''. Omit or null to include all visitors.'
+                      anyOf:
+                      - type: string
+                        enum:
+                        - any
+                        - new
+                        - returning
+                      - type: 'null'
+                    customerType:
+                      description: 'Filter by customer type. Options: ''new'', ''returning''. Omit or null to include all customers.'
+                      anyOf:
+                      - type: string
+                        enum:
+                        - new
+                        - returning
+                      - type: 'null'
+                    sourceSitesOrChannels:
+                      description: 'Filter by traffic source channels. These 25 values are the complete accepted set — the channels the analytics service buckets sessions and orders into — and any other value is rejected with a 400: ''Instagram'', ''Facebook'', ''Google'', ''Twitter'', ''TikTok'', ''Youtube'', ''Klaviyo'', ''Attentive'', ''Postscript'', ''Paid Shopping'', ''Paid Search'', ''Paid Social'', ''Paid Video'', ''Display'', ''Paid Other'', ''Organic Shopping'', ''Organic Social'', ''Organic Video'', ''Organic Search'', ''Other'', ''Referral'', ''Affiliate'', ''SMS'', ''Email'', ''Direct''. Omit or pass an empty array for all channels — there is no ''any'' sentinel.'
+                      type: array
+                      items:
+                        type: string
+                        enum:
+                        - Instagram
+                        - Facebook
+                        - Google
+                        - Twitter
+                        - TikTok
+                        - Youtube
+                        - Klaviyo
+                        - Attentive
+                        - Postscript
+                        - Paid Shopping
+                        - Paid Search
+                        - Paid Social
+                        - Paid Video
+                        - Display
+                        - Paid Other
+                        - Organic Shopping
+                        - Organic Social
+                        - Organic Video
+                        - Organic Search
+                        - Other
+                        - Referral
+                        - Affiliate
+                        - SMS
+                        - Email
+                        - Direct
+                    landingPage:
+                      description: 'DEPRECATED — use landingPageFilters instead, which supports multiple values and an and/or operator. This single-path filter is retained for backwards compatibility and still works, but new integrations should use landingPageFilters. Filter by landing page URL path. Object with: landingPageUrlPath (string|null — the path to match), landingPageUrlPathFilterType (match operator|null: ''equals'', ''contains'', ''startsWith'', ''endsWith'', ''doesNotEqual'', ''doesNotContain'', ''doesNotStartWith'', ''doesNotEndWith'', ''isNull'', ''isNotNull''). REQUIRED COMBINATIONS (enforced with a 400): every operator except ''isNull''/''isNotNull'' requires a non-empty landingPageUrlPath; ''isNull''/''isNotNull'' take no path, so leave landingPageUrlPath null; and a landingPageUrlPath with no landingPageUrlPathFilterType is rejected. Omit both fields to apply no landing-page filter.'
+                      deprecated: true
+                      anyOf:
+                      - type: object
+                        properties:
+                          landingPageUrlPath:
+                            anyOf:
+                            - type: string
+                            - type: 'null'
+                          landingPageUrlPathFilterType:
+                            anyOf:
+                            - type: string
+                              enum:
+                              - equals
+                              - contains
+                              - startsWith
+                              - endsWith
+                              - doesNotEqual
+                              - doesNotContain
+                              - doesNotStartWith
+                              - doesNotEndWith
+                              - isNull
+                              - isNotNull
+                            - type: 'null'
+                        required:
+                        - landingPageUrlPath
+                        - landingPageUrlPathFilterType
+                      - type: 'null'
+                    landingPageFilters:
+                      description: 'Filter by landing page URL path with multi-value support. Recommended landing page filter (supersedes the deprecated landingPage field). Array of filter items, each with: filterType (match operator: ''equals'', ''contains'', ''startsWith'', ''endsWith'', ''doesNotEqual'', ''doesNotContain'', ''doesNotStartWith'', ''doesNotEndWith'', ''isNull'', ''isNotNull'') and values (array of strings to match against). REQUIRED COMBINATIONS (enforced with a 400): every operator except ''isNull''/''isNotNull'' requires at least one non-empty entry in values — an omitted, empty, or blank-only values array is rejected rather than silently matching nothing. ''isNull''/''isNotNull'' take no values; omit the field (an empty array is tolerated, real values are rejected). Multiple values within a single item are OR''d. How items in the array are combined is controlled by landingPageFiltersOperator.'
+                      type: array
+                      items:
+                        type: object
+                        properties:
+                          values:
+                            type: array
+                            items:
+                              type: string
+                          filterType:
+                            type: string
+                            enum:
+                            - equals
+                            - contains
+                            - startsWith
+                            - endsWith
+                            - doesNotEqual
+                            - doesNotContain
+                            - doesNotStartWith
+                            - doesNotEndWith
+                            - isNull
+                            - isNotNull
+                        required:
+                        - filterType
+                    landingPageFiltersOperator:
+                      description: How multiple items in landingPageFilters are combined. 'or' (default) — session matches if any filter item matches. 'and' — session must match every filter item.
+                      type: string
+                      enum:
+                      - or
+                      - and
+                    countryCodes:
+                      description: Filter by ISO 3166-1 alpha-2 country codes (e.g. ['US', 'GB', 'CA']). Omit or pass empty array for all countries.
+                      type: array
+                      items:
+                        type: string
+                    countryCodesFilterType:
+                      description: 'How countryCodes should be matched: ''include'' (only visitors in the listed countries) or ''exclude'' (visitors in any country except the listed ones). Defaults to ''include'' when omitted. Requires countryCodes to be a non-empty array.'
+                      type: string
+                      enum:
+                      - include
+                      - exclude
+                    currencyCodes:
+                      description: Filter by ISO 4217 order currency codes (e.g. ['USD', 'GBP', 'CAD']). Matches the currency an order was placed in. Omit or pass empty array for all currencies.
+                      type: array
+                      items:
+                        type: string
+                    currencyCodesFilterType:
+                      description: 'How currencyCodes should be matched: ''include'' (only orders in the listed currencies) or ''exclude'' (orders in any currency except the listed ones). Defaults to ''include'' when omitted. Requires currencyCodes to be a non-empty array.'
+                      type: string
+                      enum:
+                      - include
+                      - exclude
+                    maxZScore:
+                      description: Maximum Z-score threshold for outlier filtering on order revenue. Visitors with orders whose Z-score exceeds this value are excluded. Accepts number or numeric string. Null or omit to disable outlier filtering.
+                      anyOf:
+                      - anyOf:
+                        - type: number
+                        - type: string
+                      - type: 'null'
+                    onlyProductIds:
+                      description: Filter to orders containing at least one of these Shopify product IDs (numeric strings, e.g. ['1234567890', '9876543210']). Omit or pass an empty array for all products.
+                      type: array
+                      items:
+                        type: string
+                    landingPageTypes:
+                      description: 'Filter sessions by landing page types. An array of values from: ''PDP'', ''Collection'', ''Content'', ''Blog'', ''Homepage'', ''Search'', ''Cart'', ''Other''. Omit or null to include all landing page types.'
+                      type: array
+                      items:
+                        type: string
+                        enum:
+                        - PDP
+                        - Collection
+                        - Content
+                        - Blog
+                        - Homepage
+                        - Search
+                        - Cart
+                        - Other
+                    allOrders:
+                      description: Whether to include all orders or only matched orders.
+                      type: boolean
+      responses:
+        '200':
+          description: OK
+          headers:
+            access-control-allow-origin:
+              schema:
+                type: string
+              description: CORS allow-origin header.
+            access-control-allow-credentials:
+              schema:
+                type: string
+              description: CORS allow-credentials header.
+            content-type:
+              schema:
+                type: string
+              description: Response content type.
+            Timing-Allow-Origin:
+              schema:
+                type: string
+              description: Allowed origin for Timing headers.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  currency:
+                    type: string
+                    description: ISO 4217 currency code for monetary values (e.g. 'USD').
+                  granularity:
+                    type: string
+                    enum:
+                    - day
+                    - week
+                    - month
+                    description: The granularity used for time bucketing.
+                  segments:
+                    type: object
+                    propertyNames:
+                      type: string
+                    additionalProperties:
+                      type: object
+                      properties:
+                        data:
+                          type: array
+                          items:
+                            type: object
+                            properties:
+                              dt:
+                                type: string
+                            required:
+                            - dt
+                            additionalProperties:
+                              anyOf:
+                              - type: number
+                              - type: 'null'
+                        summary:
+                          type: object
+                          propertyNames:
+                            type: string
+                          additionalProperties:
+                            anyOf:
+                            - type: number
+                            - type: 'null'
+                      required:
+                      - data
+                      additionalProperties: false
+                    description: 'Time series data keyed by segment name. Contains ''All'' for every feature except `audience`, which returns per-segment keys. Each segment has a `data` array and an optional `summary`. NOTE: `summary` is not a window total — additive metrics in it are rescaled to a single `granularity` bucket (so counts are fractional and change with granularity), while ratio metrics are computed from the unscaled window sums. Sum the `data` array to get a true window total — except for `n_visitors`, which is a distinct count and cannot be summed across buckets. Known issue: because visitor-denominated ratios divide by that summed visitor count, `conversion_rate`, `net_revenue_per_visitor` and `gross_profit_per_visitor` in `summary` vary with `granularity` and are only exact when the window fits one bucket; read them from `/analytics/sitewide/snapshot` instead.'
+                required:
+                - currency
+                - granularity
+                - segments
+                additionalProperties: false
+      summary: Create v25 10 beta analytics sitewide timeseries
+      x-summary-source: derived
+      operationId: postV2510BetaAnalyticsSitewideTimeseries
+      x-operation-id-source: derived
+components:
+  securitySchemes:
+    intelligems_access_token:
+      type: apiKey
+      in: header
+      name: intelligems-access-token
+      description: Intelligems external API access token.

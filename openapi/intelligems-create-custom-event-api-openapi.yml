@@ -1,20 +1,8 @@
-# x-apievangelist-provenance:
-#   generated: '2026-08-13'
-#   method: searched
-#   source: openapi/_original/intelligems-external-api-openapi.yml
-#   note: >-
-#     Operations, parameters, request bodies and 200 schemas are Intelligems' own published
-#     OpenAPI, harvested verbatim from the embedded spec blocks on its API-reference pages.
-#     API Evangelist added only: operationIds, summaries/descriptions, the canonical tag, and
-#     the documented 4xx/5xx error responses from the published Errors page. See
-#     overlays/intelligems-external-api-overlay.yaml.
-openapi: 3.1.0
+openapi: 3.2.0
 info:
-  title: Intelligems External Custom Events API
+  title: Intelligems External Create Custom Event API
   version: v25-10-beta
-  description: Programmatic access to manage Intelligems A/B tests, personalizations, and experiences, to define
-    custom events, and to pull experiment and sitewide analytics for a Shopify store. Authenticate with an API key
-    in the `intelligems-access-token` header.
+  description: Programmatic access to manage Intelligems A/B tests, personalizations, and experiences, to define custom events, and to pull experiment and sitewide analytics for a Shopify store. Authenticate with an API key in the `intelligems-access-token` header.
   contact:
     name: Intelligems
     url: https://docs.intelligems.io/developer-resources/external-api
@@ -22,19 +10,75 @@ servers:
 - url: https://api.intelligems.io
   description: Production
 security:
-- accessToken: []
+- intelligems_access_token: []
 tags:
-- name: Custom Events
-  description: Define client-side custom events (clicks, scroll depth, page views) used as goals and triggers on
-    experiences.
+- name: Create Custom Event
+  description: 'The following custom event types are supported by the Intelligems Custom Events API:
+
+
+    - `clickEvent` — Fires when a visitor clicks an element matching one or more CSS selectors
+
+    - `scrollDepth` — Fires when a visitor scrolls past a configured percentage of the page (separate thresholds for mobile and desktop)
+
+    - `pageView` — Fires when a visitor views a page matching `applyToUrls`
+
+    - `productPageView` — Fires when a visitor views one of a specific set of product pages
+
+    - `collectionPageView`…'
 paths:
   /v25-10-beta/custom-events:
     put:
       tags:
-      - Custom Events
-      description: Create a new custom event (click, scroll depth, page view, element viewed, JavaScript event),
-        or update an existing one in place by passing back its id. Accepts a single event object or an array of
-        up to 50.
+      - Create Custom Event
+      description: 'Creates a new custom event, or updates an existing one by passing back its `id`.
+
+        `customEvent` accepts either a single event object, or an array of event
+
+        objects (up to 50) to create/update several in one request.
+
+
+        Custom events let you define client-side behaviors (clicks, scroll depth,
+
+        page views, etc.) that can be tracked as goals or triggers on experiences.
+
+
+        This is a full PUT replacement — when updating an existing event, the entire
+
+        event configuration is replaced with the provided data. Any optional fields
+
+        omitted from the request are reset to their defaults, not preserved from the
+
+        previous version.
+
+
+        ### Required Fields (inside each event object)
+
+
+        - `type` - The kind of custom event (see supported types above)
+
+        - `name` - A name for the custom event
+
+        - `settings` - Type-specific configuration (e.g. CSS selectors for `clickEvent`, scroll percentages for `scrollDepth`)
+
+        - `applyToUrls` - Required only for `pageView` (at least one rule); has no effect and is ignored for `productPageView`/`collectionPageView`
+
+
+        ### Optional Fields (inside each event object)
+
+
+        - `id` (UUID) - Pass back the `id` from a previous create/update response to update that event in place instead of creating a new one. Omit to create a new event. Supplying an `id` that doesn''t belong to your organization creates a new event rather than adopting or overwriting it.
+
+        - `description` (string) - Description of the custom event
+
+
+        ### Important Notes
+
+
+        - `customEvent` must be either a single event object or an array of up to 50 event objects — not a mix of anything else.
+
+        - `identifier` is server-generated and read-only; it is not guaranteed to stay the same across updates to the same event. Use `id` as the stable reference for an event, not `identifier`.
+
+        - Returns a `403` if your organization''s plan does not include custom events tracking. This applies to both creating a new event and updating an existing one.'
       requestBody:
         content:
           application/json:
@@ -52,8 +96,7 @@ paths:
                           pattern: ^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$
                         name:
                           type: string
-                          description: Display name shown in the Events Manager and when selecting metrics for an
-                            experience.
+                          description: Display name shown in the Events Manager and when selecting metrics for an experience.
                         description:
                           description: Internal note explaining what this event tracks.
                           anyOf:
@@ -88,16 +131,11 @@ paths:
                             required:
                             - matchBy
                             - value
-                          description: Optional URL rules restricting which pages this event fires on. Omit to track
-                            on all pages.
+                          description: Optional URL rules restricting which pages this event fires on. Omit to track on all pages.
                         type:
                           type: string
                           const: pageView
-                          description: Determines which visitor behavior is tracked and which `settings` shape is
-                            required. Use pageView for any page visit, productPageView/collectionPageView for specific
-                            product or collection pages, clickEvent/elementViewed for CSS-selector-targeted DOM
-                            interactions, scrollDepth for scroll-percentage milestones, and javascriptEvent for
-                            a custom JS snippet that fires the event.
+                          description: Determines which visitor behavior is tracked and which `settings` shape is required. Use pageView for any page visit, productPageView/collectionPageView for specific product or collection pages, clickEvent/elementViewed for CSS-selector-targeted DOM interactions, scrollDepth for scroll-percentage milestones, and javascriptEvent for a custom JS snippet that fires the event.
                         settings:
                           type: object
                           properties: {}
@@ -114,8 +152,7 @@ paths:
                           pattern: ^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$
                         name:
                           type: string
-                          description: Display name shown in the Events Manager and when selecting metrics for an
-                            experience.
+                          description: Display name shown in the Events Manager and when selecting metrics for an experience.
                         description:
                           description: Internal note explaining what this event tracks.
                           anyOf:
@@ -124,11 +161,7 @@ paths:
                         type:
                           type: string
                           const: productPageView
-                          description: Determines which visitor behavior is tracked and which `settings` shape is
-                            required. Use pageView for any page visit, productPageView/collectionPageView for specific
-                            product or collection pages, clickEvent/elementViewed for CSS-selector-targeted DOM
-                            interactions, scrollDepth for scroll-percentage milestones, and javascriptEvent for
-                            a custom JS snippet that fires the event.
+                          description: Determines which visitor behavior is tracked and which `settings` shape is required. Use pageView for any page visit, productPageView/collectionPageView for specific product or collection pages, clickEvent/elementViewed for CSS-selector-targeted DOM interactions, scrollDepth for scroll-percentage milestones, and javascriptEvent for a custom JS snippet that fires the event.
                         settings:
                           minItems: 1
                           type: array
@@ -156,8 +189,7 @@ paths:
                           pattern: ^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$
                         name:
                           type: string
-                          description: Display name shown in the Events Manager and when selecting metrics for an
-                            experience.
+                          description: Display name shown in the Events Manager and when selecting metrics for an experience.
                         description:
                           description: Internal note explaining what this event tracks.
                           anyOf:
@@ -166,11 +198,7 @@ paths:
                         type:
                           type: string
                           const: collectionPageView
-                          description: Determines which visitor behavior is tracked and which `settings` shape is
-                            required. Use pageView for any page visit, productPageView/collectionPageView for specific
-                            product or collection pages, clickEvent/elementViewed for CSS-selector-targeted DOM
-                            interactions, scrollDepth for scroll-percentage milestones, and javascriptEvent for
-                            a custom JS snippet that fires the event.
+                          description: Determines which visitor behavior is tracked and which `settings` shape is required. Use pageView for any page visit, productPageView/collectionPageView for specific product or collection pages, clickEvent/elementViewed for CSS-selector-targeted DOM interactions, scrollDepth for scroll-percentage milestones, and javascriptEvent for a custom JS snippet that fires the event.
                         settings:
                           minItems: 1
                           type: array
@@ -194,16 +222,14 @@ paths:
                           pattern: ^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$
                         name:
                           type: string
-                          description: Display name shown in the Events Manager and when selecting metrics for an
-                            experience.
+                          description: Display name shown in the Events Manager and when selecting metrics for an experience.
                         description:
                           description: Internal note explaining what this event tracks.
                           anyOf:
                           - type: string
                           - type: 'null'
                         applyToUrls:
-                          description: Optional URL rules restricting which pages this event fires on. Omit to track
-                            on all pages.
+                          description: Optional URL rules restricting which pages this event fires on. Omit to track on all pages.
                           anyOf:
                           - type: array
                             items:
@@ -236,11 +262,7 @@ paths:
                         type:
                           type: string
                           const: clickEvent
-                          description: Determines which visitor behavior is tracked and which `settings` shape is
-                            required. Use pageView for any page visit, productPageView/collectionPageView for specific
-                            product or collection pages, clickEvent/elementViewed for CSS-selector-targeted DOM
-                            interactions, scrollDepth for scroll-percentage milestones, and javascriptEvent for
-                            a custom JS snippet that fires the event.
+                          description: Determines which visitor behavior is tracked and which `settings` shape is required. Use pageView for any page visit, productPageView/collectionPageView for specific product or collection pages, clickEvent/elementViewed for CSS-selector-targeted DOM interactions, scrollDepth for scroll-percentage milestones, and javascriptEvent for a custom JS snippet that fires the event.
                         settings:
                           type: object
                           properties:
@@ -265,16 +287,14 @@ paths:
                           pattern: ^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$
                         name:
                           type: string
-                          description: Display name shown in the Events Manager and when selecting metrics for an
-                            experience.
+                          description: Display name shown in the Events Manager and when selecting metrics for an experience.
                         description:
                           description: Internal note explaining what this event tracks.
                           anyOf:
                           - type: string
                           - type: 'null'
                         applyToUrls:
-                          description: Optional URL rules restricting which pages this event fires on. Omit to track
-                            on all pages.
+                          description: Optional URL rules restricting which pages this event fires on. Omit to track on all pages.
                           anyOf:
                           - type: array
                             items:
@@ -307,11 +327,7 @@ paths:
                         type:
                           type: string
                           const: elementViewed
-                          description: Determines which visitor behavior is tracked and which `settings` shape is
-                            required. Use pageView for any page visit, productPageView/collectionPageView for specific
-                            product or collection pages, clickEvent/elementViewed for CSS-selector-targeted DOM
-                            interactions, scrollDepth for scroll-percentage milestones, and javascriptEvent for
-                            a custom JS snippet that fires the event.
+                          description: Determines which visitor behavior is tracked and which `settings` shape is required. Use pageView for any page visit, productPageView/collectionPageView for specific product or collection pages, clickEvent/elementViewed for CSS-selector-targeted DOM interactions, scrollDepth for scroll-percentage milestones, and javascriptEvent for a custom JS snippet that fires the event.
                         settings:
                           type: object
                           properties:
@@ -321,8 +337,7 @@ paths:
                               items:
                                 type: string
                                 minLength: 1
-                              description: CSS selectors identifying the elements whose visibility in the viewport
-                                should be tracked.
+                              description: CSS selectors identifying the elements whose visibility in the viewport should be tracked.
                           required:
                           - selectors
                       required:
@@ -337,16 +352,14 @@ paths:
                           pattern: ^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$
                         name:
                           type: string
-                          description: Display name shown in the Events Manager and when selecting metrics for an
-                            experience.
+                          description: Display name shown in the Events Manager and when selecting metrics for an experience.
                         description:
                           description: Internal note explaining what this event tracks.
                           anyOf:
                           - type: string
                           - type: 'null'
                         applyToUrls:
-                          description: Optional URL rules restricting which pages this event fires on. Omit to track
-                            on all pages.
+                          description: Optional URL rules restricting which pages this event fires on. Omit to track on all pages.
                           anyOf:
                           - type: array
                             items:
@@ -379,11 +392,7 @@ paths:
                         type:
                           type: string
                           const: scrollDepth
-                          description: Determines which visitor behavior is tracked and which `settings` shape is
-                            required. Use pageView for any page visit, productPageView/collectionPageView for specific
-                            product or collection pages, clickEvent/elementViewed for CSS-selector-targeted DOM
-                            interactions, scrollDepth for scroll-percentage milestones, and javascriptEvent for
-                            a custom JS snippet that fires the event.
+                          description: Determines which visitor behavior is tracked and which `settings` shape is required. Use pageView for any page visit, productPageView/collectionPageView for specific product or collection pages, clickEvent/elementViewed for CSS-selector-targeted DOM interactions, scrollDepth for scroll-percentage milestones, and javascriptEvent for a custom JS snippet that fires the event.
                         settings:
                           type: object
                           properties:
@@ -424,16 +433,14 @@ paths:
                           pattern: ^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$
                         name:
                           type: string
-                          description: Display name shown in the Events Manager and when selecting metrics for an
-                            experience.
+                          description: Display name shown in the Events Manager and when selecting metrics for an experience.
                         description:
                           description: Internal note explaining what this event tracks.
                           anyOf:
                           - type: string
                           - type: 'null'
                         applyToUrls:
-                          description: Optional URL rules restricting which pages this event fires on. Omit to track
-                            on all pages.
+                          description: Optional URL rules restricting which pages this event fires on. Omit to track on all pages.
                           anyOf:
                           - type: array
                             items:
@@ -466,21 +473,13 @@ paths:
                         type:
                           type: string
                           const: javascriptEvent
-                          description: Determines which visitor behavior is tracked and which `settings` shape is
-                            required. Use pageView for any page visit, productPageView/collectionPageView for specific
-                            product or collection pages, clickEvent/elementViewed for CSS-selector-targeted DOM
-                            interactions, scrollDepth for scroll-percentage milestones, and javascriptEvent for
-                            a custom JS snippet that fires the event.
+                          description: Determines which visitor behavior is tracked and which `settings` shape is required. Use pageView for any page visit, productPageView/collectionPageView for specific product or collection pages, clickEvent/elementViewed for CSS-selector-targeted DOM interactions, scrollDepth for scroll-percentage milestones, and javascriptEvent for a custom JS snippet that fires the event.
                         settings:
                           type: object
                           properties:
                             code:
                               type: string
-                              description: 'JavaScript snippet injected into a <script> tag on the page. To register
-                                an occurrence, it must call `window.igEvents.push({ event: "<identifier>" })` where
-                                `<identifier>` exactly matches this event''s own identifier. The identifier is server-generated
-                                and only returned after creation, so write a placeholder here and update the event''s
-                                code afterward with the returned identifier.'
+                              description: 'JavaScript snippet injected into a <script> tag on the page. To register an occurrence, it must call `window.igEvents.push({ event: "<identifier>" })` where `<identifier>` exactly matches this event''s own identifier. The identifier is server-generated and only returned after creation, so write a placeholder here and update the event''s code afterward with the returned identifier.'
                           required:
                           - code
                       required:
@@ -500,8 +499,7 @@ paths:
                             pattern: ^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$
                           name:
                             type: string
-                            description: Display name shown in the Events Manager and when selecting metrics for
-                              an experience.
+                            description: Display name shown in the Events Manager and when selecting metrics for an experience.
                           description:
                             description: Internal note explaining what this event tracks.
                             anyOf:
@@ -536,16 +534,11 @@ paths:
                               required:
                               - matchBy
                               - value
-                            description: Optional URL rules restricting which pages this event fires on. Omit to
-                              track on all pages.
+                            description: Optional URL rules restricting which pages this event fires on. Omit to track on all pages.
                           type:
                             type: string
                             const: pageView
-                            description: Determines which visitor behavior is tracked and which `settings` shape
-                              is required. Use pageView for any page visit, productPageView/collectionPageView for
-                              specific product or collection pages, clickEvent/elementViewed for CSS-selector-targeted
-                              DOM interactions, scrollDepth for scroll-percentage milestones, and javascriptEvent
-                              for a custom JS snippet that fires the event.
+                            description: Determines which visitor behavior is tracked and which `settings` shape is required. Use pageView for any page visit, productPageView/collectionPageView for specific product or collection pages, clickEvent/elementViewed for CSS-selector-targeted DOM interactions, scrollDepth for scroll-percentage milestones, and javascriptEvent for a custom JS snippet that fires the event.
                           settings:
                             type: object
                             properties: {}
@@ -562,8 +555,7 @@ paths:
                             pattern: ^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$
                           name:
                             type: string
-                            description: Display name shown in the Events Manager and when selecting metrics for
-                              an experience.
+                            description: Display name shown in the Events Manager and when selecting metrics for an experience.
                           description:
                             description: Internal note explaining what this event tracks.
                             anyOf:
@@ -572,11 +564,7 @@ paths:
                           type:
                             type: string
                             const: productPageView
-                            description: Determines which visitor behavior is tracked and which `settings` shape
-                              is required. Use pageView for any page visit, productPageView/collectionPageView for
-                              specific product or collection pages, clickEvent/elementViewed for CSS-selector-targeted
-                              DOM interactions, scrollDepth for scroll-percentage milestones, and javascriptEvent
-                              for a custom JS snippet that fires the event.
+                            description: Determines which visitor behavior is tracked and which `settings` shape is required. Use pageView for any page visit, productPageView/collectionPageView for specific product or collection pages, clickEvent/elementViewed for CSS-selector-targeted DOM interactions, scrollDepth for scroll-percentage milestones, and javascriptEvent for a custom JS snippet that fires the event.
                           settings:
                             minItems: 1
                             type: array
@@ -604,8 +592,7 @@ paths:
                             pattern: ^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$
                           name:
                             type: string
-                            description: Display name shown in the Events Manager and when selecting metrics for
-                              an experience.
+                            description: Display name shown in the Events Manager and when selecting metrics for an experience.
                           description:
                             description: Internal note explaining what this event tracks.
                             anyOf:
@@ -614,11 +601,7 @@ paths:
                           type:
                             type: string
                             const: collectionPageView
-                            description: Determines which visitor behavior is tracked and which `settings` shape
-                              is required. Use pageView for any page visit, productPageView/collectionPageView for
-                              specific product or collection pages, clickEvent/elementViewed for CSS-selector-targeted
-                              DOM interactions, scrollDepth for scroll-percentage milestones, and javascriptEvent
-                              for a custom JS snippet that fires the event.
+                            description: Determines which visitor behavior is tracked and which `settings` shape is required. Use pageView for any page visit, productPageView/collectionPageView for specific product or collection pages, clickEvent/elementViewed for CSS-selector-targeted DOM interactions, scrollDepth for scroll-percentage milestones, and javascriptEvent for a custom JS snippet that fires the event.
                           settings:
                             minItems: 1
                             type: array
@@ -642,16 +625,14 @@ paths:
                             pattern: ^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$
                           name:
                             type: string
-                            description: Display name shown in the Events Manager and when selecting metrics for
-                              an experience.
+                            description: Display name shown in the Events Manager and when selecting metrics for an experience.
                           description:
                             description: Internal note explaining what this event tracks.
                             anyOf:
                             - type: string
                             - type: 'null'
                           applyToUrls:
-                            description: Optional URL rules restricting which pages this event fires on. Omit to
-                              track on all pages.
+                            description: Optional URL rules restricting which pages this event fires on. Omit to track on all pages.
                             anyOf:
                             - type: array
                               items:
@@ -684,11 +665,7 @@ paths:
                           type:
                             type: string
                             const: clickEvent
-                            description: Determines which visitor behavior is tracked and which `settings` shape
-                              is required. Use pageView for any page visit, productPageView/collectionPageView for
-                              specific product or collection pages, clickEvent/elementViewed for CSS-selector-targeted
-                              DOM interactions, scrollDepth for scroll-percentage milestones, and javascriptEvent
-                              for a custom JS snippet that fires the event.
+                            description: Determines which visitor behavior is tracked and which `settings` shape is required. Use pageView for any page visit, productPageView/collectionPageView for specific product or collection pages, clickEvent/elementViewed for CSS-selector-targeted DOM interactions, scrollDepth for scroll-percentage milestones, and javascriptEvent for a custom JS snippet that fires the event.
                           settings:
                             type: object
                             properties:
@@ -713,16 +690,14 @@ paths:
                             pattern: ^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$
                           name:
                             type: string
-                            description: Display name shown in the Events Manager and when selecting metrics for
-                              an experience.
+                            description: Display name shown in the Events Manager and when selecting metrics for an experience.
                           description:
                             description: Internal note explaining what this event tracks.
                             anyOf:
                             - type: string
                             - type: 'null'
                           applyToUrls:
-                            description: Optional URL rules restricting which pages this event fires on. Omit to
-                              track on all pages.
+                            description: Optional URL rules restricting which pages this event fires on. Omit to track on all pages.
                             anyOf:
                             - type: array
                               items:
@@ -755,11 +730,7 @@ paths:
                           type:
                             type: string
                             const: elementViewed
-                            description: Determines which visitor behavior is tracked and which `settings` shape
-                              is required. Use pageView for any page visit, productPageView/collectionPageView for
-                              specific product or collection pages, clickEvent/elementViewed for CSS-selector-targeted
-                              DOM interactions, scrollDepth for scroll-percentage milestones, and javascriptEvent
-                              for a custom JS snippet that fires the event.
+                            description: Determines which visitor behavior is tracked and which `settings` shape is required. Use pageView for any page visit, productPageView/collectionPageView for specific product or collection pages, clickEvent/elementViewed for CSS-selector-targeted DOM interactions, scrollDepth for scroll-percentage milestones, and javascriptEvent for a custom JS snippet that fires the event.
                           settings:
                             type: object
                             properties:
@@ -769,8 +740,7 @@ paths:
                                 items:
                                   type: string
                                   minLength: 1
-                                description: CSS selectors identifying the elements whose visibility in the viewport
-                                  should be tracked.
+                                description: CSS selectors identifying the elements whose visibility in the viewport should be tracked.
                             required:
                             - selectors
                         required:
@@ -785,16 +755,14 @@ paths:
                             pattern: ^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$
                           name:
                             type: string
-                            description: Display name shown in the Events Manager and when selecting metrics for
-                              an experience.
+                            description: Display name shown in the Events Manager and when selecting metrics for an experience.
                           description:
                             description: Internal note explaining what this event tracks.
                             anyOf:
                             - type: string
                             - type: 'null'
                           applyToUrls:
-                            description: Optional URL rules restricting which pages this event fires on. Omit to
-                              track on all pages.
+                            description: Optional URL rules restricting which pages this event fires on. Omit to track on all pages.
                             anyOf:
                             - type: array
                               items:
@@ -827,11 +795,7 @@ paths:
                           type:
                             type: string
                             const: scrollDepth
-                            description: Determines which visitor behavior is tracked and which `settings` shape
-                              is required. Use pageView for any page visit, productPageView/collectionPageView for
-                              specific product or collection pages, clickEvent/elementViewed for CSS-selector-targeted
-                              DOM interactions, scrollDepth for scroll-percentage milestones, and javascriptEvent
-                              for a custom JS snippet that fires the event.
+                            description: Determines which visitor behavior is tracked and which `settings` shape is required. Use pageView for any page visit, productPageView/collectionPageView for specific product or collection pages, clickEvent/elementViewed for CSS-selector-targeted DOM interactions, scrollDepth for scroll-percentage milestones, and javascriptEvent for a custom JS snippet that fires the event.
                           settings:
                             type: object
                             properties:
@@ -872,16 +836,14 @@ paths:
                             pattern: ^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$
                           name:
                             type: string
-                            description: Display name shown in the Events Manager and when selecting metrics for
-                              an experience.
+                            description: Display name shown in the Events Manager and when selecting metrics for an experience.
                           description:
                             description: Internal note explaining what this event tracks.
                             anyOf:
                             - type: string
                             - type: 'null'
                           applyToUrls:
-                            description: Optional URL rules restricting which pages this event fires on. Omit to
-                              track on all pages.
+                            description: Optional URL rules restricting which pages this event fires on. Omit to track on all pages.
                             anyOf:
                             - type: array
                               items:
@@ -914,21 +876,13 @@ paths:
                           type:
                             type: string
                             const: javascriptEvent
-                            description: Determines which visitor behavior is tracked and which `settings` shape
-                              is required. Use pageView for any page visit, productPageView/collectionPageView for
-                              specific product or collection pages, clickEvent/elementViewed for CSS-selector-targeted
-                              DOM interactions, scrollDepth for scroll-percentage milestones, and javascriptEvent
-                              for a custom JS snippet that fires the event.
+                            description: Determines which visitor behavior is tracked and which `settings` shape is required. Use pageView for any page visit, productPageView/collectionPageView for specific product or collection pages, clickEvent/elementViewed for CSS-selector-targeted DOM interactions, scrollDepth for scroll-percentage milestones, and javascriptEvent for a custom JS snippet that fires the event.
                           settings:
                             type: object
                             properties:
                               code:
                                 type: string
-                                description: 'JavaScript snippet injected into a <script> tag on the page. To register
-                                  an occurrence, it must call `window.igEvents.push({ event: "<identifier>" })`
-                                  where `<identifier>` exactly matches this event''s own identifier. The identifier
-                                  is server-generated and only returned after creation, so write a placeholder here
-                                  and update the event''s code afterward with the returned identifier.'
+                                description: 'JavaScript snippet injected into a <script> tag on the page. To register an occurrence, it must call `window.igEvents.push({ event: "<identifier>" })` where `<identifier>` exactly matches this event''s own identifier. The identifier is server-generated and only returned after creation, so write a placeholder here and update the event''s code afterward with the returned identifier.'
                             required:
                             - code
                         required:
@@ -2442,97 +2396,14 @@ paths:
                 required:
                 - customEvent
                 additionalProperties: false
-        '400':
-          $ref: '#/components/responses/ValidationError'
-        '401':
-          $ref: '#/components/responses/Unauthorized'
-        '429':
-          $ref: '#/components/responses/RateLimited'
-        '500':
-          $ref: '#/components/responses/ServerError'
-        '403':
-          $ref: '#/components/responses/PlanRestricted'
-      operationId: createOrUpdateCustomEvent
-      summary: Create or update custom event
-      x-source-page: https://docs.intelligems.io/developer-resources/external-api/create-custom-event
+      summary: Replace v25 10 beta custom events
+      x-summary-source: derived
+      operationId: putV2510BetaCustomEvents
+      x-operation-id-source: derived
 components:
-  responses:
-    OK:
-      description: Success.
-      content:
-        application/json:
-          schema:
-            type: object
-            additionalProperties: true
-    ValidationError:
-      description: Validation error (invalid query/body values). Per-field messages under properties.<field>.errors.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ValidationError'
-    Unauthorized:
-      description: Unauthorized (invalid or missing API key).
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/AuthError'
-    NotFound:
-      description: Resource not found.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/AuthError'
-    RateLimited:
-      description: Rate limit exceeded. See x-ratelimit-limit / x-ratelimit-remaining / x-ratelimit-reset headers.
-      headers:
-        x-ratelimit-limit:
-          schema:
-            type: integer
-          description: Bucket size for the endpoint.
-        x-ratelimit-remaining:
-          schema:
-            type: integer
-          description: Remaining tokens in the current bucket.
-        x-ratelimit-reset:
-          schema:
-            type: integer
-          description: Unix timestamp (ms) at which the bucket next refills.
-    ServerError:
-      description: Internal server error.
-    PlanRestricted:
-      description: Forbidden — the organization's plan does not include custom-events tracking.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/AuthError'
-  schemas:
-    ValidationError:
-      type: object
-      description: Validation error envelope. Top-level errors[] is for request-level errors; per-field messages
-        live under properties.<field>.errors.
-      properties:
-        errors:
-          type: array
-          items:
-            type: string
-        properties:
-          type: object
-          additionalProperties:
-            type: object
-            properties:
-              errors:
-                type: array
-                items:
-                  type: string
-    AuthError:
-      type: object
-      properties:
-        error:
-          type: string
-          description: Error message, e.g. "Unauthorized" or "Unauthorized!".
   securitySchemes:
-    accessToken:
+    intelligems_access_token:
       type: apiKey
       in: header
       name: intelligems-access-token
-      description: API key issued by Intelligems, sent in the intelligems-access-token header.
+      description: Intelligems external API access token.

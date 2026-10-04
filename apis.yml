@@ -52,6 +52,9 @@ image: https://intelligems.io/favicon.ico
 specificationVersion: '0.23'
 created: '2026-07-17'
 modified: '2026-08-13'
+x-docs-platform: gitbook
+x-docs-platform-confidence: high
+x-docs-platform-checked: 2026-10-03
 tags:
 - Company
 - A/B Testing
@@ -393,6 +396,9 @@ maintainers:
 - FN: APIs.json
   email: info@apis.io
 common:
+- type: CapabilityMap
+  url: capabilities/intelligems-capability-edges.yml
+  name: Intelligems Business Capability Map
 - type: Overlay
   url: overlays/intelligems-external-api-overlay.yaml
 - type: AgenticAccess

@@ -1,0 +1,12 @@
+{
+ "url": "https://static.intelligems.io/api-docs-v25-10-prod.json",
+ "requested_url": "https://static.intelligems.io/api-docs-v25-10-prod.json",
+ "status": 200,
+ "content_type": "application/json",
+ "bytes": 172057,
+ "sha256": "95ecd2fb97d65b50f3236d4a052c90ac9d9b55c3939ed0fa30236f239f0175df",
+ "fetched_at": "2026-10-04",
+ "fetched_by": "APIEvangelist-Harvest/1.0 (+https://apievangelist.com)",
+ "match": "equivalent",
+ "note": "Re-fetched from the provider by verify-openapi-sources.py; the provider's current document describes the same operations (Jaccard 1.0), but the bytes differ, so the archive is an earlier or reformatted copy."
+}

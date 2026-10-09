@@ -464,3 +464,18 @@ x-evidence:
   status: 401
   fetched: '2026-08-13'
   note: tools/list is OAuth-gated
+rfc9728:
+  endpoint: https://ai.intelligems.io/mcp
+  metadata_url: https://ai.intelligems.io/.well-known/oauth-protected-resource
+  discovered_via: WWW-Authenticate resource_metadata on an anonymous POST initialize
+  fetched: '2026-09-25'
+  http_status: 200
+  content_type: application/json
+  document:
+    resource: https://ai.intelligems.io/mcp
+    authorization_servers:
+    - https://ai.intelligems.io
+    scopes_supported:
+    - member
+    bearer_methods_supported:
+    - header

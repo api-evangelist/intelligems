@@ -7195,3 +7195,9 @@ components:
       in: header
       name: intelligems-access-token
       description: Intelligems external API access token.
+x-provenance:
+  method: harvested
+  publisher: Intelligems
+  source: https://static.intelligems.io/api-docs-v25-10-prod.json
+  note: split by refine-openapis from the provider's own published document, verified by fetch (openapi/_original/*.fetch.json);
+    stamped by stamp-openapi-provenance.py (roadmap#793)

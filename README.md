@@ -64,6 +64,156 @@
 > Full detail: **[Where this data comes from](https://apievangelist.com/about/where-our-data-comes-from)**
 <!-- API-EVANGELIST-PROVENANCE:END -->
 
-Intelligems is a company surfaced as a portfolio company of techstars and added to the API Evangelist network as a stub for enrichment. This profile is a lead awaiting the enrichment pipeline.
+Intelligems is an AI-powered A/B testing, pricing optimization, and personalization platform for ecommerce stores, built primarily as a Shopify app. Merchants use it to test and personalize product and subscription pricing, discounts and offers, shipping strategies, content and landing pages, the checkout experience, and post-purchase offers, then measure the profit impact with built-in analytics. For developers, Intelligems publishes a REST External API (v25-10-beta) that manages experiences, defines custom events, and pulls experiment, sitewide and seasonal-benchmark analytics — with its own OpenAPI 3.1 published inside the reference — plus signed webhooks for the experience lifecycle, a client-side JavaScript API (window.igData), a headless React SDK (@intelligems/headless), and an official hosted MCP server with 46 OAuth-authenticated tools that connects experiments, Shopify store data, and analytics to Claude, ChatGPT, and Gemini.
 
-Backed by: techstars — https://intelligems.io/
+**Areas:** Company · A/B Testing · E-Commerce · Pricing · Personalization · Conversion Rate Optimization · Shopify · Analytics · Experimentation · MCP · Webhook · Profit Optimization
+
+## Intelligems on APIs.io
+
+Everything profiled for Intelligems is published on APIs.io rather than in this repository. Start at the provider page — **[apis.io/providers/intelligems/](https://apis.io/providers/intelligems/)** — or go straight to one of the APIs or properties below.
+
+### APIs (10)
+
+- [Intelligems MCP Server](https://apis.io/apis/intelligems/intelligems-mcp-server/) — Official hosted Model Context Protocol server exposing 46 tools over HTTP and SSE — experiment discovery and lifecycle, price-test prepare/commit,…
+- [Intelligems Create Custom Event API](https://apis.io/apis/intelligems/intelligems-create-custom-event-api/) — The following custom event types are supported by the Intelligems Custom Events API: - `clickEvent` — Fires when a visitor clicks an element matching one or…
+- [Intelligems Create Experience API](https://apis.io/apis/intelligems/intelligems-create-experience-api/) — The following experience types are supported by the Intelligems Experiments API: - `content/advanced` — Advanced content test (custom CSS/JS injection) -…
+- [Intelligems Fetch Experience Data API](https://apis.io/apis/intelligems/intelligems-fetch-experience-data-api/) — The Fetch Experience Data API from Intelligems — 3 operation(s) for fetch experience data.
+- [Intelligems Fetch Experience List API](https://apis.io/apis/intelligems/intelligems-fetch-experience-list-api/) — The Fetch Experience List API from Intelligems — 1 operation(s) for fetch experience list.
+- [Intelligems Fetch Sitewide Analytics API](https://apis.io/apis/intelligems/intelligems-fetch-sitewide-analytics-api/) — The Fetch Sitewide Analytics API from Intelligems — 4 operation(s) for fetch sitewide analytics.
+- [Intelligems Get Experience Export API](https://apis.io/apis/intelligems/intelligems-get-experience-export-api/) — The Get Experience Export API from Intelligems — 1 operation(s) for get experience export.
+- [Intelligems Get Holiday Benchmark Data API](https://apis.io/apis/intelligems/intelligems-get-holiday-benchmark-data-api/) — The Get Holiday Benchmark Data API from Intelligems — 2 operation(s) for get holiday benchmark data.
+- [Intelligems Perform Experience Action API](https://apis.io/apis/intelligems/intelligems-perform-experience-action-api/) — Lifecycle actions for managing experience state transitions (start, pause, end).
+- [Intelligems Update Experience API](https://apis.io/apis/intelligems/intelligems-update-experience-api/) — Updates an existing experience. This is a full PUT replacement — the entire experience configuration is replaced with the provided data. All required fields…
+
+### Published properties
+
+Each property below is a page on APIs.io carrying the machine-readable artifact and what it says.
+
+#### AsyncAPI (1)
+
+Event-driven and webhook contracts.
+
+- [Intelligems Webhooks](https://apis.io/asyncapis/intelligems/intelligems-webhooks/)
+
+#### MCP servers (1)
+
+Model Context Protocol servers that expose the API to agents.
+
+- [intelligems](https://apis.io/servers/intelligems/intelligems/)
+
+#### Agentic access (1)
+
+Which operations an agent can call, which act, and which need a human in the loop.
+
+- [Intelligems Agentic Access](https://apis.io/agentic-access/intelligems/intelligems-agentic-access/)
+
+#### Collections (4)
+
+Postman and Open Collection request collections.
+
+- [Intelligems External Analytics API](https://apis.io/collections/intelligems/open-intelligems-analytics-api/)
+- [Intelligems External Custom Events API](https://apis.io/collections/intelligems/open-intelligems-custom-events-api/)
+- [Intelligems External Experiences API](https://apis.io/collections/intelligems/open-intelligems-experiences-api/)
+- [Intelligems External Holiday Benchmark API](https://apis.io/collections/intelligems/open-intelligems-holiday-benchmark-api/)
+
+#### Overlays (1)
+
+OpenAPI overlays, including conversational phrasing for each operation.
+
+- [Intelligems External Api Overlay](https://apis.io/overlays/intelligems/intelligems-external-api-overlay/)
+
+#### Security (2)
+
+Authentication, trust centre, and vulnerability disclosure.
+
+- [Intelligems Authentication](https://apis.io/security/intelligems/intelligems-authentication/)
+- [Intelligems Domain Security](https://apis.io/security/intelligems/intelligems-domain-security/)
+
+#### OAuth scopes (1)
+
+The permissions the API asks for.
+
+- [Intelligems Scopes](https://apis.io/scopes/intelligems/intelligems-scopes/)
+
+#### Plans and pricing (1)
+
+Published plans, tiers and prices.
+
+- [Intelligems Plans Pricing](https://apis.io/plans/intelligems/intelligems-plans-pricing/)
+
+#### Rate limits (1)
+
+Published request limits.
+
+- [Intelligems Rate Limits](https://apis.io/rate-limits/intelligems/intelligems-rate-limits/)
+
+## Where to find this API
+
+Links to the company's own pages. This repository publishes no copy of their specifications — the canonical document is theirs and lives at the URLs below.
+
+- [Website](https://intelligems.io/)
+- [Documentation](https://docs.intelligems.io/)
+- [Getting started](https://docs.intelligems.io/getting-started/getting-started)
+- [API reference](https://docs.intelligems.io/developer-resources/external-api)
+- [Pricing](https://www.intelligems.io/pricing)
+- [Sign up](https://apps.shopify.com/intelligems)
+- [Support](https://www.intelligems.io/company/get-in-touch)
+- [Changelog](https://www.intelligems.io/resources/product-updates)
+- [Blog](https://www.intelligems.io/resources/blog)
+- [Terms of service](https://www.intelligems.io/terms-of-service)
+- [Privacy policy](https://www.intelligems.io/privacy-policy)
+
+## API Evangelist rating
+
+**Kin Score 60.7** — strong · rubric 0.25.0 · scored 2026-10-23
+
+| Facet | Score |
+|---|---|
+| Discoverability | 75.0 |
+| Contract quality | 57.5 |
+| Contract governance | 4.5 |
+| Operational transparency | 55.3 |
+| Developer ergonomics | 73.2 |
+| Access clarity | 65.8 |
+
+**Agent readiness 56.2** — agent-ready (gated down from agent-native)
+
+| Agent-readiness dimension | Result |
+|---|---|
+| Spec Presence | yes |
+| Agentic Access | derived (partial credit) |
+| Reversibility Documented | — |
+| MCP Server | verified |
+| Auth Clarity | served (partial credit) |
+| Idempotency | — |
+| Error Semantics | documented (partial credit) |
+| OpenAPI Examples | partial |
+| Rate Limit Signal | documented (partial credit) |
+| Event Surface Described | yes |
+| Agent Skills | derived (partial credit) |
+| Well Known Catalog | — |
+| Consent Identity | — |
+| Agent Card | — |
+| Dry Run Mode | — |
+| Delegated Identity | served (partial credit) |
+| Protected Resource Metadata | verified |
+| Dynamic Client Registration | yes |
+| Agentic Commerce | — |
+| Pagination Ratio | na |
+| Operation Distinctiveness | distinct |
+
+**Regulatory alignment 34.3** — Horizontal (data, software, accessibility, platform)
+
+The rubric is published at [github.com/api-evangelist/kin-score](https://github.com/api-evangelist/kin-score). The per-check breakdown behind these numbers — which checks were earned, partial or missed — along with score history and how this provider compares to its peers, is available at [apis.io/providers/intelligems/](https://apis.io/providers/intelligems/).
+
+## How this profile is made
+
+API Evangelist profiles a company's public API surface the way a developer would find it: the website, developer portal and documentation, the specifications it publishes, its public repositories, and its pricing, status and changelog pages. From that it derives the properties above — contracts split per API, workflows, schemas, collections, governance rules, plans and rate limits — and scores them against the published [Kin Score rubric](https://github.com/api-evangelist/kin-score).
+
+The artifacts are published on [APIs.io](https://apis.io), not in this repository. This repository is the public record for Intelligems: the place to say something is wrong, missing or out of date, and to ask for a re-score or a removal.
+
+## Open an issue
+
+- **Something about this listing** — a wrong description, a missing API, a stale artifact or a question about the rating: [open an issue on this repository](https://github.com/api-evangelist/intelligems/issues/new).
+- **A new API, or one that is not in the catalog yet** — [submit it on APIs.io](https://apis.io/add/).
+- **Anything else** — [the APIs.io inbox](https://github.com/api-search/inbox/issues/new) or [info@apievangelist.com](mailto:info@apievangelist.com).
